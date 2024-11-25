@@ -9,182 +9,182 @@ M8
 G1 Z-.25 F10.
 G1 X0. F5.2384
 G4 P1.
-G1 F5.2384 X-.0981
-M3 S5880
-G1 F768.0 X-.1081
-G1 F768.0 X-.0981
-G1 F5.8799 X-.1347
-M3 S5238
-G1 F768.0 X-.1447
-G1 F768.0 X-.1347
-G1 F5.2384 X-.2
-M3 S4405
-G1 F768.0 X-.21
-G1 F768.0 X-.2
-G1 F4.405 X-.3651
-M3 S5238
-G1 F768.0 X-.3751
-G1 F768.0 X-.3651
-G1 F5.2384 X-.4632
-M3 S5880
-G1 F768.0 X-.4732
-G1 F768.0 X-.4632
-G1 F5.8799 X-.4998
-M3 S5238
-G1 F768.0 X-.5098
-G1 F768.0 X-.4998
-G1 F5.2384 X-.5651
-M3 S4405
-G1 F768.0 X-.5751
-G1 F768.0 X-.5651
-G1 F4.405 X-.7302
-M3 S7849
-G1 F768.0 X-.7402
-G1 F768.0 X-.7302
-G1 F7.8488 X-.9262
-G1 F768.0 X-.9362
-G1 F768.0 X-.9262
-G1 F7.8488 X-1.0241
-M3 S6600
-G1 F768.0 X-1.0341
-G1 F768.0 X-1.0241
-G1 F6.6 X-1.2714
-M3 S6992
-G1 F768.0 X-1.2814
-G1 F768.0 X-1.2714
-G1 F6.9925 X-1.4461
-G1 F768.0 X-1.4561
-G1 F768.0 X-1.4461
-G1 F6.9925 X-1.5333
-M3 S5238
-G1 F768.0 X-1.5433
-G1 F768.0 X-1.5333
-G1 F5.2384 X-1.7296
-M3 S5880
-G1 F768.0 X-1.7396
-G1 F768.0 X-1.7296
-G1 F5.8799 X-1.8764
-G1 F768.0 X-1.8864
-G1 F768.0 X-1.8764
-G1 F5.8799 X-1.9498
-M3 S6992
-G1 F768.0 X-1.9598
-G1 F768.0 X-1.9498
-G1 F6.9925 X-2.0807
-M3 S6600
-G1 F768.0 X-2.0907
-G1 F768.0 X-2.0807
-G1 F6.6 X-2.1218
-M3 S5880
-G1 F768.0 X-2.1318
-G1 F768.0 X-2.1218
-G1 F5.8799 X-2.1951
-M3 S5238
-G1 F768.0 X-2.2051
-G1 F768.0 X-2.1951
-G1 F5.2384 X-2.2932
-M3 S5880
-G1 F768.0 X-2.3032
-G1 F768.0 X-2.2932
-G1 F5.8799 X-2.3298
-M3 S5238
-G1 F768.0 X-2.3398
-G1 F768.0 X-2.3298
-G1 F5.2384 X-2.3952
-M3 S4405
-G1 F768.0 X-2.4052
-G1 F768.0 X-2.3952
-G1 F4.405 X-2.5602
-M3 S5880
-G1 F768.0 X-2.5702
-G1 F768.0 X-2.5602
-G1 F5.8799 X-2.7071
-G1 F768.0 X-2.7171
-G1 F768.0 X-2.7071
-G1 F5.8799 X-2.7804
-M3 S6992
-G1 F768.0 X-2.7904
-G1 F768.0 X-2.7804
-G1 F6.9925 X-2.9114
-M3 S6600
-G1 F768.0 X-2.9214
-G1 F768.0 X-2.9114
-G1 F6.6 X-2.9524
-M3 S5880
-G1 F768.0 X-2.9624
-G1 F768.0 X-2.9524
-G1 F5.8799 X-3.0258
-M3 S5238
-G1 F768.0 X-3.0358
-G1 F768.0 X-3.0258
-G1 F5.2384 X-3.1239
-M3 S5880
-G1 F768.0 X-3.1339
-G1 F768.0 X-3.1239
-G1 F5.8799 X-3.1605
-M3 S5238
-G1 F768.0 X-3.1705
-G1 F768.0 X-3.1605
-G1 F5.2384 X-3.2258
-M3 S4405
-G1 F768.0 X-3.2358
-G1 F768.0 X-3.2258
-G1 F4.405 X-3.3909
-M3 S7849
-G1 F768.0 X-3.4009
-G1 F768.0 X-3.3909
-G1 F7.8488 X-3.5869
-G1 F768.0 X-3.5969
-G1 F768.0 X-3.5869
-G1 F7.8488 X-3.6848
-M3 S9334
-G1 F768.0 X-3.6948
-G1 F768.0 X-3.6848
-G1 F9.3338 X-3.8596
-M3 S7849
-G1 F768.0 X-3.8696
-G1 F768.0 X-3.8596
-G1 F7.8488 X-3.9084
-M3 S6600
-G1 F768.0 X-3.9184
-G1 F768.0 X-3.9084
-G1 F6.6 X-3.9907
-M3 S6992
-G1 F768.0 X-4.0007
-G1 F768.0 X-3.9907
-G1 F6.9925 X-4.2528
-M3 S8810
-G1 F768.0 X-4.2628
-G1 F768.0 X-4.2528
-G1 F8.8099 X-4.5829
-M3 S6992
-G1 F768.0 X-4.5929
-G1 F768.0 X-4.5829
-G1 F6.9925 X-4.7138
-M3 S5238
-G1 F768.0 X-4.7238
-G1 F768.0 X-4.7138
-G1 F5.2384 X-4.7464
-M3 S4405
-G1 F768.0 X-4.7564
-G1 F768.0 X-4.7464
-G1 F4.405 X-4.8014
-M3 S5238
-G1 F768.0 X-4.8114
-G1 F768.0 X-4.8014
-G1 F5.2384 X-4.8995
-M3 S4667
-G1 F768.0 X-4.9095
-G1 F768.0 X-4.8995
-G1 F4.6669 X-4.9285
-M3 S3924
-G1 F768.0 X-4.9385
-G1 F768.0 X-4.9285
-G1 F3.9244 X-4.9775
-M3 S3496
-G1 F768.0 X-4.9875
-G1 F768.0 X-4.9775
-G1 F3.4962 X-5.1959
+G1 F5.2384 X-.0981; play F3
+G1 F768.0 X-.1081; backward feed
+M3 S5880; new spindle speed
+G1 F768.0 X-.0981; forward feed
+G1 F5.8799 X-.1347; play G3
+G1 F768.0 X-.1447; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-.1347; forward feed
+G1 F5.2384 X-.2; play F3
+G1 F768.0 X-.21; backward feed
+M3 S4405; new spindle speed
+G1 F768.0 X-.2; forward feed
+G1 F4.405 X-.3651; play D3
+G1 F768.0 X-.3751; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-.3651; forward feed
+G1 F5.2384 X-.4632; play F3
+G1 F768.0 X-.4732; backward feed
+M3 S5880; new spindle speed
+G1 F768.0 X-.4632; forward feed
+G1 F5.8799 X-.4998; play G3
+G1 F768.0 X-.5098; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-.4998; forward feed
+G1 F5.2384 X-.5651; play F3
+G1 F768.0 X-.5751; backward feed
+M3 S4405; new spindle speed
+G1 F768.0 X-.5651; forward feed
+G1 F4.405 X-.7302; play D3
+G1 F768.0 X-.7402; backward feed
+M3 S7849; new spindle speed
+G1 F768.0 X-.7302; forward feed
+G1 F7.8488 X-.9262; play C4
+G1 F768.0 X-.9362; backward feed
+G1 F768.0 X-.9262; forward feed
+G1 F7.8488 X-1.0241; play C4
+G1 F768.0 X-1.0341; backward feed
+M3 S6600; new spindle speed
+G1 F768.0 X-1.0241; forward feed
+G1 F6.6 X-1.2714; play A3
+G1 F768.0 X-1.2814; backward feed
+M3 S6992; new spindle speed
+G1 F768.0 X-1.2714; forward feed
+G1 F6.9925 X-1.4461; play A#3
+G1 F768.0 X-1.4561; backward feed
+G1 F768.0 X-1.4461; forward feed
+G1 F6.9925 X-1.5333; play A#3
+G1 F768.0 X-1.5433; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-1.5333; forward feed
+G1 F5.2384 X-1.7296; play F3
+G1 F768.0 X-1.7396; backward feed
+M3 S5880; new spindle speed
+G1 F768.0 X-1.7296; forward feed
+G1 F5.8799 X-1.8764; play G3
+G1 F768.0 X-1.8864; backward feed
+G1 F768.0 X-1.8764; forward feed
+G1 F5.8799 X-1.9498; play G3
+G1 F768.0 X-1.9598; backward feed
+M3 S6992; new spindle speed
+G1 F768.0 X-1.9498; forward feed
+G1 F6.9925 X-2.0807; play A#3
+G1 F768.0 X-2.0907; backward feed
+M3 S6600; new spindle speed
+G1 F768.0 X-2.0807; forward feed
+G1 F6.6 X-2.1218; play A3
+G1 F768.0 X-2.1318; backward feed
+M3 S5880; new spindle speed
+G1 F768.0 X-2.1218; forward feed
+G1 F5.8799 X-2.1951; play G3
+G1 F768.0 X-2.2051; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-2.1951; forward feed
+G1 F5.2384 X-2.2932; play F3
+G1 F768.0 X-2.3032; backward feed
+M3 S5880; new spindle speed
+G1 F768.0 X-2.2932; forward feed
+G1 F5.8799 X-2.3298; play G3
+G1 F768.0 X-2.3398; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-2.3298; forward feed
+G1 F5.2384 X-2.3952; play F3
+G1 F768.0 X-2.4052; backward feed
+M3 S4405; new spindle speed
+G1 F768.0 X-2.3952; forward feed
+G1 F4.405 X-2.5602; play D3
+G1 F768.0 X-2.5702; backward feed
+M3 S5880; new spindle speed
+G1 F768.0 X-2.5602; forward feed
+G1 F5.8799 X-2.7071; play G3
+G1 F768.0 X-2.7171; backward feed
+G1 F768.0 X-2.7071; forward feed
+G1 F5.8799 X-2.7804; play G3
+G1 F768.0 X-2.7904; backward feed
+M3 S6992; new spindle speed
+G1 F768.0 X-2.7804; forward feed
+G1 F6.9925 X-2.9114; play A#3
+G1 F768.0 X-2.9214; backward feed
+M3 S6600; new spindle speed
+G1 F768.0 X-2.9114; forward feed
+G1 F6.6 X-2.9524; play A3
+G1 F768.0 X-2.9624; backward feed
+M3 S5880; new spindle speed
+G1 F768.0 X-2.9524; forward feed
+G1 F5.8799 X-3.0258; play G3
+G1 F768.0 X-3.0358; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-3.0258; forward feed
+G1 F5.2384 X-3.1239; play F3
+G1 F768.0 X-3.1339; backward feed
+M3 S5880; new spindle speed
+G1 F768.0 X-3.1239; forward feed
+G1 F5.8799 X-3.1605; play G3
+G1 F768.0 X-3.1705; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-3.1605; forward feed
+G1 F5.2384 X-3.2258; play F3
+G1 F768.0 X-3.2358; backward feed
+M3 S4405; new spindle speed
+G1 F768.0 X-3.2258; forward feed
+G1 F4.405 X-3.3909; play D3
+G1 F768.0 X-3.4009; backward feed
+M3 S7849; new spindle speed
+G1 F768.0 X-3.3909; forward feed
+G1 F7.8488 X-3.5869; play C4
+G1 F768.0 X-3.5969; backward feed
+G1 F768.0 X-3.5869; forward feed
+G1 F7.8488 X-3.6848; play C4
+G1 F768.0 X-3.6948; backward feed
+M3 S9334; new spindle speed
+G1 F768.0 X-3.6848; forward feed
+G1 F9.3338 X-3.8596; play D#4
+G1 F768.0 X-3.8696; backward feed
+M3 S7849; new spindle speed
+G1 F768.0 X-3.8596; forward feed
+G1 F7.8488 X-3.9084; play C4
+G1 F768.0 X-3.9184; backward feed
+M3 S6600; new spindle speed
+G1 F768.0 X-3.9084; forward feed
+G1 F6.6 X-3.9907; play A3
+G1 F768.0 X-4.0007; backward feed
+M3 S6992; new spindle speed
+G1 F768.0 X-3.9907; forward feed
+G1 F6.9925 X-4.2528; play A#3
+G1 F768.0 X-4.2628; backward feed
+M3 S8810; new spindle speed
+G1 F768.0 X-4.2528; forward feed
+G1 F8.8099 X-4.5829; play D4
+G1 F768.0 X-4.5929; backward feed
+M3 S6992; new spindle speed
+G1 F768.0 X-4.5829; forward feed
+G1 F6.9925 X-4.7138; play A#3
+G1 F768.0 X-4.7238; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-4.7138; forward feed
+G1 F5.2384 X-4.7464; play F3
+G1 F768.0 X-4.7564; backward feed
+M3 S4405; new spindle speed
+G1 F768.0 X-4.7464; forward feed
+G1 F4.405 X-4.8014; play D3
+G1 F768.0 X-4.8114; backward feed
+M3 S5238; new spindle speed
+G1 F768.0 X-4.8014; forward feed
+G1 F5.2384 X-4.8995; play F3
+G1 F768.0 X-4.9095; backward feed
+M3 S4667; new spindle speed
+G1 F768.0 X-4.8995; forward feed
+G1 F4.6669 X-4.9285; play D#3
+G1 F768.0 X-4.9385; backward feed
+M3 S3924; new spindle speed
+G1 F768.0 X-4.9285; forward feed
+G1 F3.9244 X-4.9775; play C3
+G1 F768.0 X-4.9875; backward feed
+M3 S3496; new spindle speed
+G1 F768.0 X-4.9775; forward feed
+G1 F3.4962 X-5.1959; play A#2
 G0 Z.1
 M5
 G53 Z0. M9

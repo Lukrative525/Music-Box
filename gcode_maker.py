@@ -36,7 +36,7 @@ def get_printer_settings():
     # start_position_z = 125
     # start_position_e = 0
 
-    # axis_labels = ['X', 'Y', 'Z', 'E'] # last axis must be E, not used to play notes
+    # axis_labels = ["X", "Y", "Z", "E"] # last axis must be E, not used to play notes
     # center_axis = [True, True, True, False]
 
     # settings_0 = [x_microstepping, y_microstepping, z_microstepping]
@@ -75,7 +75,7 @@ def get_printer_settings():
     # start_position_z = 100
     # start_position_e = 0
 
-    # axis_labels = ['X', 'Y', 'Z', 'E'] # last axis must be E, not used to play notes
+    # axis_labels = ["X", "Y", "Z", "E"] # last axis must be E, not used to play notes
     # center_axis = [True, True, True, False]
 
     # settings_0 = [x_microstepping, y_microstepping, z_microstepping]
@@ -126,7 +126,7 @@ def get_printer_settings():
     start_position_b = 0
     start_position_e = 0
 
-    axis_labels = ['X', 'Y', 'Z', 'A', 'B', 'E'] # last axis must be E, not used to play notes
+    axis_labels = ["X", "Y", "Z", "A", "B", "E"] # last axis must be E, not used to play notes
     center_axis = [True, True, True, False, False, False] # whether to actually move axis to center position (True) or to set to start position with G92 command (False)
 
     settings_0 = [x_microstepping, y_microstepping, z_microstepping, a_microstepping, b_microstepping]
@@ -396,7 +396,7 @@ def generate_cnc_gcode(file_name, sync, pause):
         else:
             # use the previous note value (if at the beginning this becomes the last note value)
             frequencies[i] = frequencies[i - 1]
-        # set durations to whatever they are in 'sync'
+        # set durations to whatever they are in "sync"
         durations[i] = sync[0][i][2]
 
     # calculate rpms based on frequencies and the number of flutes
@@ -426,11 +426,11 @@ def generate_cnc_gcode(file_name, sync, pause):
             lengths[i] = lengths[i] * -1
 
     # calculate starting coordinates
-    if settings[7] == 'left':
+    if settings[7] == "left":
         x_start = (settings[5] / 2)
         y_start = -1 * ((settings[5] / 2) - settings[3])
         dir = -1
-    elif settings[7] == 'right':
+    elif settings[7] == "right":
         x_start = -1 * (settings[5] / 2)
         y_start = ((settings[5] / 2) - settings[3])
         dir = 1
@@ -510,10 +510,10 @@ def format_text(text):
 
 def remove_leading_zeros(text):
 
-    if text[0:2] == '-0':
+    if text[0:2] == "-0":
         return remove_leading_zeros(text[0] + text[2:])
 
-    if text[0] == '0':
+    if text[0] == "0":
         return remove_leading_zeros(text[1:])
 
     else:
@@ -521,10 +521,10 @@ def remove_leading_zeros(text):
 
 def add_trailing_decimals(text):
 
-    if '.' not in text:
-        text += '.'
+    if "." not in text:
+        text += "."
 
     return text
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(remove_leading_zeros("-0000.00"))

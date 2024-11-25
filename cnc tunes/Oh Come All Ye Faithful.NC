@@ -9,245 +9,245 @@ M8
 G1 Z-.25 F10.
 G1 X0. F5.8799
 G4 P1.
-G1 F5.8799 X-.0458
-G1 F1228.8 X-.0558
-G1 F1228.8 X-.0458
-G1 F5.8799 X-.1376
-M3 S4405
-G1 F1228.8 X-.1476
-G1 F1228.8 X-.1376
-G1 F4.405 X-.172
-M3 S5880
-G1 F1228.8 X-.182
-G1 F1228.8 X-.172
-G1 F5.8799 X-.2178
-M3 S6600
-G1 F1228.8 X-.2278
-G1 F1228.8 X-.2178
-G1 F6.6 X-.3208
-M3 S4405
-G1 F1228.8 X-.3308
-G1 F1228.8 X-.3208
-G1 F4.405 X-.3896
-M3 S7408
-G1 F1228.8 X-.3996
-G1 F1228.8 X-.3896
-G1 F7.4082 X-.4473
-M3 S6600
-G1 F1228.8 X-.4573
-G1 F1228.8 X-.4473
-G1 F6.6 X-.4988
-M3 S7408
-G1 F1228.8 X-.5088
-G1 F1228.8 X-.4988
-G1 F7.4082 X-.5565
-M3 S7849
-G1 F1228.8 X-.5665
-G1 F1228.8 X-.5565
-G1 F7.8488 X-.6177
-M3 S7408
-G1 F1228.8 X-.6277
-G1 F1228.8 X-.6177
-G1 F7.4082 X-.7334
-M3 S6600
-G1 F1228.8 X-.7434
-G1 F1228.8 X-.7334
-G1 F6.6 X-.7848
-M3 S5880
-G1 F1228.8 X-.7948
-G1 F1228.8 X-.7848
-G1 F5.8799 X-.8307
-G1 F1228.8 X-.8407
-G1 F1228.8 X-.8307
-G1 F5.8799 X-.9224
-M3 S5550
-G1 F1228.8 X-.9324
-G1 F1228.8 X-.9224
-G1 F5.5499 X-.9657
-M3 S4944
-G1 F1228.8 X-.9757
-G1 F1228.8 X-.9657
-G1 F4.9444 X-1.0043
-M3 S5550
-G1 F1228.8 X-1.0143
-G1 F1228.8 X-1.0043
-G1 F5.5499 X-1.0475
-M3 S5880
-G1 F1228.8 X-1.0575
-G1 F1228.8 X-1.0475
-G1 F5.8799 X-1.0934
-M3 S6600
-G1 F1228.8 X-1.1034
-G1 F1228.8 X-1.0934
-G1 F6.6 X-1.1448
-M3 S7408
-G1 F1228.8 X-1.1548
-G1 F1228.8 X-1.1448
-G1 F7.4082 X-1.2026
-M3 S5550
-G1 F1228.8 X-1.2126
-G1 F1228.8 X-1.2026
-G1 F5.5499 X-1.2892
-M3 S4944
-G1 F1228.8 X-1.2992
-G1 F1228.8 X-1.2892
-G1 F4.9444 X-1.3471
-M3 S4405
-G1 F1228.8 X-1.3571
-G1 F1228.8 X-1.3471
-G1 F4.405 X-1.3642
-G1 F1228.8 X-1.3742
-G1 F1228.8 X-1.3642
-G1 F4.405 X-1.5018
-M3 S8810
-G1 F1228.8 X-1.5118
-G1 F1228.8 X-1.5018
-G1 F8.8099 X-1.6393
-M3 S7849
-G1 F1228.8 X-1.6493
-G1 F1228.8 X-1.6393
-G1 F7.8488 X-1.7005
-M3 S7408
-G1 F1228.8 X-1.7105
-G1 F1228.8 X-1.7005
-G1 F7.4082 X-1.7582
-M3 S7849
-G1 F1228.8 X-1.7682
-G1 F1228.8 X-1.7582
-G1 F7.8488 X-1.8808
-M3 S7408
-G1 F1228.8 X-1.8908
-G1 F1228.8 X-1.8808
-G1 F7.4082 X-1.9964
-M3 S6600
-G1 F1228.8 X-2.0064
-G1 F1228.8 X-1.9964
-G1 F6.6 X-2.0478
-M3 S7408
-G1 F1228.8 X-2.0578
-G1 F1228.8 X-2.0478
-G1 F7.4082 X-2.1056
-M3 S5880
-G1 F1228.8 X-2.1156
-G1 F1228.8 X-2.1056
-G1 F5.8799 X-2.1514
-M3 S6600
-G1 F1228.8 X-2.1614
-G1 F1228.8 X-2.1514
-G1 F6.6 X-2.2029
-M3 S5550
-G1 F1228.8 X-2.2129
-G1 F1228.8 X-2.2029
-G1 F5.5499 X-2.2678
-M3 S4944
-G1 F1228.8 X-2.2778
-G1 F1228.8 X-2.2678
-G1 F4.9444 X-2.2871
-M3 S4405
-G1 F1228.8 X-2.2971
-G1 F1228.8 X-2.2871
-G1 F4.405 X-2.3214
-M3 S5880
-G1 F1228.8 X-2.3314
-G1 F1228.8 X-2.3214
-G1 F5.8799 X-2.3673
-G1 F1228.8 X-2.3773
-G1 F1228.8 X-2.3673
-G1 F5.8799 X-2.4131
-M3 S5550
-G1 F1228.8 X-2.4231
-G1 F1228.8 X-2.4131
-G1 F5.5499 X-2.4564
-M3 S5880
-G1 F1228.8 X-2.4664
-G1 F1228.8 X-2.4564
-G1 F5.8799 X-2.5022
-M3 S6600
-G1 F1228.8 X-2.5122
-G1 F1228.8 X-2.5022
-G1 F6.6 X-2.5537
-M3 S5880
-G1 F1228.8 X-2.5637
-G1 F1228.8 X-2.5537
-G1 F5.8799 X-2.6454
-M3 S4405
-G1 F1228.8 X-2.6554
-G1 F1228.8 X-2.6454
-G1 F4.405 X-2.6798
-M3 S7408
-G1 F1228.8 X-2.6898
-G1 F1228.8 X-2.6798
-G1 F7.4082 X-2.7375
-G1 F1228.8 X-2.7475
-G1 F1228.8 X-2.7375
-G1 F7.4082 X-2.7953
-M3 S6600
-G1 F1228.8 X-2.8053
-G1 F1228.8 X-2.7953
-G1 F6.6 X-2.8468
-M3 S7408
-G1 F1228.8 X-2.8568
-G1 F1228.8 X-2.8468
-G1 F7.4082 X-2.9045
-M3 S7849
-G1 F1228.8 X-2.9145
-G1 F1228.8 X-2.9045
-G1 F7.8488 X-2.9657
-M3 S7408
-G1 F1228.8 X-2.9757
-G1 F1228.8 X-2.9657
-G1 F7.4082 X-3.0813
-M3 S6600
-G1 F1228.8 X-3.0913
-G1 F1228.8 X-3.0813
-G1 F6.6 X-3.1328
-M3 S7408
-G1 F1228.8 X-3.1428
-G1 F1228.8 X-3.1328
-G1 F7.4082 X-3.1905
-M3 S7849
-G1 F1228.8 X-3.2005
-G1 F1228.8 X-3.1905
-G1 F7.8488 X-3.2517
-M3 S7408
-G1 F1228.8 X-3.2617
-G1 F1228.8 X-3.2517
-G1 F7.4082 X-3.3095
-M3 S6600
-G1 F1228.8 X-3.3195
-G1 F1228.8 X-3.3095
-G1 F6.6 X-3.361
-M3 S5880
-G1 F1228.8 X-3.371
-G1 F1228.8 X-3.361
-G1 F5.8799 X-3.4068
-M3 S5550
-G1 F1228.8 X-3.4168
-G1 F1228.8 X-3.4068
-G1 F5.5499 X-3.4934
-M3 S5880
-G1 F1228.8 X-3.5034
-G1 F1228.8 X-3.4934
-G1 F5.8799 X-3.5393
-M3 S7849
-G1 F1228.8 X-3.5493
-G1 F1228.8 X-3.5393
-G1 F7.8488 X-3.6005
-M3 S7408
-G1 F1228.8 X-3.6105
-G1 F1228.8 X-3.6005
-G1 F7.4082 X-3.7161
-M3 S6600
-G1 F1228.8 X-3.7261
-G1 F1228.8 X-3.7161
-G1 F6.6 X-3.7933
-M3 S5880
-G1 F1228.8 X-3.8033
-G1 F1228.8 X-3.7933
-G1 F5.8799 X-3.8162
-G1 F1228.8 X-3.8262
-G1 F1228.8 X-3.8162
-G1 F5.8799 X-3.9539
+G1 F5.8799 X-.0458; play G3
+G1 F1228.8 X-.0558; backward feed
+G1 F1228.8 X-.0458; forward feed
+G1 F5.8799 X-.1376; play G3
+G1 F1228.8 X-.1476; backward feed
+M3 S4405; new spindle speed
+G1 F1228.8 X-.1376; forward feed
+G1 F4.405 X-.172; play D3
+G1 F1228.8 X-.182; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-.172; forward feed
+G1 F5.8799 X-.2178; play G3
+G1 F1228.8 X-.2278; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-.2178; forward feed
+G1 F6.6 X-.3208; play A3
+G1 F1228.8 X-.3308; backward feed
+M3 S4405; new spindle speed
+G1 F1228.8 X-.3208; forward feed
+G1 F4.405 X-.3896; play D3
+G1 F1228.8 X-.3996; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-.3896; forward feed
+G1 F7.4082 X-.4473; play B3
+G1 F1228.8 X-.4573; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-.4473; forward feed
+G1 F6.6 X-.4988; play A3
+G1 F1228.8 X-.5088; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-.4988; forward feed
+G1 F7.4082 X-.5565; play B3
+G1 F1228.8 X-.5665; backward feed
+M3 S7849; new spindle speed
+G1 F1228.8 X-.5565; forward feed
+G1 F7.8488 X-.6177; play C4
+G1 F1228.8 X-.6277; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-.6177; forward feed
+G1 F7.4082 X-.7334; play B3
+G1 F1228.8 X-.7434; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-.7334; forward feed
+G1 F6.6 X-.7848; play A3
+G1 F1228.8 X-.7948; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-.7848; forward feed
+G1 F5.8799 X-.8307; play G3
+G1 F1228.8 X-.8407; backward feed
+G1 F1228.8 X-.8307; forward feed
+G1 F5.8799 X-.9224; play G3
+G1 F1228.8 X-.9324; backward feed
+M3 S5550; new spindle speed
+G1 F1228.8 X-.9224; forward feed
+G1 F5.5499 X-.9657; play F#3
+G1 F1228.8 X-.9757; backward feed
+M3 S4944; new spindle speed
+G1 F1228.8 X-.9657; forward feed
+G1 F4.9444 X-1.0043; play E3
+G1 F1228.8 X-1.0143; backward feed
+M3 S5550; new spindle speed
+G1 F1228.8 X-1.0043; forward feed
+G1 F5.5499 X-1.0475; play F#3
+G1 F1228.8 X-1.0575; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-1.0475; forward feed
+G1 F5.8799 X-1.0934; play G3
+G1 F1228.8 X-1.1034; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-1.0934; forward feed
+G1 F6.6 X-1.1448; play A3
+G1 F1228.8 X-1.1548; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-1.1448; forward feed
+G1 F7.4082 X-1.2026; play B3
+G1 F1228.8 X-1.2126; backward feed
+M3 S5550; new spindle speed
+G1 F1228.8 X-1.2026; forward feed
+G1 F5.5499 X-1.2892; play F#3
+G1 F1228.8 X-1.2992; backward feed
+M3 S4944; new spindle speed
+G1 F1228.8 X-1.2892; forward feed
+G1 F4.9444 X-1.3471; play E3
+G1 F1228.8 X-1.3571; backward feed
+M3 S4405; new spindle speed
+G1 F1228.8 X-1.3471; forward feed
+G1 F4.405 X-1.3642; play D3
+G1 F1228.8 X-1.3742; backward feed
+G1 F1228.8 X-1.3642; forward feed
+G1 F4.405 X-1.5018; play D3
+G1 F1228.8 X-1.5118; backward feed
+M3 S8810; new spindle speed
+G1 F1228.8 X-1.5018; forward feed
+G1 F8.8099 X-1.6393; play D4
+G1 F1228.8 X-1.6493; backward feed
+M3 S7849; new spindle speed
+G1 F1228.8 X-1.6393; forward feed
+G1 F7.8488 X-1.7005; play C4
+G1 F1228.8 X-1.7105; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-1.7005; forward feed
+G1 F7.4082 X-1.7582; play B3
+G1 F1228.8 X-1.7682; backward feed
+M3 S7849; new spindle speed
+G1 F1228.8 X-1.7582; forward feed
+G1 F7.8488 X-1.8808; play C4
+G1 F1228.8 X-1.8908; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-1.8808; forward feed
+G1 F7.4082 X-1.9964; play B3
+G1 F1228.8 X-2.0064; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-1.9964; forward feed
+G1 F6.6 X-2.0478; play A3
+G1 F1228.8 X-2.0578; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-2.0478; forward feed
+G1 F7.4082 X-2.1056; play B3
+G1 F1228.8 X-2.1156; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-2.1056; forward feed
+G1 F5.8799 X-2.1514; play G3
+G1 F1228.8 X-2.1614; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-2.1514; forward feed
+G1 F6.6 X-2.2029; play A3
+G1 F1228.8 X-2.2129; backward feed
+M3 S5550; new spindle speed
+G1 F1228.8 X-2.2029; forward feed
+G1 F5.5499 X-2.2678; play F#3
+G1 F1228.8 X-2.2778; backward feed
+M3 S4944; new spindle speed
+G1 F1228.8 X-2.2678; forward feed
+G1 F4.9444 X-2.2871; play E3
+G1 F1228.8 X-2.2971; backward feed
+M3 S4405; new spindle speed
+G1 F1228.8 X-2.2871; forward feed
+G1 F4.405 X-2.3214; play D3
+G1 F1228.8 X-2.3314; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-2.3214; forward feed
+G1 F5.8799 X-2.3673; play G3
+G1 F1228.8 X-2.3773; backward feed
+G1 F1228.8 X-2.3673; forward feed
+G1 F5.8799 X-2.4131; play G3
+G1 F1228.8 X-2.4231; backward feed
+M3 S5550; new spindle speed
+G1 F1228.8 X-2.4131; forward feed
+G1 F5.5499 X-2.4564; play F#3
+G1 F1228.8 X-2.4664; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-2.4564; forward feed
+G1 F5.8799 X-2.5022; play G3
+G1 F1228.8 X-2.5122; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-2.5022; forward feed
+G1 F6.6 X-2.5537; play A3
+G1 F1228.8 X-2.5637; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-2.5537; forward feed
+G1 F5.8799 X-2.6454; play G3
+G1 F1228.8 X-2.6554; backward feed
+M3 S4405; new spindle speed
+G1 F1228.8 X-2.6454; forward feed
+G1 F4.405 X-2.6798; play D3
+G1 F1228.8 X-2.6898; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-2.6798; forward feed
+G1 F7.4082 X-2.7375; play B3
+G1 F1228.8 X-2.7475; backward feed
+G1 F1228.8 X-2.7375; forward feed
+G1 F7.4082 X-2.7953; play B3
+G1 F1228.8 X-2.8053; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-2.7953; forward feed
+G1 F6.6 X-2.8468; play A3
+G1 F1228.8 X-2.8568; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-2.8468; forward feed
+G1 F7.4082 X-2.9045; play B3
+G1 F1228.8 X-2.9145; backward feed
+M3 S7849; new spindle speed
+G1 F1228.8 X-2.9045; forward feed
+G1 F7.8488 X-2.9657; play C4
+G1 F1228.8 X-2.9757; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-2.9657; forward feed
+G1 F7.4082 X-3.0813; play B3
+G1 F1228.8 X-3.0913; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-3.0813; forward feed
+G1 F6.6 X-3.1328; play A3
+G1 F1228.8 X-3.1428; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-3.1328; forward feed
+G1 F7.4082 X-3.1905; play B3
+G1 F1228.8 X-3.2005; backward feed
+M3 S7849; new spindle speed
+G1 F1228.8 X-3.1905; forward feed
+G1 F7.8488 X-3.2517; play C4
+G1 F1228.8 X-3.2617; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-3.2517; forward feed
+G1 F7.4082 X-3.3095; play B3
+G1 F1228.8 X-3.3195; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-3.3095; forward feed
+G1 F6.6 X-3.361; play A3
+G1 F1228.8 X-3.371; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-3.361; forward feed
+G1 F5.8799 X-3.4068; play G3
+G1 F1228.8 X-3.4168; backward feed
+M3 S5550; new spindle speed
+G1 F1228.8 X-3.4068; forward feed
+G1 F5.5499 X-3.4934; play F#3
+G1 F1228.8 X-3.5034; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-3.4934; forward feed
+G1 F5.8799 X-3.5393; play G3
+G1 F1228.8 X-3.5493; backward feed
+M3 S7849; new spindle speed
+G1 F1228.8 X-3.5393; forward feed
+G1 F7.8488 X-3.6005; play C4
+G1 F1228.8 X-3.6105; backward feed
+M3 S7408; new spindle speed
+G1 F1228.8 X-3.6005; forward feed
+G1 F7.4082 X-3.7161; play B3
+G1 F1228.8 X-3.7261; backward feed
+M3 S6600; new spindle speed
+G1 F1228.8 X-3.7161; forward feed
+G1 F6.6 X-3.7933; play A3
+G1 F1228.8 X-3.8033; backward feed
+M3 S5880; new spindle speed
+G1 F1228.8 X-3.7933; forward feed
+G1 F5.8799 X-3.8162; play G3
+G1 F1228.8 X-3.8262; backward feed
+G1 F1228.8 X-3.8162; forward feed
+G1 F5.8799 X-3.9539; play G3
 G0 Z.1
 M5
 G53 Z0. M9
