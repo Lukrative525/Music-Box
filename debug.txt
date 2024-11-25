@@ -1,0 +1,2881 @@
+channel type: 1
+number of channels: 1
+ticks per beat: 480
+starting next track
+data[14] is 77
+data[15] is 84
+data[16] is 114
+data[17] is 107
+data[18] is 0
+data[19] is 0
+data[20] is 3
+data[21] is 218
+delta t: 0
+data[22] is 0
+track name: Saw Synthesizer
+data[23] is 255
+data[24] is 3
+data[25] is 16
+data[26] is 83
+data[27] is 97
+data[28] is 119
+data[29] is 32
+data[30] is 83
+data[31] is 121
+data[32] is 110
+data[33] is 116
+data[34] is 104
+data[35] is 101
+data[36] is 115
+data[37] is 105
+data[38] is 122
+data[39] is 101
+data[40] is 114
+data[41] is 0
+delta t: 0
+data[42] is 0
+time signature: 4/4
+data[43] is 255
+data[44] is 88
+data[45] is 4
+data[46] is 4
+data[47] is 2
+data[48] is 24
+data[49] is 8
+delta t: 0
+data[50] is 0
+key signature
+data[51] is 255
+data[52] is 89
+data[53] is 2
+data[54] is 254
+data[55] is 0
+delta t: 0
+data[56] is 0
+microseconds per beat: 394737
+data[57] is 255
+data[58] is 81
+data[59] is 3
+data[60] is 6
+data[61] is 5
+data[62] is 241
+delta t: 0
+data[63] is 0
+channel number: 0
+control number: 121
+assigned value: 0
+data[64] is 176
+data[65] is 121
+data[66] is 0
+delta t: 0
+data[67] is 0
+channel number: 0
+program number: 81
+data[68] is 192
+data[69] is 81
+delta t: 0
+data[70] is 0
+channel number: 0
+control number: 7
+assigned value: 100
+data[71] is 176
+data[72] is 7
+data[73] is 100
+delta t: 0
+data[74] is 0
+implied channel number: 0
+control number: 10
+assigned value: 64
+data[75] is 10
+data[76] is 64
+delta t: 0
+data[77] is 0
+implied channel number: 0
+control number: 91
+assigned value: 0
+data[78] is 91
+data[79] is 0
+delta t: 0
+data[80] is 0
+implied channel number: 0
+control number: 93
+assigned value: 0
+data[81] is 93
+data[82] is 0
+delta t: 0
+data[83] is 0
+port: 0
+data[84] is 255
+data[85] is 33
+data[86] is 1
+data[87] is 0
+delta t: 0
+data[88] is 0
+channel number: 0
+note number: 53
+note volume: 80
+data[89] is 144
+data[90] is 53
+data[91] is 80
+delta t: 0
+data[92] is 0
+channel number: 0
+control number: 2
+assigned value: 80
+data[93] is 176
+data[94] is 2
+data[95] is 80
+delta t: 719
+data[96] is 133
+data[97] is 79
+channel number: 0
+note number: 53
+note volume: 0
+data[98] is 144
+data[99] is 53
+data[100] is 0
+delta t: 1
+data[101] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[102] is 53
+data[103] is 80
+delta t: 239
+data[104] is 129
+data[105] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[106] is 53
+data[107] is 0
+delta t: 1
+data[108] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[109] is 55
+data[110] is 80
+delta t: 479
+data[111] is 131
+data[112] is 95
+implied channel number: 0
+note number: 55
+note volume: 0
+data[113] is 55
+data[114] is 0
+delta t: 1
+data[115] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[116] is 57
+data[117] is 80
+delta t: 479
+data[118] is 131
+data[119] is 95
+implied channel number: 0
+note number: 57
+note volume: 0
+data[120] is 57
+data[121] is 0
+delta t: 1
+data[122] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[123] is 58
+data[124] is 80
+delta t: 1199
+data[125] is 137
+data[126] is 47
+implied channel number: 0
+note number: 58
+note volume: 0
+data[127] is 58
+data[128] is 0
+delta t: 1
+data[129] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[130] is 58
+data[131] is 80
+delta t: 239
+data[132] is 129
+data[133] is 111
+implied channel number: 0
+note number: 58
+note volume: 0
+data[134] is 58
+data[135] is 0
+delta t: 1
+data[136] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[137] is 57
+data[138] is 80
+delta t: 239
+data[139] is 129
+data[140] is 111
+implied channel number: 0
+note number: 57
+note volume: 0
+data[141] is 57
+data[142] is 0
+delta t: 1
+data[143] is 1
+implied channel number: 0
+note number: 56
+note volume: 80
+data[144] is 56
+data[145] is 80
+delta t: 239
+data[146] is 129
+data[147] is 111
+implied channel number: 0
+note number: 56
+note volume: 0
+data[148] is 56
+data[149] is 0
+delta t: 1
+data[150] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[151] is 55
+data[152] is 80
+delta t: 719
+data[153] is 133
+data[154] is 79
+implied channel number: 0
+note number: 55
+note volume: 0
+data[155] is 55
+data[156] is 0
+delta t: 1
+data[157] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[158] is 57
+data[159] is 80
+delta t: 239
+data[160] is 129
+data[161] is 111
+implied channel number: 0
+note number: 57
+note volume: 0
+data[162] is 57
+data[163] is 0
+delta t: 1
+data[164] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[165] is 58
+data[166] is 80
+delta t: 479
+data[167] is 131
+data[168] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[169] is 58
+data[170] is 0
+delta t: 1
+data[171] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[172] is 55
+data[173] is 80
+delta t: 479
+data[174] is 131
+data[175] is 95
+implied channel number: 0
+note number: 55
+note volume: 0
+data[176] is 55
+data[177] is 0
+delta t: 1
+data[178] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[179] is 53
+data[180] is 80
+delta t: 1919
+data[181] is 142
+data[182] is 127
+implied channel number: 0
+note number: 53
+note volume: 0
+data[183] is 53
+data[184] is 0
+delta t: 1
+data[185] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[186] is 60
+data[187] is 80
+delta t: 719
+data[188] is 133
+data[189] is 79
+implied channel number: 0
+note number: 60
+note volume: 0
+data[190] is 60
+data[191] is 0
+delta t: 1
+data[192] is 1
+implied channel number: 0
+note number: 59
+note volume: 80
+data[193] is 59
+data[194] is 80
+delta t: 239
+data[195] is 129
+data[196] is 111
+implied channel number: 0
+note number: 59
+note volume: 0
+data[197] is 59
+data[198] is 0
+delta t: 1
+data[199] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[200] is 60
+data[201] is 80
+delta t: 959
+data[202] is 135
+data[203] is 63
+implied channel number: 0
+note number: 60
+note volume: 0
+data[204] is 60
+data[205] is 0
+delta t: 1
+data[206] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[207] is 62
+data[208] is 80
+delta t: 719
+data[209] is 133
+data[210] is 79
+implied channel number: 0
+note number: 62
+note volume: 0
+data[211] is 62
+data[212] is 0
+delta t: 1
+data[213] is 1
+implied channel number: 0
+note number: 61
+note volume: 80
+data[214] is 61
+data[215] is 80
+delta t: 239
+data[216] is 129
+data[217] is 111
+implied channel number: 0
+note number: 61
+note volume: 0
+data[218] is 61
+data[219] is 0
+delta t: 1
+data[220] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[221] is 62
+data[222] is 80
+delta t: 959
+data[223] is 135
+data[224] is 63
+implied channel number: 0
+note number: 62
+note volume: 0
+data[225] is 62
+data[226] is 0
+delta t: 1
+data[227] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[228] is 60
+data[229] is 80
+delta t: 959
+data[230] is 135
+data[231] is 63
+implied channel number: 0
+note number: 60
+note volume: 0
+data[232] is 60
+data[233] is 0
+delta t: 1
+data[234] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[235] is 62
+data[236] is 80
+delta t: 959
+data[237] is 135
+data[238] is 63
+implied channel number: 0
+note number: 62
+note volume: 0
+data[239] is 62
+data[240] is 0
+delta t: 1
+data[241] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[242] is 60
+data[243] is 80
+delta t: 1919
+data[244] is 142
+data[245] is 127
+implied channel number: 0
+note number: 60
+note volume: 0
+data[246] is 60
+data[247] is 0
+delta t: 1
+data[248] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[249] is 53
+data[250] is 80
+delta t: 719
+data[251] is 133
+data[252] is 79
+implied channel number: 0
+note number: 53
+note volume: 0
+data[253] is 53
+data[254] is 0
+delta t: 1
+data[255] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[256] is 53
+data[257] is 80
+delta t: 239
+data[258] is 129
+data[259] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[260] is 53
+data[261] is 0
+delta t: 1
+data[262] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[263] is 55
+data[264] is 80
+delta t: 479
+data[265] is 131
+data[266] is 95
+implied channel number: 0
+note number: 55
+note volume: 0
+data[267] is 55
+data[268] is 0
+delta t: 1
+data[269] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[270] is 57
+data[271] is 80
+delta t: 479
+data[272] is 131
+data[273] is 95
+implied channel number: 0
+note number: 57
+note volume: 0
+data[274] is 57
+data[275] is 0
+delta t: 1
+data[276] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[277] is 58
+data[278] is 80
+delta t: 1919
+data[279] is 142
+data[280] is 127
+implied channel number: 0
+note number: 58
+note volume: 0
+data[281] is 58
+data[282] is 0
+delta t: 1
+data[283] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[284] is 60
+data[285] is 80
+delta t: 719
+data[286] is 133
+data[287] is 79
+implied channel number: 0
+note number: 60
+note volume: 0
+data[288] is 60
+data[289] is 0
+delta t: 1
+data[290] is 1
+implied channel number: 0
+note number: 59
+note volume: 80
+data[291] is 59
+data[292] is 80
+delta t: 239
+data[293] is 129
+data[294] is 111
+implied channel number: 0
+note number: 59
+note volume: 0
+data[295] is 59
+data[296] is 0
+delta t: 1
+data[297] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[298] is 60
+data[299] is 80
+delta t: 479
+data[300] is 131
+data[301] is 95
+implied channel number: 0
+note number: 60
+note volume: 0
+data[302] is 60
+data[303] is 0
+delta t: 1
+data[304] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[305] is 62
+data[306] is 80
+delta t: 479
+data[307] is 131
+data[308] is 95
+implied channel number: 0
+note number: 62
+note volume: 0
+data[309] is 62
+data[310] is 0
+delta t: 1
+data[311] is 1
+implied channel number: 0
+note number: 63
+note volume: 80
+data[312] is 63
+data[313] is 80
+delta t: 1919
+data[314] is 142
+data[315] is 127
+implied channel number: 0
+note number: 63
+note volume: 0
+data[316] is 63
+data[317] is 0
+delta t: 1
+data[318] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[319] is 55
+data[320] is 80
+delta t: 719
+data[321] is 133
+data[322] is 79
+implied channel number: 0
+note number: 55
+note volume: 0
+data[323] is 55
+data[324] is 0
+delta t: 1
+data[325] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[326] is 57
+data[327] is 80
+delta t: 239
+data[328] is 129
+data[329] is 111
+implied channel number: 0
+note number: 57
+note volume: 0
+data[330] is 57
+data[331] is 0
+delta t: 1
+data[332] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[333] is 58
+data[334] is 80
+delta t: 479
+data[335] is 131
+data[336] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[337] is 58
+data[338] is 0
+delta t: 1
+data[339] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[340] is 60
+data[341] is 80
+delta t: 479
+data[342] is 131
+data[343] is 95
+implied channel number: 0
+note number: 60
+note volume: 0
+data[344] is 60
+data[345] is 0
+delta t: 1
+data[346] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[347] is 62
+data[348] is 80
+delta t: 719
+data[349] is 133
+data[350] is 79
+implied channel number: 0
+note number: 62
+note volume: 0
+data[351] is 62
+data[352] is 0
+delta t: 1
+data[353] is 1
+implied channel number: 0
+note number: 61
+note volume: 80
+data[354] is 61
+data[355] is 80
+delta t: 239
+data[356] is 129
+data[357] is 111
+implied channel number: 0
+note number: 61
+note volume: 0
+data[358] is 61
+data[359] is 0
+delta t: 1
+data[360] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[361] is 62
+data[362] is 80
+delta t: 479
+data[363] is 131
+data[364] is 95
+implied channel number: 0
+note number: 62
+note volume: 0
+data[365] is 62
+data[366] is 0
+delta t: 1
+data[367] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[368] is 53
+data[369] is 80
+delta t: 239
+data[370] is 129
+data[371] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[372] is 53
+data[373] is 0
+delta t: 1
+data[374] is 1
+implied channel number: 0
+note number: 54
+note volume: 80
+data[375] is 54
+data[376] is 80
+delta t: 239
+data[377] is 129
+data[378] is 111
+implied channel number: 0
+note number: 54
+note volume: 0
+data[379] is 54
+data[380] is 0
+delta t: 1
+data[381] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[382] is 55
+data[383] is 80
+delta t: 239
+data[384] is 129
+data[385] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[386] is 55
+data[387] is 0
+delta t: 1
+data[388] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[389] is 58
+data[390] is 80
+delta t: 479
+data[391] is 131
+data[392] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[393] is 58
+data[394] is 0
+delta t: 1
+data[395] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[396] is 55
+data[397] is 80
+delta t: 239
+data[398] is 129
+data[399] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[400] is 55
+data[401] is 0
+delta t: 1
+data[402] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[403] is 62
+data[404] is 80
+delta t: 479
+data[405] is 131
+data[406] is 95
+implied channel number: 0
+note number: 62
+note volume: 0
+data[407] is 62
+data[408] is 0
+delta t: 1
+data[409] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[410] is 62
+data[411] is 80
+delta t: 479
+data[412] is 131
+data[413] is 95
+implied channel number: 0
+note number: 62
+note volume: 0
+data[414] is 62
+data[415] is 0
+delta t: 1
+data[416] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[417] is 58
+data[418] is 80
+delta t: 1439
+data[419] is 139
+data[420] is 31
+implied channel number: 0
+note number: 58
+note volume: 0
+data[421] is 58
+data[422] is 0
+delta t: 1
+data[423] is 1
+implied channel number: 0
+note number: 65
+note volume: 80
+data[424] is 65
+data[425] is 80
+delta t: 479
+data[426] is 131
+data[427] is 95
+implied channel number: 0
+note number: 65
+note volume: 0
+data[428] is 65
+data[429] is 0
+delta t: 1
+data[430] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[431] is 62
+data[432] is 80
+delta t: 719
+data[433] is 133
+data[434] is 79
+implied channel number: 0
+note number: 62
+note volume: 0
+data[435] is 62
+data[436] is 0
+delta t: 1
+data[437] is 1
+implied channel number: 0
+note number: 61
+note volume: 80
+data[438] is 61
+data[439] is 80
+delta t: 239
+data[440] is 129
+data[441] is 111
+implied channel number: 0
+note number: 61
+note volume: 0
+data[442] is 61
+data[443] is 0
+delta t: 1
+data[444] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[445] is 62
+data[446] is 80
+delta t: 719
+data[447] is 133
+data[448] is 79
+implied channel number: 0
+note number: 62
+note volume: 0
+data[449] is 62
+data[450] is 0
+delta t: 1
+data[451] is 1
+implied channel number: 0
+note number: 61
+note volume: 80
+data[452] is 61
+data[453] is 80
+delta t: 239
+data[454] is 129
+data[455] is 111
+implied channel number: 0
+note number: 61
+note volume: 0
+data[456] is 61
+data[457] is 0
+delta t: 1
+data[458] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[459] is 62
+data[460] is 80
+delta t: 239
+data[461] is 129
+data[462] is 111
+implied channel number: 0
+note number: 62
+note volume: 0
+data[463] is 62
+data[464] is 0
+delta t: 1
+data[465] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[466] is 58
+data[467] is 80
+delta t: 239
+data[468] is 129
+data[469] is 111
+implied channel number: 0
+note number: 58
+note volume: 0
+data[470] is 58
+data[471] is 0
+delta t: 1
+data[472] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[473] is 55
+data[474] is 80
+delta t: 239
+data[475] is 129
+data[476] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[477] is 55
+data[478] is 0
+delta t: 1
+data[479] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[480] is 53
+data[481] is 80
+delta t: 479
+data[482] is 131
+data[483] is 95
+implied channel number: 0
+note number: 53
+note volume: 0
+data[484] is 53
+data[485] is 0
+delta t: 1
+data[486] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[487] is 53
+data[488] is 80
+delta t: 239
+data[489] is 129
+data[490] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[491] is 53
+data[492] is 0
+delta t: 1
+data[493] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[494] is 55
+data[495] is 80
+delta t: 239
+data[496] is 129
+data[497] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[498] is 55
+data[499] is 0
+delta t: 1
+data[500] is 1
+implied channel number: 0
+note number: 54
+note volume: 80
+data[501] is 54
+data[502] is 80
+delta t: 239
+data[503] is 129
+data[504] is 111
+implied channel number: 0
+note number: 54
+note volume: 0
+data[505] is 54
+data[506] is 0
+delta t: 1
+data[507] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[508] is 53
+data[509] is 80
+delta t: 479
+data[510] is 131
+data[511] is 95
+implied channel number: 0
+note number: 53
+note volume: 0
+data[512] is 53
+data[513] is 0
+delta t: 1
+data[514] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[515] is 58
+data[516] is 80
+delta t: 479
+data[517] is 131
+data[518] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[519] is 58
+data[520] is 0
+delta t: 1
+data[521] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[522] is 60
+data[523] is 80
+delta t: 479
+data[524] is 131
+data[525] is 95
+implied channel number: 0
+note number: 60
+note volume: 0
+data[526] is 60
+data[527] is 0
+delta t: 1
+data[528] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[529] is 58
+data[530] is 80
+delta t: 479
+data[531] is 131
+data[532] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[533] is 58
+data[534] is 0
+delta t: 1
+data[535] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[536] is 58
+data[537] is 80
+delta t: 959
+data[538] is 135
+data[539] is 63
+implied channel number: 0
+note number: 58
+note volume: 0
+data[540] is 58
+data[541] is 0
+delta t: 1
+data[542] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[543] is 57
+data[544] is 80
+delta t: 959
+data[545] is 135
+data[546] is 63
+implied channel number: 0
+note number: 57
+note volume: 0
+data[547] is 57
+data[548] is 0
+delta t: 1
+data[549] is 1
+implied channel number: 0
+note number: 63
+note volume: 80
+data[550] is 63
+data[551] is 80
+delta t: 719
+data[552] is 133
+data[553] is 79
+implied channel number: 0
+note number: 63
+note volume: 0
+data[554] is 63
+data[555] is 0
+delta t: 1
+data[556] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[557] is 62
+data[558] is 80
+delta t: 239
+data[559] is 129
+data[560] is 111
+implied channel number: 0
+note number: 62
+note volume: 0
+data[561] is 62
+data[562] is 0
+delta t: 1
+data[563] is 1
+implied channel number: 0
+note number: 63
+note volume: 80
+data[564] is 63
+data[565] is 80
+delta t: 719
+data[566] is 133
+data[567] is 79
+implied channel number: 0
+note number: 63
+note volume: 0
+data[568] is 63
+data[569] is 0
+delta t: 1
+data[570] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[571] is 62
+data[572] is 80
+delta t: 239
+data[573] is 129
+data[574] is 111
+implied channel number: 0
+note number: 62
+note volume: 0
+data[575] is 62
+data[576] is 0
+delta t: 1
+data[577] is 1
+implied channel number: 0
+note number: 63
+note volume: 80
+data[578] is 63
+data[579] is 80
+delta t: 239
+data[580] is 129
+data[581] is 111
+implied channel number: 0
+note number: 63
+note volume: 0
+data[582] is 63
+data[583] is 0
+delta t: 1
+data[584] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[585] is 60
+data[586] is 80
+delta t: 239
+data[587] is 129
+data[588] is 111
+implied channel number: 0
+note number: 60
+note volume: 0
+data[589] is 60
+data[590] is 0
+delta t: 1
+data[591] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[592] is 57
+data[593] is 80
+delta t: 239
+data[594] is 129
+data[595] is 111
+implied channel number: 0
+note number: 57
+note volume: 0
+data[596] is 57
+data[597] is 0
+delta t: 1
+data[598] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[599] is 53
+data[600] is 80
+delta t: 479
+data[601] is 131
+data[602] is 95
+implied channel number: 0
+note number: 53
+note volume: 0
+data[603] is 53
+data[604] is 0
+delta t: 1
+data[605] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[606] is 53
+data[607] is 80
+delta t: 239
+data[608] is 129
+data[609] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[610] is 53
+data[611] is 0
+delta t: 1
+data[612] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[613] is 55
+data[614] is 80
+delta t: 239
+data[615] is 129
+data[616] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[617] is 55
+data[618] is 0
+delta t: 1
+data[619] is 1
+implied channel number: 0
+note number: 54
+note volume: 80
+data[620] is 54
+data[621] is 80
+delta t: 239
+data[622] is 129
+data[623] is 111
+implied channel number: 0
+note number: 54
+note volume: 0
+data[624] is 54
+data[625] is 0
+delta t: 1
+data[626] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[627] is 53
+data[628] is 80
+delta t: 479
+data[629] is 131
+data[630] is 95
+implied channel number: 0
+note number: 53
+note volume: 0
+data[631] is 53
+data[632] is 0
+delta t: 1
+data[633] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[634] is 57
+data[635] is 80
+delta t: 479
+data[636] is 131
+data[637] is 95
+implied channel number: 0
+note number: 57
+note volume: 0
+data[638] is 57
+data[639] is 0
+delta t: 1
+data[640] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[641] is 58
+data[642] is 80
+delta t: 479
+data[643] is 131
+data[644] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[645] is 58
+data[646] is 0
+delta t: 1
+data[647] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[648] is 60
+data[649] is 80
+delta t: 479
+data[650] is 131
+data[651] is 95
+implied channel number: 0
+note number: 60
+note volume: 0
+data[652] is 60
+data[653] is 0
+delta t: 1
+data[654] is 1
+implied channel number: 0
+note number: 61
+note volume: 80
+data[655] is 61
+data[656] is 80
+delta t: 959
+data[657] is 135
+data[658] is 63
+implied channel number: 0
+note number: 61
+note volume: 0
+data[659] is 61
+data[660] is 0
+delta t: 1
+data[661] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[662] is 62
+data[663] is 80
+delta t: 959
+data[664] is 135
+data[665] is 63
+implied channel number: 0
+note number: 62
+note volume: 0
+data[666] is 62
+data[667] is 0
+delta t: 1
+data[668] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[669] is 62
+data[670] is 80
+delta t: 719
+data[671] is 133
+data[672] is 79
+implied channel number: 0
+note number: 62
+note volume: 0
+data[673] is 62
+data[674] is 0
+delta t: 1
+data[675] is 1
+implied channel number: 0
+note number: 61
+note volume: 80
+data[676] is 61
+data[677] is 80
+delta t: 239
+data[678] is 129
+data[679] is 111
+implied channel number: 0
+note number: 61
+note volume: 0
+data[680] is 61
+data[681] is 0
+delta t: 1
+data[682] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[683] is 62
+data[684] is 80
+delta t: 719
+data[685] is 133
+data[686] is 79
+implied channel number: 0
+note number: 62
+note volume: 0
+data[687] is 62
+data[688] is 0
+delta t: 1
+data[689] is 1
+implied channel number: 0
+note number: 61
+note volume: 80
+data[690] is 61
+data[691] is 80
+delta t: 239
+data[692] is 129
+data[693] is 111
+implied channel number: 0
+note number: 61
+note volume: 0
+data[694] is 61
+data[695] is 0
+delta t: 1
+data[696] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[697] is 62
+data[698] is 80
+delta t: 239
+data[699] is 129
+data[700] is 111
+implied channel number: 0
+note number: 62
+note volume: 0
+data[701] is 62
+data[702] is 0
+delta t: 1
+data[703] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[704] is 58
+data[705] is 80
+delta t: 239
+data[706] is 129
+data[707] is 111
+implied channel number: 0
+note number: 58
+note volume: 0
+data[708] is 58
+data[709] is 0
+delta t: 1
+data[710] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[711] is 55
+data[712] is 80
+delta t: 239
+data[713] is 129
+data[714] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[715] is 55
+data[716] is 0
+delta t: 1
+data[717] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[718] is 53
+data[719] is 80
+delta t: 479
+data[720] is 131
+data[721] is 95
+implied channel number: 0
+note number: 53
+note volume: 0
+data[722] is 53
+data[723] is 0
+delta t: 1
+data[724] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[725] is 53
+data[726] is 80
+delta t: 239
+data[727] is 129
+data[728] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[729] is 53
+data[730] is 0
+delta t: 1
+data[731] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[732] is 55
+data[733] is 80
+delta t: 239
+data[734] is 129
+data[735] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[736] is 55
+data[737] is 0
+delta t: 1
+data[738] is 1
+implied channel number: 0
+note number: 54
+note volume: 80
+data[739] is 54
+data[740] is 80
+delta t: 239
+data[741] is 129
+data[742] is 111
+implied channel number: 0
+note number: 54
+note volume: 0
+data[743] is 54
+data[744] is 0
+delta t: 1
+data[745] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[746] is 53
+data[747] is 80
+delta t: 479
+data[748] is 131
+data[749] is 95
+implied channel number: 0
+note number: 53
+note volume: 0
+data[750] is 53
+data[751] is 0
+delta t: 1
+data[752] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[753] is 58
+data[754] is 80
+delta t: 479
+data[755] is 131
+data[756] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[757] is 58
+data[758] is 0
+delta t: 1
+data[759] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[760] is 60
+data[761] is 80
+delta t: 479
+data[762] is 131
+data[763] is 95
+implied channel number: 0
+note number: 60
+note volume: 0
+data[764] is 60
+data[765] is 0
+delta t: 1
+data[766] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[767] is 58
+data[768] is 80
+delta t: 479
+data[769] is 131
+data[770] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[771] is 58
+data[772] is 0
+delta t: 1
+data[773] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[774] is 58
+data[775] is 80
+delta t: 959
+data[776] is 135
+data[777] is 63
+implied channel number: 0
+note number: 58
+note volume: 0
+data[778] is 58
+data[779] is 0
+delta t: 1
+data[780] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[781] is 55
+data[782] is 80
+delta t: 959
+data[783] is 135
+data[784] is 63
+implied channel number: 0
+note number: 55
+note volume: 0
+data[785] is 55
+data[786] is 0
+delta t: 1
+data[787] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[788] is 58
+data[789] is 80
+delta t: 719
+data[790] is 133
+data[791] is 79
+implied channel number: 0
+note number: 58
+note volume: 0
+data[792] is 58
+data[793] is 0
+delta t: 1
+data[794] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[795] is 57
+data[796] is 80
+delta t: 239
+data[797] is 129
+data[798] is 111
+implied channel number: 0
+note number: 57
+note volume: 0
+data[799] is 57
+data[800] is 0
+delta t: 1
+data[801] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[802] is 60
+data[803] is 80
+delta t: 719
+data[804] is 133
+data[805] is 79
+implied channel number: 0
+note number: 60
+note volume: 0
+data[806] is 60
+data[807] is 0
+delta t: 1
+data[808] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[809] is 58
+data[810] is 80
+delta t: 239
+data[811] is 129
+data[812] is 111
+implied channel number: 0
+note number: 58
+note volume: 0
+data[813] is 58
+data[814] is 0
+delta t: 1
+data[815] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[816] is 62
+data[817] is 80
+delta t: 1199
+data[818] is 137
+data[819] is 47
+implied channel number: 0
+note number: 62
+note volume: 0
+data[820] is 62
+data[821] is 0
+delta t: 1
+data[822] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[823] is 53
+data[824] is 80
+delta t: 239
+data[825] is 129
+data[826] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[827] is 53
+data[828] is 0
+delta t: 1
+data[829] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[830] is 55
+data[831] is 80
+delta t: 239
+data[832] is 129
+data[833] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[834] is 55
+data[835] is 0
+delta t: 1
+data[836] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[837] is 58
+data[838] is 80
+delta t: 239
+data[839] is 129
+data[840] is 111
+implied channel number: 0
+note number: 58
+note volume: 0
+data[841] is 58
+data[842] is 0
+delta t: 1
+data[843] is 1
+implied channel number: 0
+note number: 63
+note volume: 80
+data[844] is 63
+data[845] is 80
+delta t: 1199
+data[846] is 137
+data[847] is 47
+implied channel number: 0
+note number: 63
+note volume: 0
+data[848] is 63
+data[849] is 0
+delta t: 1
+data[850] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[851] is 53
+data[852] is 80
+delta t: 239
+data[853] is 129
+data[854] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[855] is 53
+data[856] is 0
+delta t: 1
+data[857] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[858] is 55
+data[859] is 80
+delta t: 239
+data[860] is 129
+data[861] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[862] is 55
+data[863] is 0
+delta t: 1
+data[864] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[865] is 58
+data[866] is 80
+delta t: 239
+data[867] is 129
+data[868] is 111
+implied channel number: 0
+note number: 58
+note volume: 0
+data[869] is 58
+data[870] is 0
+delta t: 1
+data[871] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[872] is 62
+data[873] is 80
+delta t: 1439
+data[874] is 139
+data[875] is 31
+implied channel number: 0
+note number: 62
+note volume: 0
+data[876] is 62
+data[877] is 0
+delta t: 1
+data[878] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[879] is 58
+data[880] is 80
+delta t: 479
+data[881] is 131
+data[882] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[883] is 58
+data[884] is 0
+delta t: 1
+data[885] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[886] is 58
+data[887] is 80
+delta t: 719
+data[888] is 133
+data[889] is 79
+implied channel number: 0
+note number: 58
+note volume: 0
+data[890] is 58
+data[891] is 0
+delta t: 1
+data[892] is 1
+implied channel number: 0
+note number: 57
+note volume: 80
+data[893] is 57
+data[894] is 80
+delta t: 239
+data[895] is 129
+data[896] is 111
+implied channel number: 0
+note number: 57
+note volume: 0
+data[897] is 57
+data[898] is 0
+delta t: 1
+data[899] is 1
+implied channel number: 0
+note number: 60
+note volume: 80
+data[900] is 60
+data[901] is 80
+delta t: 719
+data[902] is 133
+data[903] is 79
+implied channel number: 0
+note number: 60
+note volume: 0
+data[904] is 60
+data[905] is 0
+delta t: 1
+data[906] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[907] is 58
+data[908] is 80
+delta t: 239
+data[909] is 129
+data[910] is 111
+implied channel number: 0
+note number: 58
+note volume: 0
+data[911] is 58
+data[912] is 0
+delta t: 1
+data[913] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[914] is 62
+data[915] is 80
+delta t: 239
+data[916] is 129
+data[917] is 111
+implied channel number: 0
+note number: 62
+note volume: 0
+data[918] is 62
+data[919] is 0
+delta t: 1
+data[920] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[921] is 58
+data[922] is 80
+delta t: 239
+data[923] is 129
+data[924] is 111
+implied channel number: 0
+note number: 58
+note volume: 0
+data[925] is 58
+data[926] is 0
+delta t: 1
+data[927] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[928] is 55
+data[929] is 80
+delta t: 239
+data[930] is 129
+data[931] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[932] is 55
+data[933] is 0
+delta t: 1
+data[934] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[935] is 53
+data[936] is 80
+delta t: 479
+data[937] is 131
+data[938] is 95
+implied channel number: 0
+note number: 53
+note volume: 0
+data[939] is 53
+data[940] is 0
+delta t: 1
+data[941] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[942] is 53
+data[943] is 80
+delta t: 239
+data[944] is 129
+data[945] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[946] is 53
+data[947] is 0
+delta t: 1
+data[948] is 1
+implied channel number: 0
+note number: 52
+note volume: 80
+data[949] is 52
+data[950] is 80
+delta t: 239
+data[951] is 129
+data[952] is 111
+implied channel number: 0
+note number: 52
+note volume: 0
+data[953] is 52
+data[954] is 0
+delta t: 1
+data[955] is 1
+implied channel number: 0
+note number: 53
+note volume: 80
+data[956] is 53
+data[957] is 80
+delta t: 239
+data[958] is 129
+data[959] is 111
+implied channel number: 0
+note number: 53
+note volume: 0
+data[960] is 53
+data[961] is 0
+delta t: 1
+data[962] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[963] is 55
+data[964] is 80
+delta t: 239
+data[965] is 129
+data[966] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[967] is 55
+data[968] is 0
+delta t: 1
+data[969] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[970] is 58
+data[971] is 80
+delta t: 479
+data[972] is 131
+data[973] is 95
+implied channel number: 0
+note number: 58
+note volume: 0
+data[974] is 58
+data[975] is 0
+delta t: 1
+data[976] is 1
+implied channel number: 0
+note number: 55
+note volume: 80
+data[977] is 55
+data[978] is 80
+delta t: 239
+data[979] is 129
+data[980] is 111
+implied channel number: 0
+note number: 55
+note volume: 0
+data[981] is 55
+data[982] is 0
+delta t: 1
+data[983] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[984] is 62
+data[985] is 80
+delta t: 479
+data[986] is 131
+data[987] is 95
+implied channel number: 0
+note number: 62
+note volume: 0
+data[988] is 62
+data[989] is 0
+delta t: 1
+data[990] is 1
+implied channel number: 0
+note number: 62
+note volume: 80
+data[991] is 62
+data[992] is 80
+delta t: 479
+data[993] is 131
+data[994] is 95
+implied channel number: 0
+note number: 62
+note volume: 0
+data[995] is 62
+data[996] is 0
+delta t: 1
+data[997] is 1
+implied channel number: 0
+note number: 58
+note volume: 80
+data[998] is 58
+data[999] is 80
+delta t: 1919
+data[1000] is 142
+data[1001] is 127
+implied channel number: 0
+note number: 58
+note volume: 0
+data[1002] is 58
+data[1003] is 0
+delta t: 1
+data[1004] is 1
+end track
+data[1005] is 255
+data[1006] is 47
+data[1007] is 0
+
+notes
+
+['channel 0' 0 0]
+['new' 0 0]
+['name' 0 0]
+['time' 0 0]
+['key' 0 0]
+['tempo' 394737 0]
+['control' 0 0]
+['program' 0 0]
+['control' 0 0]
+['control' 0 0]
+['control' 0 0]
+['control' 0 0]
+['port' 0 0]
+[53 1 0]
+['control' 0 719]
+[53 0 719]
+[53 1 720]
+[53 0 959]
+[55 1 960]
+[55 0 1439]
+[57 1 1440]
+[57 0 1919]
+[58 1 1920]
+[58 0 3119]
+[58 1 3120]
+[58 0 3359]
+[57 1 3360]
+[57 0 3599]
+[56 1 3600]
+[56 0 3839]
+[55 1 3840]
+[55 0 4559]
+[57 1 4560]
+[57 0 4799]
+[58 1 4800]
+[58 0 5279]
+[55 1 5280]
+[55 0 5759]
+[53 1 5760]
+[53 0 7679]
+[60 1 7680]
+[60 0 8399]
+[59 1 8400]
+[59 0 8639]
+[60 1 8640]
+[60 0 9599]
+[62 1 9600]
+[62 0 10319]
+[61 1 10320]
+[61 0 10559]
+[62 1 10560]
+[62 0 11519]
+[60 1 11520]
+[60 0 12479]
+[62 1 12480]
+[62 0 13439]
+[60 1 13440]
+[60 0 15359]
+[53 1 15360]
+[53 0 16079]
+[53 1 16080]
+[53 0 16319]
+[55 1 16320]
+[55 0 16799]
+[57 1 16800]
+[57 0 17279]
+[58 1 17280]
+[58 0 19199]
+[60 1 19200]
+[60 0 19919]
+[59 1 19920]
+[59 0 20159]
+[60 1 20160]
+[60 0 20639]
+[62 1 20640]
+[62 0 21119]
+[63 1 21120]
+[63 0 23039]
+[55 1 23040]
+[55 0 23759]
+[57 1 23760]
+[57 0 23999]
+[58 1 24000]
+[58 0 24479]
+[60 1 24480]
+[60 0 24959]
+[62 1 24960]
+[62 0 25679]
+[61 1 25680]
+[61 0 25919]
+[62 1 25920]
+[62 0 26399]
+[53 1 26400]
+[53 0 26639]
+[54 1 26640]
+[54 0 26879]
+[55 1 26880]
+[55 0 27119]
+[58 1 27120]
+[58 0 27599]
+[55 1 27600]
+[55 0 27839]
+[62 1 27840]
+[62 0 28319]
+[62 1 28320]
+[62 0 28799]
+[58 1 28800]
+[58 0 30239]
+[65 1 30240]
+[65 0 30719]
+[62 1 30720]
+[62 0 31439]
+[61 1 31440]
+[61 0 31679]
+[62 1 31680]
+[62 0 32399]
+[61 1 32400]
+[61 0 32639]
+[62 1 32640]
+[62 0 32879]
+[58 1 32880]
+[58 0 33119]
+[55 1 33120]
+[55 0 33359]
+[53 1 33360]
+[53 0 33839]
+[53 1 33840]
+[53 0 34079]
+[55 1 34080]
+[55 0 34319]
+[54 1 34320]
+[54 0 34559]
+[53 1 34560]
+[53 0 35039]
+[58 1 35040]
+[58 0 35519]
+[60 1 35520]
+[60 0 35999]
+[58 1 36000]
+[58 0 36479]
+[58 1 36480]
+[58 0 37439]
+[57 1 37440]
+[57 0 38399]
+[63 1 38400]
+[63 0 39119]
+[62 1 39120]
+[62 0 39359]
+[63 1 39360]
+[63 0 40079]
+[62 1 40080]
+[62 0 40319]
+[63 1 40320]
+[63 0 40559]
+[60 1 40560]
+[60 0 40799]
+[57 1 40800]
+[57 0 41039]
+[53 1 41040]
+[53 0 41519]
+[53 1 41520]
+[53 0 41759]
+[55 1 41760]
+[55 0 41999]
+[54 1 42000]
+[54 0 42239]
+[53 1 42240]
+[53 0 42719]
+[57 1 42720]
+[57 0 43199]
+[58 1 43200]
+[58 0 43679]
+[60 1 43680]
+[60 0 44159]
+[61 1 44160]
+[61 0 45119]
+[62 1 45120]
+[62 0 46079]
+[62 1 46080]
+[62 0 46799]
+[61 1 46800]
+[61 0 47039]
+[62 1 47040]
+[62 0 47759]
+[61 1 47760]
+[61 0 47999]
+[62 1 48000]
+[62 0 48239]
+[58 1 48240]
+[58 0 48479]
+[55 1 48480]
+[55 0 48719]
+[53 1 48720]
+[53 0 49199]
+[53 1 49200]
+[53 0 49439]
+[55 1 49440]
+[55 0 49679]
+[54 1 49680]
+[54 0 49919]
+[53 1 49920]
+[53 0 50399]
+[58 1 50400]
+[58 0 50879]
+[60 1 50880]
+[60 0 51359]
+[58 1 51360]
+[58 0 51839]
+[58 1 51840]
+[58 0 52799]
+[55 1 52800]
+[55 0 53759]
+[58 1 53760]
+[58 0 54479]
+[57 1 54480]
+[57 0 54719]
+[60 1 54720]
+[60 0 55439]
+[58 1 55440]
+[58 0 55679]
+[62 1 55680]
+[62 0 56879]
+[53 1 56880]
+[53 0 57119]
+[55 1 57120]
+[55 0 57359]
+[58 1 57360]
+[58 0 57599]
+[63 1 57600]
+[63 0 58799]
+[53 1 58800]
+[53 0 59039]
+[55 1 59040]
+[55 0 59279]
+[58 1 59280]
+[58 0 59519]
+[62 1 59520]
+[62 0 60959]
+[58 1 60960]
+[58 0 61439]
+[58 1 61440]
+[58 0 62159]
+[57 1 62160]
+[57 0 62399]
+[60 1 62400]
+[60 0 63119]
+[58 1 63120]
+[58 0 63359]
+[62 1 63360]
+[62 0 63599]
+[58 1 63600]
+[58 0 63839]
+[55 1 63840]
+[55 0 64079]
+[53 1 64080]
+[53 0 64559]
+[53 1 64560]
+[53 0 64799]
+[52 1 64800]
+[52 0 65039]
+[53 1 65040]
+[53 0 65279]
+[55 1 65280]
+[55 0 65519]
+[58 1 65520]
+[58 0 65999]
+[55 1 66000]
+[55 0 66239]
+[62 1 66240]
+[62 0 66719]
+[62 1 66720]
+[62 0 67199]
+[58 1 67200]
+[58 0 69119]
+['end' 0 69120]
+
+sync with time stamps
+
+[53 1 0]            ['tempo' 394737 0]  
+[53 0 719]          [0 0 719]           
+[53 1 720]          [0 0 720]           
+[53 0 959]          [0 0 959]           
+[55 1 960]          [0 0 960]           
+[55 0 1439]         [0 0 1439]          
+[57 1 1440]         [0 0 1440]          
+[57 0 1919]         [0 0 1919]          
+[58 1 1920]         [0 0 1920]          
+[58 0 3119]         [0 0 3119]          
+[58 1 3120]         [0 0 3120]          
+[58 0 3359]         [0 0 3359]          
+[57 1 3360]         [0 0 3360]          
+[57 0 3599]         [0 0 3599]          
+[56 1 3600]         [0 0 3600]          
+[56 0 3839]         [0 0 3839]          
+[55 1 3840]         [0 0 3840]          
+[55 0 4559]         [0 0 4559]          
+[57 1 4560]         [0 0 4560]          
+[57 0 4799]         [0 0 4799]          
+[58 1 4800]         [0 0 4800]          
+[58 0 5279]         [0 0 5279]          
+[55 1 5280]         [0 0 5280]          
+[55 0 5759]         [0 0 5759]          
+[53 1 5760]         [0 0 5760]          
+[53 0 7679]         [0 0 7679]          
+[60 1 7680]         [0 0 7680]          
+[60 0 8399]         [0 0 8399]          
+[59 1 8400]         [0 0 8400]          
+[59 0 8639]         [0 0 8639]          
+[60 1 8640]         [0 0 8640]          
+[60 0 9599]         [0 0 9599]          
+[62 1 9600]         [0 0 9600]          
+[62 0 10319]        [0 0 10319]         
+[61 1 10320]        [0 0 10320]         
+[61 0 10559]        [0 0 10559]         
+[62 1 10560]        [0 0 10560]         
+[62 0 11519]        [0 0 11519]         
+[60 1 11520]        [0 0 11520]         
+[60 0 12479]        [0 0 12479]         
+[62 1 12480]        [0 0 12480]         
+[62 0 13439]        [0 0 13439]         
+[60 1 13440]        [0 0 13440]         
+[60 0 15359]        [0 0 15359]         
+[53 1 15360]        [0 0 15360]         
+[53 0 16079]        [0 0 16079]         
+[53 1 16080]        [0 0 16080]         
+[53 0 16319]        [0 0 16319]         
+[55 1 16320]        [0 0 16320]         
+[55 0 16799]        [0 0 16799]         
+[57 1 16800]        [0 0 16800]         
+[57 0 17279]        [0 0 17279]         
+[58 1 17280]        [0 0 17280]         
+[58 0 19199]        [0 0 19199]         
+[60 1 19200]        [0 0 19200]         
+[60 0 19919]        [0 0 19919]         
+[59 1 19920]        [0 0 19920]         
+[59 0 20159]        [0 0 20159]         
+[60 1 20160]        [0 0 20160]         
+[60 0 20639]        [0 0 20639]         
+[62 1 20640]        [0 0 20640]         
+[62 0 21119]        [0 0 21119]         
+[63 1 21120]        [0 0 21120]         
+[63 0 23039]        [0 0 23039]         
+[55 1 23040]        [0 0 23040]         
+[55 0 23759]        [0 0 23759]         
+[57 1 23760]        [0 0 23760]         
+[57 0 23999]        [0 0 23999]         
+[58 1 24000]        [0 0 24000]         
+[58 0 24479]        [0 0 24479]         
+[60 1 24480]        [0 0 24480]         
+[60 0 24959]        [0 0 24959]         
+[62 1 24960]        [0 0 24960]         
+[62 0 25679]        [0 0 25679]         
+[61 1 25680]        [0 0 25680]         
+[61 0 25919]        [0 0 25919]         
+[62 1 25920]        [0 0 25920]         
+[62 0 26399]        [0 0 26399]         
+[53 1 26400]        [0 0 26400]         
+[53 0 26639]        [0 0 26639]         
+[54 1 26640]        [0 0 26640]         
+[54 0 26879]        [0 0 26879]         
+[55 1 26880]        [0 0 26880]         
+[55 0 27119]        [0 0 27119]         
+[58 1 27120]        [0 0 27120]         
+[58 0 27599]        [0 0 27599]         
+[55 1 27600]        [0 0 27600]         
+[55 0 27839]        [0 0 27839]         
+[62 1 27840]        [0 0 27840]         
+[62 0 28319]        [0 0 28319]         
+[62 1 28320]        [0 0 28320]         
+[62 0 28799]        [0 0 28799]         
+[58 1 28800]        [0 0 28800]         
+[58 0 30239]        [0 0 30239]         
+[65 1 30240]        [0 0 30240]         
+[65 0 30719]        [0 0 30719]         
+[62 1 30720]        [0 0 30720]         
+[62 0 31439]        [0 0 31439]         
+[61 1 31440]        [0 0 31440]         
+[61 0 31679]        [0 0 31679]         
+[62 1 31680]        [0 0 31680]         
+[62 0 32399]        [0 0 32399]         
+[61 1 32400]        [0 0 32400]         
+[61 0 32639]        [0 0 32639]         
+[62 1 32640]        [0 0 32640]         
+[62 0 32879]        [0 0 32879]         
+[58 1 32880]        [0 0 32880]         
+[58 0 33119]        [0 0 33119]         
+[55 1 33120]        [0 0 33120]         
+[55 0 33359]        [0 0 33359]         
+[53 1 33360]        [0 0 33360]         
+[53 0 33839]        [0 0 33839]         
+[53 1 33840]        [0 0 33840]         
+[53 0 34079]        [0 0 34079]         
+[55 1 34080]        [0 0 34080]         
+[55 0 34319]        [0 0 34319]         
+[54 1 34320]        [0 0 34320]         
+[54 0 34559]        [0 0 34559]         
+[53 1 34560]        [0 0 34560]         
+[53 0 35039]        [0 0 35039]         
+[58 1 35040]        [0 0 35040]         
+[58 0 35519]        [0 0 35519]         
+[60 1 35520]        [0 0 35520]         
+[60 0 35999]        [0 0 35999]         
+[58 1 36000]        [0 0 36000]         
+[58 0 36479]        [0 0 36479]         
+[58 1 36480]        [0 0 36480]         
+[58 0 37439]        [0 0 37439]         
+[57 1 37440]        [0 0 37440]         
+[57 0 38399]        [0 0 38399]         
+[63 1 38400]        [0 0 38400]         
+[63 0 39119]        [0 0 39119]         
+[62 1 39120]        [0 0 39120]         
+[62 0 39359]        [0 0 39359]         
+[63 1 39360]        [0 0 39360]         
+[63 0 40079]        [0 0 40079]         
+[62 1 40080]        [0 0 40080]         
+[62 0 40319]        [0 0 40319]         
+[63 1 40320]        [0 0 40320]         
+[63 0 40559]        [0 0 40559]         
+[60 1 40560]        [0 0 40560]         
+[60 0 40799]        [0 0 40799]         
+[57 1 40800]        [0 0 40800]         
+[57 0 41039]        [0 0 41039]         
+[53 1 41040]        [0 0 41040]         
+[53 0 41519]        [0 0 41519]         
+[53 1 41520]        [0 0 41520]         
+[53 0 41759]        [0 0 41759]         
+[55 1 41760]        [0 0 41760]         
+[55 0 41999]        [0 0 41999]         
+[54 1 42000]        [0 0 42000]         
+[54 0 42239]        [0 0 42239]         
+[53 1 42240]        [0 0 42240]         
+[53 0 42719]        [0 0 42719]         
+[57 1 42720]        [0 0 42720]         
+[57 0 43199]        [0 0 43199]         
+[58 1 43200]        [0 0 43200]         
+[58 0 43679]        [0 0 43679]         
+[60 1 43680]        [0 0 43680]         
+[60 0 44159]        [0 0 44159]         
+[61 1 44160]        [0 0 44160]         
+[61 0 45119]        [0 0 45119]         
+[62 1 45120]        [0 0 45120]         
+[62 0 46079]        [0 0 46079]         
+[62 1 46080]        [0 0 46080]         
+[62 0 46799]        [0 0 46799]         
+[61 1 46800]        [0 0 46800]         
+[61 0 47039]        [0 0 47039]         
+[62 1 47040]        [0 0 47040]         
+[62 0 47759]        [0 0 47759]         
+[61 1 47760]        [0 0 47760]         
+[61 0 47999]        [0 0 47999]         
+[62 1 48000]        [0 0 48000]         
+[62 0 48239]        [0 0 48239]         
+[58 1 48240]        [0 0 48240]         
+[58 0 48479]        [0 0 48479]         
+[55 1 48480]        [0 0 48480]         
+[55 0 48719]        [0 0 48719]         
+[53 1 48720]        [0 0 48720]         
+[53 0 49199]        [0 0 49199]         
+[53 1 49200]        [0 0 49200]         
+[53 0 49439]        [0 0 49439]         
+[55 1 49440]        [0 0 49440]         
+[55 0 49679]        [0 0 49679]         
+[54 1 49680]        [0 0 49680]         
+[54 0 49919]        [0 0 49919]         
+[53 1 49920]        [0 0 49920]         
+[53 0 50399]        [0 0 50399]         
+[58 1 50400]        [0 0 50400]         
+[58 0 50879]        [0 0 50879]         
+[60 1 50880]        [0 0 50880]         
+[60 0 51359]        [0 0 51359]         
+[58 1 51360]        [0 0 51360]         
+[58 0 51839]        [0 0 51839]         
+[58 1 51840]        [0 0 51840]         
+[58 0 52799]        [0 0 52799]         
+[55 1 52800]        [0 0 52800]         
+[55 0 53759]        [0 0 53759]         
+[58 1 53760]        [0 0 53760]         
+[58 0 54479]        [0 0 54479]         
+[57 1 54480]        [0 0 54480]         
+[57 0 54719]        [0 0 54719]         
+[60 1 54720]        [0 0 54720]         
+[60 0 55439]        [0 0 55439]         
+[58 1 55440]        [0 0 55440]         
+[58 0 55679]        [0 0 55679]         
+[62 1 55680]        [0 0 55680]         
+[62 0 56879]        [0 0 56879]         
+[53 1 56880]        [0 0 56880]         
+[53 0 57119]        [0 0 57119]         
+[55 1 57120]        [0 0 57120]         
+[55 0 57359]        [0 0 57359]         
+[58 1 57360]        [0 0 57360]         
+[58 0 57599]        [0 0 57599]         
+[63 1 57600]        [0 0 57600]         
+[63 0 58799]        [0 0 58799]         
+[53 1 58800]        [0 0 58800]         
+[53 0 59039]        [0 0 59039]         
+[55 1 59040]        [0 0 59040]         
+[55 0 59279]        [0 0 59279]         
+[58 1 59280]        [0 0 59280]         
+[58 0 59519]        [0 0 59519]         
+[62 1 59520]        [0 0 59520]         
+[62 0 60959]        [0 0 60959]         
+[58 1 60960]        [0 0 60960]         
+[58 0 61439]        [0 0 61439]         
+[58 1 61440]        [0 0 61440]         
+[58 0 62159]        [0 0 62159]         
+[57 1 62160]        [0 0 62160]         
+[57 0 62399]        [0 0 62399]         
+[60 1 62400]        [0 0 62400]         
+[60 0 63119]        [0 0 63119]         
+[58 1 63120]        [0 0 63120]         
+[58 0 63359]        [0 0 63359]         
+[62 1 63360]        [0 0 63360]         
+[62 0 63599]        [0 0 63599]         
+[58 1 63600]        [0 0 63600]         
+[58 0 63839]        [0 0 63839]         
+[55 1 63840]        [0 0 63840]         
+[55 0 64079]        [0 0 64079]         
+[53 1 64080]        [0 0 64080]         
+[53 0 64559]        [0 0 64559]         
+[53 1 64560]        [0 0 64560]         
+[53 0 64799]        [0 0 64799]         
+[52 1 64800]        [0 0 64800]         
+[52 0 65039]        [0 0 65039]         
+[53 1 65040]        [0 0 65040]         
+[53 0 65279]        [0 0 65279]         
+[55 1 65280]        [0 0 65280]         
+[55 0 65519]        [0 0 65519]         
+[58 1 65520]        [0 0 65520]         
+[58 0 65999]        [0 0 65999]         
+[55 1 66000]        [0 0 66000]         
+[55 0 66239]        [0 0 66239]         
+[62 1 66240]        [0 0 66240]         
+[62 0 66719]        [0 0 66719]         
+[62 1 66720]        [0 0 66720]         
+[62 0 67199]        [0 0 67199]         
+[58 1 67200]        [0 0 67200]         
+[58 0 69119]        [0 0 69119]         
+
+sync with durations
+
+[53 1 591.28]       [tempo 394737 719]  
+[53 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[55 1 393.91]       [0 0 479]           
+[55 0 0.82]         [0 0 1]             
+[57 1 393.91]       [0 0 479]           
+[57 0 0.82]         [0 0 1]             
+[58 1 986.02]       [0 0 1199]          
+[58 0 0.82]         [0 0 1]             
+[58 1 196.55]       [0 0 239]           
+[58 0 0.82]         [0 0 1]             
+[57 1 196.55]       [0 0 239]           
+[57 0 0.82]         [0 0 1]             
+[56 1 196.55]       [0 0 239]           
+[56 0 0.82]         [0 0 1]             
+[55 1 591.28]       [0 0 719]           
+[55 0 0.82]         [0 0 1]             
+[57 1 196.55]       [0 0 239]           
+[57 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[55 1 393.91]       [0 0 479]           
+[55 0 0.82]         [0 0 1]             
+[53 1 1578.13]      [0 0 1919]          
+[53 0 0.82]         [0 0 1]             
+[60 1 591.28]       [0 0 719]           
+[60 0 0.82]         [0 0 1]             
+[59 1 196.55]       [0 0 239]           
+[59 0 0.82]         [0 0 1]             
+[60 1 788.65]       [0 0 959]           
+[60 0 0.82]         [0 0 1]             
+[62 1 591.28]       [0 0 719]           
+[62 0 0.82]         [0 0 1]             
+[61 1 196.55]       [0 0 239]           
+[61 0 0.82]         [0 0 1]             
+[62 1 788.65]       [0 0 959]           
+[62 0 0.82]         [0 0 1]             
+[60 1 788.65]       [0 0 959]           
+[60 0 0.82]         [0 0 1]             
+[62 1 788.65]       [0 0 959]           
+[62 0 0.82]         [0 0 1]             
+[60 1 1578.13]      [0 0 1919]          
+[60 0 0.82]         [0 0 1]             
+[53 1 591.28]       [0 0 719]           
+[53 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[55 1 393.91]       [0 0 479]           
+[55 0 0.82]         [0 0 1]             
+[57 1 393.91]       [0 0 479]           
+[57 0 0.82]         [0 0 1]             
+[58 1 1578.13]      [0 0 1919]          
+[58 0 0.82]         [0 0 1]             
+[60 1 591.28]       [0 0 719]           
+[60 0 0.82]         [0 0 1]             
+[59 1 196.55]       [0 0 239]           
+[59 0 0.82]         [0 0 1]             
+[60 1 393.91]       [0 0 479]           
+[60 0 0.82]         [0 0 1]             
+[62 1 393.91]       [0 0 479]           
+[62 0 0.82]         [0 0 1]             
+[63 1 1578.13]      [0 0 1919]          
+[63 0 0.82]         [0 0 1]             
+[55 1 591.28]       [0 0 719]           
+[55 0 0.82]         [0 0 1]             
+[57 1 196.55]       [0 0 239]           
+[57 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[60 1 393.91]       [0 0 479]           
+[60 0 0.82]         [0 0 1]             
+[62 1 591.28]       [0 0 719]           
+[62 0 0.82]         [0 0 1]             
+[61 1 196.55]       [0 0 239]           
+[61 0 0.82]         [0 0 1]             
+[62 1 393.91]       [0 0 479]           
+[62 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[54 1 196.55]       [0 0 239]           
+[54 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[62 1 393.91]       [0 0 479]           
+[62 0 0.82]         [0 0 1]             
+[62 1 393.91]       [0 0 479]           
+[62 0 0.82]         [0 0 1]             
+[58 1 1183.39]      [0 0 1439]          
+[58 0 0.82]         [0 0 1]             
+[65 1 393.91]       [0 0 479]           
+[65 0 0.82]         [0 0 1]             
+[62 1 591.28]       [0 0 719]           
+[62 0 0.82]         [0 0 1]             
+[61 1 196.55]       [0 0 239]           
+[61 0 0.82]         [0 0 1]             
+[62 1 591.28]       [0 0 719]           
+[62 0 0.82]         [0 0 1]             
+[61 1 196.55]       [0 0 239]           
+[61 0 0.82]         [0 0 1]             
+[62 1 196.55]       [0 0 239]           
+[62 0 0.82]         [0 0 1]             
+[58 1 196.55]       [0 0 239]           
+[58 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[53 1 393.91]       [0 0 479]           
+[53 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[54 1 196.55]       [0 0 239]           
+[54 0 0.82]         [0 0 1]             
+[53 1 393.91]       [0 0 479]           
+[53 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[60 1 393.91]       [0 0 479]           
+[60 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[58 1 788.65]       [0 0 959]           
+[58 0 0.82]         [0 0 1]             
+[57 1 788.65]       [0 0 959]           
+[57 0 0.82]         [0 0 1]             
+[63 1 591.28]       [0 0 719]           
+[63 0 0.82]         [0 0 1]             
+[62 1 196.55]       [0 0 239]           
+[62 0 0.82]         [0 0 1]             
+[63 1 591.28]       [0 0 719]           
+[63 0 0.82]         [0 0 1]             
+[62 1 196.55]       [0 0 239]           
+[62 0 0.82]         [0 0 1]             
+[63 1 196.55]       [0 0 239]           
+[63 0 0.82]         [0 0 1]             
+[60 1 196.55]       [0 0 239]           
+[60 0 0.82]         [0 0 1]             
+[57 1 196.55]       [0 0 239]           
+[57 0 0.82]         [0 0 1]             
+[53 1 393.91]       [0 0 479]           
+[53 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[54 1 196.55]       [0 0 239]           
+[54 0 0.82]         [0 0 1]             
+[53 1 393.91]       [0 0 479]           
+[53 0 0.82]         [0 0 1]             
+[57 1 393.91]       [0 0 479]           
+[57 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[60 1 393.91]       [0 0 479]           
+[60 0 0.82]         [0 0 1]             
+[61 1 788.65]       [0 0 959]           
+[61 0 0.82]         [0 0 1]             
+[62 1 788.65]       [0 0 959]           
+[62 0 0.82]         [0 0 1]             
+[62 1 591.28]       [0 0 719]           
+[62 0 0.82]         [0 0 1]             
+[61 1 196.55]       [0 0 239]           
+[61 0 0.82]         [0 0 1]             
+[62 1 591.28]       [0 0 719]           
+[62 0 0.82]         [0 0 1]             
+[61 1 196.55]       [0 0 239]           
+[61 0 0.82]         [0 0 1]             
+[62 1 196.55]       [0 0 239]           
+[62 0 0.82]         [0 0 1]             
+[58 1 196.55]       [0 0 239]           
+[58 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[53 1 393.91]       [0 0 479]           
+[53 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[54 1 196.55]       [0 0 239]           
+[54 0 0.82]         [0 0 1]             
+[53 1 393.91]       [0 0 479]           
+[53 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[60 1 393.91]       [0 0 479]           
+[60 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[58 1 788.65]       [0 0 959]           
+[58 0 0.82]         [0 0 1]             
+[55 1 788.65]       [0 0 959]           
+[55 0 0.82]         [0 0 1]             
+[58 1 591.28]       [0 0 719]           
+[58 0 0.82]         [0 0 1]             
+[57 1 196.55]       [0 0 239]           
+[57 0 0.82]         [0 0 1]             
+[60 1 591.28]       [0 0 719]           
+[60 0 0.82]         [0 0 1]             
+[58 1 196.55]       [0 0 239]           
+[58 0 0.82]         [0 0 1]             
+[62 1 986.02]       [0 0 1199]          
+[62 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[58 1 196.55]       [0 0 239]           
+[58 0 0.82]         [0 0 1]             
+[63 1 986.02]       [0 0 1199]          
+[63 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[58 1 196.55]       [0 0 239]           
+[58 0 0.82]         [0 0 1]             
+[62 1 1183.39]      [0 0 1439]          
+[62 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[58 1 591.28]       [0 0 719]           
+[58 0 0.82]         [0 0 1]             
+[57 1 196.55]       [0 0 239]           
+[57 0 0.82]         [0 0 1]             
+[60 1 591.28]       [0 0 719]           
+[60 0 0.82]         [0 0 1]             
+[58 1 196.55]       [0 0 239]           
+[58 0 0.82]         [0 0 1]             
+[62 1 196.55]       [0 0 239]           
+[62 0 0.82]         [0 0 1]             
+[58 1 196.55]       [0 0 239]           
+[58 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[53 1 393.91]       [0 0 479]           
+[53 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[52 1 196.55]       [0 0 239]           
+[52 0 0.82]         [0 0 1]             
+[53 1 196.55]       [0 0 239]           
+[53 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[58 1 393.91]       [0 0 479]           
+[58 0 0.82]         [0 0 1]             
+[55 1 196.55]       [0 0 239]           
+[55 0 0.82]         [0 0 1]             
+[62 1 393.91]       [0 0 479]           
+[62 0 0.82]         [0 0 1]             
+[62 1 393.91]       [0 0 479]           
+[62 0 0.82]         [0 0 1]             
+[58 1 1578.13]      [0 0 1919]          
+[58 0 0.0]          [0 0 0]             
