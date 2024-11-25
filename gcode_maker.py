@@ -47,95 +47,95 @@ def get_printer_settings():
     # settings_5 = [start_position_x, start_position_y, start_position_z, start_position_e]
     # settings_6 = [axis_labels, center_axis]
 
-    # # configuration for: Printer of Theseus (with modified settings)
-
-    # x_microstepping = 16
-    # y_microstepping = 16
-    # z_microstepping = 16
-
-    # x_steps_mm = 6.25 * x_microstepping
-    # y_steps_mm = 6.25 * y_microstepping
-    # z_steps_mm = 25 * z_microstepping
-
-    # x_feed_max = 18000 # mm/min
-    # y_feed_max = 18000 # mm/min
-    # z_feed_max = 360 # mm/min
-    # e_feed = -30 # mm/min
-
-    # x_upper_limit = 128 - 10
-    # y_upper_limit = 110 - 10
-    # z_upper_limit = 200 - 10
-
-    # x_lower_limit = -128 + 10
-    # y_lower_limit = -110 + 10
-    # z_lower_limit = 0 + 10
-
-    # start_position_x = 0
-    # start_position_y = 0
-    # start_position_z = 100
-    # start_position_e = 0
-
-    # axis_labels = ["X", "Y", "Z", "E"] # last axis must be E, not used to play notes
-    # center_axis = [True, True, True, False]
-
-    # settings_0 = [x_microstepping, y_microstepping, z_microstepping]
-    # settings_1 = [x_steps_mm, y_steps_mm, z_steps_mm]
-    # settings_2 = [x_feed_max, y_feed_max, z_feed_max, e_feed]
-    # settings_3 = [x_upper_limit, y_upper_limit, z_upper_limit]
-    # settings_4 = [x_lower_limit, y_lower_limit, z_lower_limit]
-    # settings_5 = [start_position_x, start_position_y, start_position_z, start_position_e]
-    # settings_6 = [axis_labels, center_axis]
-
-    # 5-channel configuration for: Printer of Theseus (with modified settings)
+    # configuration for: Printer of Theseus (with modified settings)
 
     x_microstepping = 16
     y_microstepping = 16
     z_microstepping = 16
-    a_microstepping = 16
-    b_microstepping = 16
 
     x_steps_mm = 6.25 * x_microstepping
     y_steps_mm = 6.25 * y_microstepping
     z_steps_mm = 25 * z_microstepping
-    a_steps_mm = 10 * a_microstepping
-    b_steps_mm = 10 * b_microstepping
 
-    x_feed_max = 7527 # mm/min
-    y_feed_max = 7527 # mm/min
-    z_feed_max = 941 # mm/min
-    a_feed_max = 4704 # mm/min
-    b_feed_max = 4704 # mm/min
+    x_feed_max = 18000 # mm/min
+    y_feed_max = 18000 # mm/min
+    z_feed_max = 360 # mm/min
     e_feed = -30 # mm/min
 
     x_upper_limit = 128 - 10
     y_upper_limit = 110 - 10
     z_upper_limit = 200 - 10
-    a_upper_limit = 200 - 10
-    b_upper_limit = 200 - 10
 
     x_lower_limit = -128 + 10
     y_lower_limit = -110 + 10
     z_lower_limit = 0 + 10
-    a_lower_limit = -200 + 10
-    b_lower_limit = -200 + 10
 
     start_position_x = 0
     start_position_y = 0
     start_position_z = 100
-    start_position_a = 0
-    start_position_b = 0
     start_position_e = 0
 
-    axis_labels = ["X", "Y", "Z", "A", "B", "E"] # last axis must be E, not used to play notes
-    center_axis = [True, True, True, False, False, False] # whether to actually move axis to center position (True) or to set to start position with G92 command (False)
+    axis_labels = ["X", "Y", "Z", "E"] # last axis must be E, not used to play notes
+    center_axis = [True, True, True, False]
 
-    settings_0 = [x_microstepping, y_microstepping, z_microstepping, a_microstepping, b_microstepping]
-    settings_1 = [x_steps_mm, y_steps_mm, z_steps_mm, a_steps_mm, b_steps_mm]
-    settings_2 = [x_feed_max, y_feed_max, z_feed_max, a_feed_max, b_feed_max, e_feed]
-    settings_3 = [x_upper_limit, y_upper_limit, z_upper_limit, a_upper_limit, b_upper_limit]
-    settings_4 = [x_lower_limit, y_lower_limit, z_lower_limit, a_lower_limit, b_lower_limit]
-    settings_5 = [start_position_x, start_position_y, start_position_z, start_position_a, start_position_b, start_position_e]
+    settings_0 = [x_microstepping, y_microstepping, z_microstepping]
+    settings_1 = [x_steps_mm, y_steps_mm, z_steps_mm]
+    settings_2 = [x_feed_max, y_feed_max, z_feed_max, e_feed]
+    settings_3 = [x_upper_limit, y_upper_limit, z_upper_limit]
+    settings_4 = [x_lower_limit, y_lower_limit, z_lower_limit]
+    settings_5 = [start_position_x, start_position_y, start_position_z, start_position_e]
     settings_6 = [axis_labels, center_axis]
+
+    # # 5-channel configuration for: Printer of Theseus (with modified settings)
+
+    # x_microstepping = 16
+    # y_microstepping = 16
+    # z_microstepping = 16
+    # a_microstepping = 16
+    # b_microstepping = 16
+
+    # x_steps_mm = 6.25 * x_microstepping
+    # y_steps_mm = 6.25 * y_microstepping
+    # z_steps_mm = 25 * z_microstepping
+    # a_steps_mm = 10 * a_microstepping
+    # b_steps_mm = 10 * b_microstepping
+
+    # x_feed_max = 7527 # mm/min
+    # y_feed_max = 7527 # mm/min
+    # z_feed_max = 941 # mm/min
+    # a_feed_max = 4704 # mm/min
+    # b_feed_max = 4704 # mm/min
+    # e_feed = -30 # mm/min
+
+    # x_upper_limit = 128 - 10
+    # y_upper_limit = 110 - 10
+    # z_upper_limit = 200 - 10
+    # a_upper_limit = 200 - 10
+    # b_upper_limit = 200 - 10
+
+    # x_lower_limit = -128 + 10
+    # y_lower_limit = -110 + 10
+    # z_lower_limit = 0 + 10
+    # a_lower_limit = -200 + 10
+    # b_lower_limit = -200 + 10
+
+    # start_position_x = 0
+    # start_position_y = 0
+    # start_position_z = 100
+    # start_position_a = 0
+    # start_position_b = 0
+    # start_position_e = 0
+
+    # axis_labels = ["X", "Y", "Z", "A", "B", "E"] # last axis must be E, not used to play notes
+    # center_axis = [True, True, True, False, False, False] # whether to actually move axis to center position (True) or to set to start position with G92 command (False)
+
+    # settings_0 = [x_microstepping, y_microstepping, z_microstepping, a_microstepping, b_microstepping]
+    # settings_1 = [x_steps_mm, y_steps_mm, z_steps_mm, a_steps_mm, b_steps_mm]
+    # settings_2 = [x_feed_max, y_feed_max, z_feed_max, a_feed_max, b_feed_max, e_feed]
+    # settings_3 = [x_upper_limit, y_upper_limit, z_upper_limit, a_upper_limit, b_upper_limit]
+    # settings_4 = [x_lower_limit, y_lower_limit, z_lower_limit, a_lower_limit, b_lower_limit]
+    # settings_5 = [start_position_x, start_position_y, start_position_z, start_position_a, start_position_b, start_position_e]
+    # settings_6 = [axis_labels, center_axis]
 
     # wrapping up
 
