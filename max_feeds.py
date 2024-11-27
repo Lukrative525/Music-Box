@@ -5,14 +5,14 @@ import numpy as np
 
 settings = gm.get_printer_settings()
 
-midi = 127
+midi = 108
 feeds_max = np.zeros(len(settings[0]))
-frequency_max = 440*(2**((midi-69)/12))
+frequency_max = gm.calculate_frequency(midi)
 
 for j in range(len(settings[0])):
-    feeds_max[j] = (frequency_max*60)/settings[1][j]
+    feeds_max[j] = (frequency_max * 60) / settings[1][j]
 
-double_max = np.ceil(2*feeds_max)
+double_max = np.ceil(2 * feeds_max)
 feeds_max = np.ceil(feeds_max)
 
 print(feeds_max)
