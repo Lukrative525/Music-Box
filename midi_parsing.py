@@ -264,7 +264,7 @@ def getChannelOrder(byte_data):
                 bytes_to_skip = 2
                 next_event = EventType.DELTA_T
 
-    return(channel_order)
+    return channel_order
 
 def getTicksPerBeat(byte_data):
 
@@ -305,17 +305,14 @@ def parse(file_name, verbose):
     if verbose:
         debug.write(f"channel order: {channel_order}\n")
 
-    # create list to store note values
-    notes = np.zeros((channels, number_bytes_in_file, 3), dtype = object)
+    notes_array = np.zeros((channels, number_bytes_in_file, 3), dtype = object)
     for i in range(channels):
-        notes[i][0][0] = f"channel {i}"
+        notes_array[i][0][0] = f"channel {i}"
 
-    #  extract ticks per beat from header:
     ticks_per_beat = getTicksPerBeat(byte_data)
     if verbose:
         debug.write(f"ticks per beat: {ticks_per_beat}\n")
 
-    # start parsing track chunks
     bytes_to_skip = 0
     next_event = EventType.TRACK_START
     current_running_status = RunningStatus.NONE
@@ -344,7 +341,7 @@ def parse(file_name, verbose):
             bytes_to_skip = vlq_length
             new_note[2] = delta_t
             for j in range(3):
-                notes[channel_number][position][j] = new_note[j]
+                notes_array[channel_number][position][j] = new_note[j]
             position += 1
             new_note = [-1, 0, 0]
             next_event = EventType.OTHER
@@ -385,7 +382,7 @@ def parse(file_name, verbose):
             elif isEndTrack(byte_data, i):
                 new_note[0] = "end"
                 for j in range(3):
-                    notes[channel_number][position][j] = new_note[j]
+                    notes_array[channel_number][position][j] = new_note[j]
                 for j in range(1, 3):
                     new_note[j] = 0
                 new_note[0] = -1
@@ -583,65 +580,75 @@ def parse(file_name, verbose):
         if verbose:
             debug.write(f"byte[{i}] is {byte_data[i]}\n")
 
+    sync = synchronizeEvents(notes_array)
+    sync = convertTimesToDurations(sync, ticks_per_beat)
+
+    return sync
+
+def synchronizeEvents(notes_array):
+
+    channels = len(notes_array)
+    number_bytes_in_file = len(notes_array[0])
+
     # create an array to store "start" indices
-    starts = np.zeros(len(notes), dtype = np.int64)
+    starts = np.zeros(len(notes_array), dtype = np.int64)
     # populate starts with indices of first note or tempo marking
-    for j in range(len(notes)):
-        for i in range(len(notes[j])):
-            if notes[j][i][0] == "tempo" or type(notes[j][i][0]) != str:
+    for j in range(len(notes_array)):
+        for i in range(len(notes_array[j])):
+            if notes_array[j][i][0] == "tempo" or type(notes_array[j][i][0]) != str:
                 starts[j] = i
                 break
 
     # create an array to store "end" indices
-    ends = np.zeros(len(notes), dtype = np.int64)
+    ends = np.zeros(len(notes_array), dtype = np.int64)
     # populate ends with indices where "end" is found:
-    for j in range(len(notes)):
-        for i in range(len(notes[j])):
-            if notes[j][i][0] == "end":
+    for j in range(len(notes_array)):
+        for i in range(len(notes_array[j])):
+            if notes_array[j][i][0] == "end":
                 ends[j] = i
                 break
 
     # group delta t's with notes and tempo changes
-    for j in range(len(notes)):
+    for j in range(len(notes_array)):
         # start at the end, go backward to element 1
         for i in range(ends[j], starts[j], -1):
             # if this event is not a note or tempo change
-            if type(notes[j][i][0]) == str and notes[j][i - 1][0] != "tempo":
-                notes[j][i - 1][2] += notes[j][i][2]
-                notes[j][i][2] = 0
+            if type(notes_array[j][i][0]) == str and notes_array[j][i - 1][0] != "tempo":
+                notes_array[j][i - 1][2] += notes_array[j][i][2]
+                notes_array[j][i][2] = 0
 
     # switch from delta time to elapsed time
-    for j in range(len(notes)):
+    for j in range(len(notes_array)):
         for i in range(2, ends[j]):
-            notes[j][i][2] += notes[j][i - 1][2]
+            notes_array[j][i][2] += notes_array[j][i - 1][2]
 
     # switch from end times to start times
-    for j in range(len(notes)):
+    for j in range(len(notes_array)):
         for i in range(ends[j], starts[j] - 1, -1):
-            notes[j][i][2] = notes[j][i - 1][2]
+            notes_array[j][i][2] = notes_array[j][i - 1][2]
 
     # change volume to on/off
-    for j in range(len(notes)):
+    for j in range(len(notes_array)):
         for i in range(1, ends[j]):
-            if notes[j][i][1] != 0 and isinstance(notes[j][i][0], str) == False:
-                notes[j][i][1] = 1
+            if notes_array[j][i][1] != 0 and isinstance(notes_array[j][i][0], str) == False:
+                notes_array[j][i][1] = 1
 
-    # print out notes
-    if verbose:
-        debug.write("\nnotes\n")
-        for j in range(len(notes)):
-            debug.write("\n")
-            for i in range(ends[j] + 1):
-                debug.write(str(notes[j][i]) + "\n")
+    # # print out notes
+    # if verbose:
+    #     debug.write("\nnotes\n")
+    #     for j in range(len(notes_array)):
+    #         debug.write("\n")
+    #         for i in range(ends[j] + 1):
+    #             debug.write(str(notes_array[j][i]) + "\n")
 
     # create list for filling with synchronized notes
     sync = np.zeros((channels + 1, number_bytes_in_file, 3), dtype = object)
 
     # create list containing time stamps to step through as we sync notes
     times = [0]
-    for j in range(len(notes)):
+    for j in range(len(notes_array)):
         for i in range(1, ends[j] + 1):
-            times.append(notes[j][i][2])
+            times.append(notes_array[j][i][2])
 
     # remove duplicates and sort
     times = sorted(list(set(times)))
@@ -655,13 +662,13 @@ def parse(file_name, verbose):
     for i in times:
 
         # check each channel
-        for j in range(len(notes)):
+        for j in range(len(notes_array)):
 
             # check each row in the channel
             for k in range(pick_up_from[j], ends[j] + 1):
 
                 # if the time in notes matches i, and it's a note
-                if notes[j][k][2] == i and type(notes[j][k][0]) != str:
+                if notes_array[j][k][2] == i and type(notes_array[j][k][0]) != str:
 
                     # if we've just gotten to this time stamp, make sure that we're beginning a new row in sync
                     if starting_a_row != i:
@@ -672,10 +679,10 @@ def parse(file_name, verbose):
                             sync[m][position][2] = i
 
                     # copy notes over to sync
-                    sync[j][position] = notes[j][k]
+                    sync[j][position] = notes_array[j][k]
 
                 # if the time in notes matches i, and it is a tempo change
-                elif notes[j][k][2] == i and notes[j][k][0] == "tempo":
+                elif notes_array[j][k][2] == i and notes_array[j][k][0] == "tempo":
 
                     # if we've just gotten to this time stamp, make sure that we're beginning a new row in sync
                     if starting_a_row != i:
@@ -686,10 +693,10 @@ def parse(file_name, verbose):
                             sync[m][position][2] = i
 
                     # copy notes over to sync
-                    sync[-1][position] = notes[j][k]
+                    sync[-1][position] = notes_array[j][k]
 
                 # if this is the end of a track
-                elif notes[j][k][2] == i and notes[j][k][0] == "end":
+                elif notes_array[j][k][2] == i and notes_array[j][k][0] == "end":
 
                     # if we've just gotten to this time stamp, make sure that we're beginning a new row in sync
                     if starting_a_row != i:
@@ -700,10 +707,10 @@ def parse(file_name, verbose):
                             sync[m][position][2] = i
 
                     # copy notes over to sync
-                    sync[j][position] = notes[j][k]
+                    sync[j][position] = notes_array[j][k]
 
                 # if the time stamp is greater than i, then we've gone too far and should stop
-                elif notes[j][k][2] > i:
+                elif notes_array[j][k][2] > i:
                     # record where to pick up from on the next go through (to save time)
                     pick_up_from[j] = k
                     break
@@ -720,26 +727,32 @@ def parse(file_name, verbose):
 
     sync = sync[:len(sync), :sync_last]
 
-    # print out sync with time stamps
-    if verbose:
-        current_width = 0
-        column_width = 20
-        debug.write("\nsync with time stamps\n")
-        for i in range(len(sync[0])):
-            debug.write("\n")
-            for j in range(len(sync)):
-                current_width = len(str(sync[j][i]))
-                debug.write(str(sync[j][i]))
-                if current_width < column_width:
-                    for k in range(current_width, column_width):
-                        debug.write(" ")
-        debug.write("\n")
+    return sync
+
+def convertTimesToDurations(sync, ticks_per_beat):
+
+    lenth_sync = len(sync[0])
+
+    # # print out sync with time stamps
+    # if verbose:
+    #     current_width = 0
+    #     column_width = 20
+    #     debug.write("\nsync with time stamps\n")
+    #     for i in range(len(sync[0])):
+    #         debug.write("\n")
+    #         for j in range(len(sync)):
+    #             current_width = len(str(sync[j][i]))
+    #             debug.write(str(sync[j][i]))
+    #             if current_width < column_width:
+    #                 for k in range(current_width, column_width):
+    #                     debug.write(" ")
+    #     debug.write("\n")
 
     # switch times to durations
     # for each column:
     for j in range(len(sync)):
         # for each triple
-        for i in range(sync_last - 1):
+        for i in range(lenth_sync - 1):
             # each time entry equals the next time minus the current one
             sync[j][i][2] = sync[j][i + 1][2] - sync[j][i][2]
     # change the last durations to 0
@@ -751,7 +764,7 @@ def parse(file_name, verbose):
     # for each column:
     for j in range(len(sync) - 1):
         # for each triple
-        for i in range(sync_last):
+        for i in range(lenth_sync):
             # check to see if the tempo has changed
             if sync[-1][i][0] == "tempo":
                 current_mspb = sync[-1][i][1]
@@ -762,23 +775,23 @@ def parse(file_name, verbose):
             temp = np.float64(temp)
             sync[j][i][2] = temp
 
-    # print out sync with durations
-    if verbose:
-        current_width = 0
-        column_width = 20
-        debug.write("\nsync with durations\n")
-        for i in range(len(sync[0])):
-            debug.write("\n")
-            for j in range(len(sync)):
-                string = f"[{sync[j][i][0]} {sync[j][i][1]} {np.around(sync[j][i][2], 2)}]"
-                debug.write(string)
-                current_width = len(string)
-                if current_width < column_width:
-                    for k in range(current_width, column_width):
-                        debug.write(" ")
+    # # print out sync with durations
+    # if verbose:
+    #     current_width = 0
+    #     column_width = 20
+    #     debug.write("\nsync with durations\n")
+    #     for i in range(len(sync[0])):
+    #         debug.write("\n")
+    #         for j in range(len(sync)):
+    #             string = f"[{sync[j][i][0]} {sync[j][i][1]} {np.around(sync[j][i][2], 2)}]"
+    #             debug.write(string)
+    #             current_width = len(string)
+    #             if current_width < column_width:
+    #                 for k in range(current_width, column_width):
+    #                     debug.write(" ")
 
-    # close debug file
-    if verbose:
-        debug.close
+    # # close debug file
+    # if verbose:
+    #     debug.close
 
-    return(sync)
+    return sync
