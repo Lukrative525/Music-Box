@@ -8,10 +8,10 @@ class EventType(Enum):
     TRACK_START = auto()
 
 class RunningStatus(Enum):
+    CONTROL_CHANGE = auto()
     NONE = auto()
     NOTE_END = auto()
     NOTE_START = auto()
-    CONTROL_CHANGE = auto()
     PROGRAM_CHANGE = auto()
 
 def extractVariableLengthQuantity(byte_data, index):
@@ -166,112 +166,103 @@ def getNumberOfChannels(byte_data):
 def getChannelOrder(byte_data):
 
     bytes_to_skip = 1
-    next_event_type = EventType.TRACK_START
+    next_event = EventType.TRACK_START
     channel_number = None
-    is_looking_for_track_start = True
     channel_order = []
 
     for i in range(len(byte_data)):
 
-        if is_looking_for_track_start:
-            if isTrackStart(byte_data, i):
-                bytes_to_skip = 8
-                next_event_type = EventType.DELTA_T
-                is_looking_for_track_start = False
+        if bytes_to_skip > 1:
+            bytes_to_skip -= 1
 
-        elif not is_looking_for_track_start:
+        elif next_event == EventType.TRACK_START and isTrackStart(byte_data, i):
+            bytes_to_skip = 8
+            next_event = EventType.DELTA_T
 
-            if bytes_to_skip > 1:
-                bytes_to_skip -= 1
+        elif next_event == EventType.DELTA_T:
+            vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, i)
+            bytes_to_skip = vlq_length
+            next_event = EventType.OTHER
 
-            elif next_event_type == EventType.DELTA_T:
-                vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, i)
-                bytes_to_skip = vlq_length
-                next_event_type = EventType.OTHER
+        elif next_event == EventType.OTHER:
 
-            elif next_event_type == EventType.OTHER:
+            # ------------
+            # meta events:
+            # ------------
 
-                # ------------
-                # meta events:
-                # ------------
+            if isTrackName(byte_data, i):
+                vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (i + 2))
+                chunk_length = vlq_value
+                bytes_to_skip = 2 + vlq_length + chunk_length
+                next_event = EventType.DELTA_T
 
-                if isTrackName(byte_data, i):
-                    vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (i + 2))
-                    chunk_length = vlq_value
-                    bytes_to_skip = 2 + vlq_length + chunk_length
-                    next_event_type = EventType.DELTA_T
+            elif isMidiPort(byte_data, i):
+                bytes_to_skip = 4
+                next_event = EventType.DELTA_T
 
-                elif isMidiPort(byte_data, i):
-                    bytes_to_skip = 4
-                    next_event_type = EventType.DELTA_T
+            elif isEndTrack(byte_data, i):
+                bytes_to_skip = 3
+                next_event = EventType.TRACK_START
 
-                elif isEndTrack(byte_data, i):
-                    bytes_to_skip = 3
-                    next_event_type = EventType.DELTA_T
+            elif isTempoMarking(byte_data, i):
+                bytes_to_skip = 6
+                next_event = EventType.DELTA_T
 
-                elif isTempoMarking(byte_data, i):
-                    bytes_to_skip = 6
-                    next_event_type = EventType.DELTA_T
+            elif isTimeSignature(byte_data, i):
+                bytes_to_skip = 7
+                next_event = EventType.DELTA_T
 
-                elif isTimeSignature(byte_data, i):
-                    bytes_to_skip = 7
-                    next_event_type = EventType.DELTA_T
+            elif isKeySignature(byte_data, i):
+                bytes_to_skip = 5
+                next_event = EventType.DELTA_T
 
-                elif isKeySignature(byte_data, i):
-                    bytes_to_skip = 5
-                    next_event_type = EventType.DELTA_T
+            # -----------------------
+            # channel voice messages:
+            # -----------------------
 
-                # -----------------------
-                # channel voice messages:
-                # -----------------------
+            elif isChannelNoteEnd(byte_data, i):
+                channel_number = byte_data[i] - 128
+                channel_order.append(channel_number)
+                bytes_to_skip = 3
+                next_event = EventType.TRACK_START
 
-                elif isChannelNoteEnd(byte_data, i):
-                    channel_number = byte_data[i] - 128
-                    channel_order.append(channel_number)
-                    bytes_to_skip = 3
-                    next_event_type = EventType.DELTA_T
-                    is_looking_for_track_start = True
+            elif isChannelNoteStart(byte_data, i):
+                channel_number = byte_data[i] - 144
+                channel_order.append(channel_number)
+                bytes_to_skip = 3
+                next_event = EventType.TRACK_START
 
-                elif isChannelNoteStart(byte_data, i):
-                    channel_number = byte_data[i] - 144
-                    channel_order.append(channel_number)
-                    bytes_to_skip = 3
-                    next_event_type = EventType.DELTA_T
-                    is_looking_for_track_start = True
+            elif isChannelControlChange(byte_data, i):
+                channel_number = byte_data[i] - 176
+                channel_order.append(channel_number)
+                bytes_to_skip = 3
+                next_event = EventType.TRACK_START
 
-                elif isChannelControlChange(byte_data, i):
-                    channel_number = byte_data[i] - 176
-                    channel_order.append(channel_number)
-                    bytes_to_skip = 3
-                    next_event_type = EventType.DELTA_T
-                    is_looking_for_track_start = True
+            elif isChannelProgramChange(byte_data, i):
+                channel_number = byte_data[i] - 192
+                channel_order.append(channel_number)
+                bytes_to_skip = 2
+                next_event = EventType.TRACK_START
 
-                elif isChannelProgramChange(byte_data, i):
-                    channel_number = byte_data[i] - 192
-                    channel_order.append(channel_number)
-                    bytes_to_skip = 2
-                    next_event_type = EventType.DELTA_T
-                    is_looking_for_track_start = True
+            # -------------------------
+            # midi controller messages:
+            # -------------------------
 
-                # -------------------------
-                # midi controller messages:
-                # -------------------------
+            elif isControlPanChange(byte_data, i):
+                bytes_to_skip = 2
+                next_event = EventType.DELTA_T
 
-                elif isControlPanChange(byte_data, i):
-                    bytes_to_skip = 2
-                    next_event_type = EventType.DELTA_T
+            elif isControlReverbChange(byte_data, i):
+                bytes_to_skip = 2
+                next_event = EventType.DELTA_T
 
-                elif isControlReverbChange(byte_data, i):
-                    bytes_to_skip = 2
-                    next_event_type = EventType.DELTA_T
+            elif isControlTremoloChange(byte_data, i):
+                bytes_to_skip = 2
+                next_event = EventType.DELTA_T
 
-                elif isControlTremoloChange(byte_data, i):
-                    bytes_to_skip = 2
-                    next_event_type = EventType.DELTA_T
-
-                elif isControlChorusChange(byte_data, i):
-                    bytes_to_skip = 2
-                    next_event_type = EventType.DELTA_T
+            elif isControlChorusChange(byte_data, i):
+                bytes_to_skip = 2
+                next_event = EventType.DELTA_T
 
     return(channel_order)
 
@@ -326,12 +317,12 @@ def parse(file_name, verbose):
 
     # start parsing track chunks
     bytes_to_skip = 0
-    next_event_type = EventType.TRACK_START
+    next_event = EventType.TRACK_START
+    current_running_status = RunningStatus.NONE
     new_note = np.zeros(3, dtype = object)
     new_note[0] = -1
     channel_index = 0
     channel_number = channel_order[channel_index]
-    current_running_status = RunningStatus.NONE
     position = 1
 
     for i in range(14, number_bytes_in_file):
@@ -339,27 +330,29 @@ def parse(file_name, verbose):
         if bytes_to_skip > 1:
             bytes_to_skip -= 1
 
-        elif isTrackStart(byte_data, i):
-            if verbose:
-                debug.write("starting next track\n")
+        elif next_event == EventType.TRACK_START and isTrackStart(byte_data, i):
             new_note[0] = "new"
             bytes_to_skip = 8
-            next_event_type = EventType.DELTA_T
+            next_event = EventType.DELTA_T
 
-        elif next_event_type == EventType.DELTA_T:
+            if verbose:
+                debug.write("starting next track\n")
+
+        elif next_event == EventType.DELTA_T:
             vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, i)
             delta_t = vlq_value
             bytes_to_skip = vlq_length
-            if verbose:
-                debug.write(f"delta t: {delta_t}\n")
             new_note[2] = delta_t
             for j in range(3):
                 notes[channel_number][position][j] = new_note[j]
             position += 1
             new_note = [-1, 0, 0]
-            next_event_type = EventType.OTHER
+            next_event = EventType.OTHER
 
-        elif next_event_type == EventType.OTHER:
+            if verbose:
+                debug.write(f"delta t: {delta_t}\n")
+
+        elif next_event == EventType.OTHER:
 
             # ------------
             # meta events:
@@ -373,61 +366,67 @@ def parse(file_name, verbose):
                     byte_value = byte_data[i + 2 + vlq_length + k]
                     if byte_value != 0:
                         name += chr(byte_value)
-                if verbose:
-                    debug.write(f"track name: {name}\n")
                 new_note[0] = "name"
                 bytes_to_skip = 2 + vlq_length + chunk_length
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write(f"track name: {name}\n")
 
             elif isMidiPort(byte_data, i):
                 port = byte_data[i + 3]
-                if verbose:
-                    debug.write(f"port: {port}\n")
                 new_note[0] = "port"
                 bytes_to_skip = 4
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write(f"port: {port}\n")
 
             elif isEndTrack(byte_data, i):
-                if verbose:
-                    debug.write("end track\n")
                 new_note[0] = "end"
                 for j in range(3):
                     notes[channel_number][position][j] = new_note[j]
-                for j in range(1,3):
+                for j in range(1, 3):
                     new_note[j] = 0
                 new_note[0] = -1
                 bytes_to_skip = 3
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.TRACK_START
                 current_running_status = RunningStatus.NONE
                 position = 1
                 if channel_index < channels - 1:
                     channel_index += 1
                     channel_number = channel_order[channel_index]
 
-            elif isTempoMarking(byte_data, i):
-                mspb = byte_data[i + 3]*2**16 + byte_data[i + 4]*2**8 + byte_data[i + 5]
                 if verbose:
-                    debug.write(f"microseconds per beat: {mspb}\n")
+                    debug.write("end track\n")
+
+            elif isTempoMarking(byte_data, i):
+                microseconds_per_beat = bt.concatenateBytes(byte_data[i + 3:i + 6])
                 new_note[0] = "tempo"
-                new_note[1] = mspb
+                new_note[1] = microseconds_per_beat
                 bytes_to_skip = 6
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write(f"microseconds per beat: {microseconds_per_beat}\n")
 
             elif isTimeSignature(byte_data, i):
                 numerator = byte_data[i + 3]
-                denominator = 2**byte_data[i + 4]
-                if verbose:
-                    debug.write(f"time signature: {numerator}/{denominator}\n")
+                denominator = 2 ** byte_data[i + 4]
                 new_note[0] = "time"
                 bytes_to_skip = 7
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write(f"time signature: {numerator}/{denominator}\n")
 
             elif isKeySignature(byte_data, i):
-                if verbose:
-                    debug.write("key signature\n")
                 new_note[0] = "key"
                 bytes_to_skip = 5
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write("key signature\n")
 
             # -----------------------
             # channel voice messages:
@@ -437,53 +436,57 @@ def parse(file_name, verbose):
                 channel_number = byte_data[i] - 128
                 note = byte_data[i + 1]
                 volume = byte_data[i + 2]
+                new_note[0] = note
+                new_note[1] = volume
+                bytes_to_skip = 3
+                next_event = EventType.DELTA_T
+                current_running_status = RunningStatus.NOTE_END
+
                 if verbose:
                     debug.write(f"channel number: {channel_number}\n")
                     debug.write(f"note number: {note}\n")
                     debug.write(f"note volume: {volume}\n")
-                new_note[0] = note
-                new_note[1] = volume
-                bytes_to_skip = 3
-                next_event_type = EventType.DELTA_T
-                current_running_status = RunningStatus.NOTE_END
 
             elif isChannelNoteStart(byte_data, i):
                 channel_number = byte_data[i] - 144
                 note = byte_data[i + 1]
                 volume = byte_data[i + 2]
+                new_note[0] = note
+                new_note[1] = volume
+                bytes_to_skip = 3
+                next_event = EventType.DELTA_T
+                current_running_status = RunningStatus.NOTE_START
+
                 if verbose:
                     debug.write(f"channel number: {channel_number}\n")
                     debug.write(f"note number: {note}\n")
                     debug.write(f"note volume: {volume}\n")
-                new_note[0] = note
-                new_note[1] = volume
-                bytes_to_skip = 3
-                next_event_type = EventType.DELTA_T
-                current_running_status = RunningStatus.NOTE_START
 
             elif isChannelControlChange(byte_data, i):
                 channel_number = byte_data[i] - 176
                 control_number = byte_data[i + 1]
                 assigned_value = byte_data[i + 2]
+                new_note[0] = "control"
+                bytes_to_skip = 3
+                next_event = EventType.DELTA_T
+                current_running_status = RunningStatus.CONTROL_CHANGE
+
                 if verbose:
                     debug.write(f"channel number: {channel_number}\n")
                     debug.write(f"control number: {control_number}\n")
                     debug.write(f"assigned value: {assigned_value}\n")
-                new_note[0] = "control"
-                bytes_to_skip = 3
-                next_event_type = EventType.DELTA_T
-                current_running_status = RunningStatus.CONTROL_CHANGE
 
             elif isChannelProgramChange(byte_data, i):
                 channel_number = byte_data[i] - 192
                 program_number = byte_data[i + 1]
+                new_note[0] = "program"
+                bytes_to_skip = 2
+                next_event = EventType.DELTA_T
+                current_running_status = RunningStatus.PROGRAM_CHANGE
+
                 if verbose:
                     debug.write(f"channel number: {channel_number}\n")
                     debug.write(f"program number: {program_number}\n")
-                new_note[0] = "program"
-                bytes_to_skip = 2
-                next_event_type = EventType.DELTA_T
-                current_running_status = RunningStatus.PROGRAM_CHANGE
 
             # --------------------------------------
             # running status channel voice messages:
@@ -492,46 +495,50 @@ def parse(file_name, verbose):
             elif current_running_status == RunningStatus.NOTE_END:
                 note = byte_data[i]
                 volume = byte_data[i + 1]
+                new_note[0] = note
+                new_note[1] = volume
+                bytes_to_skip = 2
+                next_event = EventType.DELTA_T
+
                 if verbose:
                     debug.write(f"implied channel number: {channel_number}\n")
                     debug.write(f"note number: {note}\n")
                     debug.write(f"note volume: {volume}\n")
-                new_note[0] = note
-                new_note[1] = volume
-                bytes_to_skip = 2
-                next_event_type = EventType.DELTA_T
 
             elif current_running_status == RunningStatus.NOTE_START:
                 note = byte_data[i]
                 volume = byte_data[i + 1]
+                new_note[0] = note
+                new_note[1] = volume
+                bytes_to_skip = 2
+                next_event = EventType.DELTA_T
+
                 if verbose:
                     debug.write(f"implied channel number: {channel_number}\n")
                     debug.write(f"note number: {note}\n")
                     debug.write(f"note volume: {volume}\n")
-                new_note[0] = note
-                new_note[1] = volume
-                bytes_to_skip = 2
-                next_event_type = EventType.DELTA_T
 
             elif current_running_status == RunningStatus.CONTROL_CHANGE:
                 control_number = byte_data[i]
                 assigned_value = byte_data[i + 1]
+                new_note[0] = "control"
+                bytes_to_skip = 2
+                next_event = EventType.DELTA_T
+
                 if verbose:
                     debug.write(f"implied channel number: {channel_number}\n")
                     debug.write(f"control number: {control_number}\n")
                     debug.write(f"assigned value: {assigned_value}\n")
-                new_note[0] = "control"
-                bytes_to_skip = 2
-                next_event_type = EventType.DELTA_T
 
             elif current_running_status == RunningStatus.PROGRAM_CHANGE:
                 program_number = byte_data[i]
+                new_note[0] = "program"
+                bytes_to_skip = 1
+                next_event = EventType.DELTA_T
+
                 if verbose:
                     debug.write(f"implied channel number: {channel_number}\n")
                     debug.write(f"program number: {program_number}\n")
-                new_note[0] = "program"
-                bytes_to_skip = 1
-                next_event_type = EventType.DELTA_T
 
             # -------------------------
             # midi controller messages:
@@ -539,35 +546,39 @@ def parse(file_name, verbose):
 
             elif isControlPanChange(byte_data, i):
                 pan = byte_data[i + 1]
-                if verbose:
-                    debug.write(f"pan: {pan}\n")
                 new_note[0] = "pan"
                 bytes_to_skip = 2
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write(f"pan: {pan}\n")
 
             elif isControlReverbChange(byte_data, i):
                 depth = byte_data[i + 1]
-                if verbose:
-                    debug.write(f"reverb: {depth}\n")
                 new_note[0] = "reverb"
                 bytes_to_skip = 2
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write(f"reverb: {depth}\n")
 
             elif isControlTremoloChange(byte_data, i):
                 depth = byte_data[i + 1]
-                if verbose:
-                    debug.write(f"tremolo: {depth}\n")
                 new_note[0] = "tremolo"
                 bytes_to_skip = 2
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write(f"tremolo: {depth}\n")
 
             elif isControlChorusChange(byte_data, i):
                 depth = byte_data[i + 1]
-                if verbose:
-                    debug.write(f"chorus: {depth}\n")
                 new_note[0] = "chorus"
                 bytes_to_skip = 2
-                next_event_type = EventType.DELTA_T
+                next_event = EventType.DELTA_T
+
+                if verbose:
+                    debug.write(f"chorus: {depth}\n")
 
         if verbose:
             debug.write(f"byte[{i}] is {byte_data[i]}\n")
