@@ -282,9 +282,9 @@ def generate_printer_gcode(file_name, sync):
             feed_rate = feeds[-1][i]
 
         # write out the gcode command
-        output.write(f"G1 F{str(np.around(np.abs(feed_rate), 5))}")
+        output.write(f"G1 F{str(np.around(np.abs(feed_rate), 6))}")
         for k in range(len(settings[6][0])):
-            output.write(f" {axis_labels[k]}{str(np.around(positions[k], 5))}")
+            output.write(f" {axis_labels[k]}{str(np.around(positions[k], 6))}")
         output.write("\n")
 
     # disallow cold extrusion
