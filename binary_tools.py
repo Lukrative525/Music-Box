@@ -30,12 +30,24 @@ def getBits(byte_as_int):
 
 def convertBitStringToInt(bit_string):
 
-    bit_int = int(bit_string, 2)
+    bits_value = int(bit_string, 2)
 
-    return bit_int
+    return bits_value
+
+def concatenateBytes(bytes_list):
+
+    bit_string = ""
+    for byte in bytes_list:
+        bit_string += getBits(byte)
+
+    bytes_value = convertBitStringToInt(bit_string)
+
+    return bytes_value
 
 if __name__ == "__main__":
 
-    test_int = 130
-    bit_string = getBits(test_int)
-    print(convertBitStringToInt(bit_string))
+    bytes_list = [1, 56, 126]
+
+    print(concatenateBytes(bytes_list))
+
+    print(chr(0))

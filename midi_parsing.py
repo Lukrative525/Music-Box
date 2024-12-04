@@ -20,6 +20,13 @@ def extractVariableLengthQuantity(byte_data, index):
 
     return [vlq_value, vlq_length]
 
+def isMidiFile(byte_data):
+
+    if byte_data[0] == ord("M") and byte_data[1] == ord("T") and byte_data[2] == ord("h") and byte_data[3] == ord("d"):
+        return True
+    else:
+        return False
+
 def isTrackStart(byte_data, index):
 
     if byte_data[index] == ord("M") and byte_data[index + 1] == ord("T") and byte_data[index + 2] == ord("r") and byte_data[index + 3] == ord("k"):
@@ -104,6 +111,44 @@ def isChannelProgramChange(byte_data, index):
         return True
     else:
         return False
+
+def isControlPanChange(byte_data, index):
+
+    if hex(byte_data[index]) == "0xa":
+        return True
+    else:
+        return False
+
+def isControlReverbChange(byte_data, index):
+
+    if hex(byte_data[index]) == "0x5b":
+        return True
+    else:
+        return False
+
+def isControlTremoloChange(byte_data, index):
+
+    if hex(byte_data[index]) == "0x5c":
+        return True
+    else:
+        return False
+
+def isControlChorusChange(byte_data, index):
+
+    if hex(byte_data[index]) == "0x5d":
+        return True
+    else:
+        return False
+
+def getNumberOfChannels(byte_data):
+
+    channel_type = byte_data[9]
+    if channel_type == 0:
+        channels = 1
+    elif channel_type == 1 or channel_type == 2:
+        channels = bt.concatenateBytes(byte_data[10:12])
+
+    return channels
 
 def getChannelOrder(byte_data):
 
@@ -199,81 +244,75 @@ def getChannelOrder(byte_data):
                 # midi controller messages:
                 # -------------------------
 
-                # midi pan 00001010
-                elif byte_data[i] == 10:
+                elif isControlPanChange(byte_data, i):
                     bytes_to_skip = 2
                     mode = "delta_t_is_next"
 
-                # midi effects 1 depth 01011011
-                elif byte_data[i] == 91:
+                elif isControlReverbChange(byte_data, i):
                     bytes_to_skip = 2
                     mode = "delta_t_is_next"
 
-                # midi effects 2 depth 01011100
-                elif byte_data[i] == 92:
+                elif isControlTremoloChange(byte_data, i):
                     bytes_to_skip = 2
                     mode = "delta_t_is_next"
 
-                # midi effects 3 depth 01011101
-                elif byte_data[i] == 93:
+                elif isControlChorusChange(byte_data, i):
                     bytes_to_skip = 2
                     mode = "delta_t_is_next"
 
     return(channel_order)
 
-# for parsing midi files into easy to use arrays of notes.
-# file_name is a string containing the name of the midi file to read.
-# verbose is true or false, depending on if you want to log parsing data
+def getTicksPerBeat(byte_data):
+
+    bits = bt.getBits(byte_data[12])
+    if bits[0] == "0":
+        ticks_per_beat = bt.concatenateBytes(byte_data[12:14])
+        return ticks_per_beat
+    else:
+        raise Exception("don\'t know how to handle this time format")
+
 def parse(file_name, verbose):
 
-    # log data?
-    if verbose == True:
+    """
+    For parsing midi files into easy to use arrays of notes.
+
+    Parameters
+    ==========
+        file_name (string): the file path of the midi file to read.
+        verbose (bool): whether you want to log parsing data
+    """
+
+    if verbose:
         debug = open("debug.txt", "w")
 
-    # open MIDI file
-    input = open(file_name, "rb")
-    data = input.read()
-    input.close
-    length = len(data)
+    midi_file = open(file_name, "rb")
+    byte_data = midi_file.read()
+    midi_file.close
+    number_bytes_in_file = len(byte_data)
 
-    # establish that this is a midi file
-    is_midi = ""
-    for i in range(4):
-        is_midi += str(chr(data[i]))
-
-    if is_midi != "MThd":
+    if not isMidiFile(byte_data):
         raise Exception("source file is not a midi file")
 
-    # extract channel data from header
-    channel_type = data[9]
-    if channel_type == 0:
-        channels = 1
-    elif channel_type == 1:
-        channels = data[10]*(2**8) + data[11]
-    elif channel_type == 2:
-        channels = data[10]*(2**8) + data[11]
-    if verbose == True:
-        debug.write(f"channel type: {channel_type}\n")
+    channels = getNumberOfChannels(byte_data)
+    if verbose:
         debug.write(f"number of channels: {channels}\n")
 
-    # create list of channels in order
-    channel_order = getChannelOrder(data)
+    channel_order = getChannelOrder(byte_data)
+    if verbose:
+        debug.write(f"channel order: {channel_order}\n")
 
     # create list to store note values
-    notes = np.zeros((channels, length, 3), dtype = object)
+    notes = np.zeros((channels, number_bytes_in_file, 3), dtype = object)
     for i in range(channels):
         notes[i][0][0] = f"channel {i}"
 
     #  extract ticks per beat from header:
-    if data[12] < 128: # check to see if leading bit is 0
-        ticks_b = data[12]*(2**8) + data[13]
-        if verbose == True:
-            debug.write(f"ticks per beat: {ticks_b}\n")
-    else:
-        raise Exception("don\'t know how to handle this time format")
+    ticks_per_beat = getTicksPerBeat(byte_data)
+    if verbose:
+        debug.write(f"ticks per beat: {ticks_per_beat}\n")
 
     # start parsing track chunks
-    skips = 0
+    bytes_to_skip = 0
     mode = "none"
     new_note = np.zeros(3, dtype = object)
     new_note[0] = -1
@@ -282,78 +321,69 @@ def parse(file_name, verbose):
     status = "none"
     position = 1
 
-    for i in range(14, length):
+    for i in range(14, number_bytes_in_file):
 
-        # do nothing while i increases past bytes containing vlq or other info
-        if skips > 1:
-            skips -= 1
+        if bytes_to_skip > 1:
+            bytes_to_skip -= 1
 
-        # starting from the beginning of the track (MTrk)
-        elif data[i] == 77 and data[i + 1] == 84 and data[i + 2] == 114 and data[i + 3] == 107:
-            if verbose == True:
+        elif isTrackStart(byte_data, i):
+            if verbose:
                 debug.write("starting next track\n")
             new_note[0] = "new"
-            skips = 8
+            bytes_to_skip = 8
             mode = "delta_t_is_next"
 
-        # next byte(s) contain delta t information
         elif mode == "delta_t_is_next":
-            vlq_value, vlq_length = extractVariableLengthQuantity(data, i)
-            delta = vlq_value
-            skips = vlq_length
-            if verbose == True:
-                debug.write(f"delta t: {delta}\n")
-            # write new_note into notes
-            new_note[2] = delta
+            vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, i)
+            delta_t = vlq_value
+            bytes_to_skip = vlq_length
+            if verbose:
+                debug.write(f"delta t: {delta_t}\n")
+            new_note[2] = delta_t
             for j in range(3):
                 notes[channel_number][position][j] = new_note[j]
             position += 1
             new_note = [-1, 0, 0]
             mode = "standby"
 
-        # determine what action to take
         elif mode == "standby":
 
             # ------------
             # meta events:
             # ------------
 
-            # sequence/track name FF 03
-            if data[i] == 255 and data[i + 1] == 3 and mode == "standby":
-                vlq_value, vlq_length = extractVariableLengthQuantity(data, (i + 2))
+            if isTrackName(byte_data, i):
+                vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (i + 2))
                 chunk_length = vlq_value
                 name = ""
                 for k in range(chunk_length):
-                    name += chr(data[i + 2 + vlq_length + k])
-                if "\x00" in name:
-                    name = name.replace("\x00", "")
-                if verbose == True:
+                    byte_value = byte_data[i + 2 + vlq_length + k]
+                    if byte_value != 0:
+                        name += chr(byte_value)
+                if verbose:
                     debug.write(f"track name: {name}\n")
                 new_note[0] = "name"
-                skips = 2 + vlq_length + chunk_length
+                bytes_to_skip = 2 + vlq_length + chunk_length
                 mode = "delta_t_is_next"
 
-            # midi port FF 21 01
-            elif data[i] == 255 and data[i + 1] == 33 and data[i + 2] == 1 and mode == "standby":
-                port = data[i + 3]
-                if verbose == True:
+            elif isMidiPort(byte_data, i):
+                port = byte_data[i + 3]
+                if verbose:
                     debug.write(f"port: {port}\n")
                 new_note[0] = "port"
-                skips = 4
+                bytes_to_skip = 4
                 mode = "delta_t_is_next"
 
-            # end track FF 2F 00
-            elif data[i] == 255 and data[i + 1] == 47 and data[i + 2] == 0 and mode == "standby":
-                if verbose == True:
+            elif isEndTrack(byte_data, i):
+                if verbose:
                     debug.write("end track\n")
                 new_note[0] = "end"
                 for j in range(3):
                     notes[channel_number][position][j] = new_note[j]
-                    # reset new_note
                 for j in range(1,3):
                     new_note[j] = 0
                 new_note[0] = -1
-                skips = 3
+                bytes_to_skip = 3
                 mode = "delta_t_is_next"
                 status = "none"
                 position = 1
@@ -361,94 +391,84 @@ def parse(file_name, verbose):
                     channel_index += 1
                     channel_number = channel_order[channel_index]
 
-            # tempo marking FF 51 03
-            elif data[i] == 255 and data[i + 1] == 81 and data[i + 2] == 3 and mode == "standby":
-                mspb = data[i + 3]*2**16 + data[i + 4]*2**8 + data[i + 5]
-                if verbose == True:
+            elif isTempoMarking(byte_data, i):
+                mspb = byte_data[i + 3]*2**16 + byte_data[i + 4]*2**8 + byte_data[i + 5]
+                if verbose:
                     debug.write(f"microseconds per beat: {mspb}\n")
-                # write to new_note
                 new_note[0] = "tempo"
                 new_note[1] = mspb
-                skips = 6
+                bytes_to_skip = 6
                 mode = "delta_t_is_next"
 
-            # time signature FF 58 04
-            elif data[i] == 255 and data[i + 1] == 88 and data[i + 2] == 4 and mode == "standby":
-                numerator = data[i + 3]
-                denominator = 2**data[i + 4]
-                if verbose == True:
+            elif isTimeSignature(byte_data, i):
+                numerator = byte_data[i + 3]
+                denominator = 2**byte_data[i + 4]
+                if verbose:
                     debug.write(f"time signature: {numerator}/{denominator}\n")
                 new_note[0] = "time"
-                skips = 7
+                bytes_to_skip = 7
                 mode = "delta_t_is_next"
 
-            # key signature FF 59 02
-            elif data[i] == 255 and data[i + 1] == 89 and data[i + 2] == 2 and mode == "standby":
-                if verbose == True:
+            elif isKeySignature(byte_data, i):
+                if verbose:
                     debug.write("key signature\n")
                 new_note[0] = "key"
-                skips = 5
+                bytes_to_skip = 5
                 mode = "delta_t_is_next"
 
             # -----------------------
             # channel voice messages:
             # -----------------------
 
-            # channel end note 1000nnnn
-            elif data[i] >= 128 and data[i] <= 143 and mode == "standby":
-                channel_number = data[i] - 128
-                note = data[i + 1]
-                volume = data[i + 2]
-                if verbose == True:
+            elif isChannelNoteEnd(byte_data, i):
+                channel_number = byte_data[i] - 128
+                note = byte_data[i + 1]
+                volume = byte_data[i + 2]
+                if verbose:
                     debug.write(f"channel number: {channel_number}\n")
                     debug.write(f"note number: {note}\n")
                     debug.write(f"note volume: {volume}\n")
-                # write to new_note
                 new_note[0] = note
                 new_note[1] = volume
-                skips = 3
+                bytes_to_skip = 3
                 mode = "delta_t_is_next"
-                status = "end note"
+                status = "note end"
 
-            # channel start note 1001nnnn
-            elif data[i] >= 144 and data[i] <= 159 and mode == "standby":
-                channel_number = data[i] - 144
-                note = data[i + 1]
-                volume = data[i + 2]
-                if verbose == True:
+            elif isChannelNoteStart(byte_data, i):
+                channel_number = byte_data[i] - 144
+                note = byte_data[i + 1]
+                volume = byte_data[i + 2]
+                if verbose:
                     debug.write(f"channel number: {channel_number}\n")
                     debug.write(f"note number: {note}\n")
                     debug.write(f"note volume: {volume}\n")
-                # write to new_note
                 new_note[0] = note
                 new_note[1] = volume
-                skips = 3
+                bytes_to_skip = 3
                 mode = "delta_t_is_next"
-                status = "start note"
+                status = "note start"
 
-            # channel control change 1011nnnn
-            elif data[i] >= 176 and data[i] <= 191 and mode == "standby":
-                channel_number = data[i] - 176
-                control_number = data[i + 1]
-                assigned_value = data[i + 2]
-                if verbose == True:
+            elif isChannelControlChange(byte_data, i):
+                channel_number = byte_data[i] - 176
+                control_number = byte_data[i + 1]
+                assigned_value = byte_data[i + 2]
+                if verbose:
                     debug.write(f"channel number: {channel_number}\n")
                     debug.write(f"control number: {control_number}\n")
                     debug.write(f"assigned value: {assigned_value}\n")
                 new_note[0] = "control"
-                skips = 3
+                bytes_to_skip = 3
                 mode = "delta_t_is_next"
                 status = "control change"
 
-            # channel program change 1100nnnn
-            elif data[i] >= 192 and data[i] <= 207 and mode == "standby":
-                channel_number = data[i] - 192
-                program_number = data[i + 1]
-                if verbose == True:
+            elif isChannelProgramChange(byte_data, i):
+                channel_number = byte_data[i] - 192
+                program_number = byte_data[i + 1]
+                if verbose:
                     debug.write(f"channel number: {channel_number}\n")
                     debug.write(f"program number: {program_number}\n")
                 new_note[0] = "program"
-                skips = 2
+                bytes_to_skip = 2
                 mode = "delta_t_is_next"
                 status = "program change"
 
@@ -456,98 +476,88 @@ def parse(file_name, verbose):
             # running status channel voice messages:
             # --------------------------------------
 
-            # channel end note 1000nnnn (running status)
-            elif status == "end note" and mode == "standby":
-                note = data[i]
-                volume = data[i + 1]
-                if verbose == True:
+            elif status == "note end":
+                note = byte_data[i]
+                volume = byte_data[i + 1]
+                if verbose:
                     debug.write(f"implied channel number: {channel_number}\n")
                     debug.write(f"note number: {note}\n")
                     debug.write(f"note volume: {volume}\n")
-                # write to new_note
                 new_note[0] = note
                 new_note[1] = volume
-                skips = 2
+                bytes_to_skip = 2
                 mode = "delta_t_is_next"
 
-            # channel start note 1001nnnn (running status)
-            elif status == "start note" and mode == "standby":
-                note = data[i]
-                volume = data[i + 1]
-                if verbose == True:
+            elif status == "note start":
+                note = byte_data[i]
+                volume = byte_data[i + 1]
+                if verbose:
                     debug.write(f"implied channel number: {channel_number}\n")
                     debug.write(f"note number: {note}\n")
                     debug.write(f"note volume: {volume}\n")
-                # write to new_note
                 new_note[0] = note
                 new_note[1] = volume
-                skips = 2
+                bytes_to_skip = 2
                 mode = "delta_t_is_next"
 
-            # channel control change 1011nnnn (running status)
-            elif status == "control change" and mode == "standby":
-                control_number = data[i]
-                assigned_value = data[i + 1]
-                if verbose == True:
+            elif status == "control change":
+                control_number = byte_data[i]
+                assigned_value = byte_data[i + 1]
+                if verbose:
                     debug.write(f"implied channel number: {channel_number}\n")
                     debug.write(f"control number: {control_number}\n")
                     debug.write(f"assigned value: {assigned_value}\n")
                 new_note[0] = "control"
-                skips = 2
+                bytes_to_skip = 2
                 mode = "delta_t_is_next"
 
-            # channel program change 1100nnnn (running status)
-            elif status == "program change" and mode == "standby":
-                program_number = data[i]
-                if verbose == True:
+            elif status == "program change":
+                program_number = byte_data[i]
+                if verbose:
                     debug.write(f"implied channel number: {channel_number}\n")
                     debug.write(f"program number: {program_number}\n")
                 new_note[0] = "program"
-                skips = 1
+                bytes_to_skip = 1
                 mode = "delta_t_is_next"
 
             # -------------------------
             # midi controller messages:
             # -------------------------
 
-            # midi pan 00001010
-            elif data[i] == 10 and mode == "standby":
-                pan = data[i + 1]
-                if verbose == True:
+            elif isControlPanChange(byte_data, i):
+                pan = byte_data[i + 1]
+                if verbose:
                     debug.write(f"pan: {pan}\n")
                 new_note[0] = "pan"
-                skips = 2
+                bytes_to_skip = 2
                 mode = "delta_t_is_next"
 
-            # midi effects 1 depth 01011011
-            elif data[i] == 91 and mode == "standby":
-                depth = data[i + 1]
-                if verbose == True:
-                    debug.write(f"effects 1 depth: {depth}\n")
-                new_note[0] = "effects"
-                skips = 2
+            elif isControlReverbChange(byte_data, i):
+                depth = byte_data[i + 1]
+                if verbose:
+                    debug.write(f"reverb: {depth}\n")
+                new_note[0] = "reverb"
+                bytes_to_skip = 2
                 mode = "delta_t_is_next"
 
-            # midi effects 2 depth 01011100 
-            elif data[i] == 92 and mode == "standby":
-                depth = data[i + 1]
-                if verbose == True:
-                    debug.write(f"effects 2 depth: {depth}\n")
-                new_note[0] = "effects"
-                skips = 2
+            elif isControlTremoloChange(byte_data, i):
+                depth = byte_data[i + 1]
+                if verbose:
+                    debug.write(f"tremolo: {depth}\n")
+                new_note[0] = "tremolo"
+                bytes_to_skip = 2
                 mode = "delta_t_is_next"
 
-            # midi effects 3 depth 01011101 
-            elif data[i] == 93 and mode == "standby":
-                depth = data[i + 1]
-                if verbose == True:
-                    debug.write(f"effects 3 depth: {depth}\n")
-                new_note[0] = "effects"
-                skips = 2
+            elif isControlChorusChange(byte_data, i):
+                depth = byte_data[i + 1]
+                if verbose:
+                    debug.write(f"chorus: {depth}\n")
+                new_note[0] = "chorus"
+                bytes_to_skip = 2
                 mode = "delta_t_is_next"
 
-        if verbose == True:
-            debug.write(f"data[{i}] is {data[i]}\n")
+        if verbose:
+            debug.write(f"byte[{i}] is {byte_data[i]}\n")
 
     # create an array to store "start" indices
     starts = np.zeros(len(notes), dtype = np.int64)
@@ -593,7 +603,7 @@ def parse(file_name, verbose):
                 notes[j][i][1] = 1
 
     # print out notes
-    if verbose == True:
+    if verbose:
         debug.write("\nnotes\n")
         for j in range(len(notes)):
             debug.write("\n")
@@ -601,7 +611,7 @@ def parse(file_name, verbose):
                 debug.write(str(notes[j][i]) + "\n")
 
     # create list for filling with synchronized notes
-    sync = np.zeros((channels + 1, length, 3), dtype = object)
+    sync = np.zeros((channels + 1, number_bytes_in_file, 3), dtype = object)
 
     # create list containing time stamps to step through as we sync notes
     times = [0]
@@ -676,7 +686,7 @@ def parse(file_name, verbose):
 
     # # determine the last significant row of sync
     ends_found = 0
-    for i in range(length):
+    for i in range(number_bytes_in_file):
         for j in range(channels):
             if sync[j][i][0] == "end":
                 sync_last = i
@@ -687,7 +697,7 @@ def parse(file_name, verbose):
     sync = sync[:len(sync), :sync_last]
 
     # print out sync with time stamps
-    if verbose == True:
+    if verbose:
         current_width = 0
         column_width = 20
         debug.write("\nsync with time stamps\n")
@@ -722,14 +732,14 @@ def parse(file_name, verbose):
             if sync[-1][i][0] == "tempo":
                 current_mspb = sync[-1][i][1]
             # 1000 for milliseconds
-            temp = ticks_b * 1000
+            temp = ticks_per_beat * 1000
             temp = current_mspb / temp
             temp = temp * sync[j][i][2]
             temp = np.float64(temp)
             sync[j][i][2] = temp
 
     # print out sync with durations
-    if verbose == True:
+    if verbose:
         current_width = 0
         column_width = 20
         debug.write("\nsync with durations\n")
@@ -744,7 +754,7 @@ def parse(file_name, verbose):
                         debug.write(" ")
 
     # close debug file
-    if verbose == True:
+    if verbose:
         debug.close
 
     return(sync)
