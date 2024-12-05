@@ -19,7 +19,7 @@ for i in range(len(file_names)):
 printer_file_path = '0:/macros/Music Box/Music Files/'
 
 # this is the complete file path to the playlist file on the computer
-playlist_file_path = 'C:/Users/Luke/Documents/3D printing/music box/Playlist.gcode'
+playlist_file_path = 'C:/Users/Luke/Documents/3D printing/music_box/Playlist.gcode'
 
 # add the file path to the music files on the printer's SD card to the file names
 for i in range(len(file_names)):
