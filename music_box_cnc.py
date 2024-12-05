@@ -36,6 +36,6 @@ pause = False
 # generate gcode files
 for i in range(len(file_names)):
     print(f'\n{short_file_names[i]}')
-    sync = mp.parse(source_files[i], verbose)
+    sync = mp.parseMidiFile(source_files[i], verbose)
     gm.generate_cnc_gcode(target_files[i], sync, pause)
 print('\nFinished\n')

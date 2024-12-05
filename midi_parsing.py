@@ -275,7 +275,7 @@ def getTicksPerBeat(byte_data):
     else:
         raise Exception("don\'t know how to handle this time format")
 
-def parse(file_name, verbose):
+def parseMidiFile(file_name, verbose):
 
     """
     For parsing midi files into easy to use arrays of notes.
@@ -580,12 +580,12 @@ def parse(file_name, verbose):
         if verbose:
             debug.write(f"byte[{i}] is {byte_data[i]}\n")
 
-    sync = synchronizeEvents(notes_array)
-    sync = convertTimesToDurations(sync, ticks_per_beat)
+    sync = synchronizeEvents(notes_array, verbose, debug)
+    sync = convertTimesToDurations(sync, ticks_per_beat, verbose, debug)
 
     return sync
 
-def synchronizeEvents(notes_array):
+def synchronizeEvents(notes_array, verbose, debug):
 
     channels = len(notes_array)
     number_bytes_in_file = len(notes_array[0])
@@ -633,13 +633,13 @@ def synchronizeEvents(notes_array):
             if notes_array[j][i][1] != 0 and isinstance(notes_array[j][i][0], str) == False:
                 notes_array[j][i][1] = 1
 
-    # # print out notes
-    # if verbose:
-    #     debug.write("\nnotes\n")
-    #     for j in range(len(notes_array)):
-    #         debug.write("\n")
-    #         for i in range(ends[j] + 1):
-    #             debug.write(str(notes_array[j][i]) + "\n")
+    # print out notes
+    if verbose:
+        debug.write("\nnotes\n")
+        for j in range(len(notes_array)):
+            debug.write("\n")
+            for i in range(ends[j] + 1):
+                debug.write(str(notes_array[j][i]) + "\n")
 
     # create list for filling with synchronized notes
     sync = np.zeros((channels + 1, number_bytes_in_file, 3), dtype = object)
@@ -729,24 +729,24 @@ def synchronizeEvents(notes_array):
 
     return sync
 
-def convertTimesToDurations(sync, ticks_per_beat):
+def convertTimesToDurations(sync, ticks_per_beat, verbose, debug):
 
     lenth_sync = len(sync[0])
 
-    # # print out sync with time stamps
-    # if verbose:
-    #     current_width = 0
-    #     column_width = 20
-    #     debug.write("\nsync with time stamps\n")
-    #     for i in range(len(sync[0])):
-    #         debug.write("\n")
-    #         for j in range(len(sync)):
-    #             current_width = len(str(sync[j][i]))
-    #             debug.write(str(sync[j][i]))
-    #             if current_width < column_width:
-    #                 for k in range(current_width, column_width):
-    #                     debug.write(" ")
-    #     debug.write("\n")
+    # print out sync with time stamps
+    if verbose:
+        current_width = 0
+        column_width = 20
+        debug.write("\nsync with time stamps\n")
+        for i in range(len(sync[0])):
+            debug.write("\n")
+            for j in range(len(sync)):
+                current_width = len(str(sync[j][i]))
+                debug.write(str(sync[j][i]))
+                if current_width < column_width:
+                    for k in range(current_width, column_width):
+                        debug.write(" ")
+        debug.write("\n")
 
     # switch times to durations
     # for each column:
@@ -775,23 +775,23 @@ def convertTimesToDurations(sync, ticks_per_beat):
             temp = np.float64(temp)
             sync[j][i][2] = temp
 
-    # # print out sync with durations
-    # if verbose:
-    #     current_width = 0
-    #     column_width = 20
-    #     debug.write("\nsync with durations\n")
-    #     for i in range(len(sync[0])):
-    #         debug.write("\n")
-    #         for j in range(len(sync)):
-    #             string = f"[{sync[j][i][0]} {sync[j][i][1]} {np.around(sync[j][i][2], 2)}]"
-    #             debug.write(string)
-    #             current_width = len(string)
-    #             if current_width < column_width:
-    #                 for k in range(current_width, column_width):
-    #                     debug.write(" ")
+    # print out sync with durations
+    if verbose:
+        current_width = 0
+        column_width = 20
+        debug.write("\nsync with durations\n")
+        for i in range(len(sync[0])):
+            debug.write("\n")
+            for j in range(len(sync)):
+                string = f"[{sync[j][i][0]} {sync[j][i][1]} {np.around(sync[j][i][2], 2)}]"
+                debug.write(string)
+                current_width = len(string)
+                if current_width < column_width:
+                    for k in range(current_width, column_width):
+                        debug.write(" ")
 
-    # # close debug file
-    # if verbose:
-    #     debug.close
+    # close debug file
+    if verbose:
+        debug.close
 
     return sync
