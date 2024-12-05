@@ -3,7 +3,7 @@ import random
 import tkinter as tk
 from tkinter import filedialog
 
-SHUFFLE = True
+shuffle = True
 
 tk.Tk().withdraw()
 file_names = filedialog.askopenfilename(filetypes = [('Gcode files','*.gcode')], multiple = True)
@@ -25,9 +25,9 @@ playlist_file_path = 'C:/Users/Luke/Documents/3D printing/music_box/Playlist.gco
 for i in range(len(file_names)):
     printer_file_names[i] = printer_file_path + printer_file_names[i]
 
-# create indices to shuffle and use if SHUFFLE is True, and to use as is if it's False
+# create indices to shuffle and use if shuffle is True, and to use as is if it's False
 indices = np.arange(0, len(file_names))
-if SHUFFLE == True:
+if shuffle == True:
     random.shuffle(indices)
 print(f'\n{indices}\n')
 
