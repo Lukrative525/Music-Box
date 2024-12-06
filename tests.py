@@ -1,22 +1,16 @@
 from midi_elements import *
 
-track = Track(1)
-event1 = NoteStart(60, 100)
-event2 = TimeDelta(1)
-event3 = NoteStart(60, 0)
+track = Track(0)
+event1 = NoteOnEvent(0, 60, 80)
+event3 = NoteOnEvent(0, 60, 0)
 
 track.append(event1)
-track.append(event2)
 track.append(event3)
 
-print(track)
+track.append(TimeSignatureEvent(4, 4))
+track.append(KeySignatureEvent(2))
 
-track.append(TimeSignature(4, 4))
-track.append(KeySignature(2))
-
-print(track)
-
-track.append(TrackEnd())
+track.append(TrackEndEvent())
 track.append(Event())
 
 print(track)

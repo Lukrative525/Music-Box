@@ -1,13 +1,13 @@
 class Track(list):
-    def __init__(self, channel_number):
-        self.channel_number = channel_number
+    def __init__(self, track_number):
+        self.track_number = track_number
 
-    def append(self, event):
-        if isinstance(event, Event) and not any(isinstance(event, TrackEnd) for event in self):
-            super().append(event)
+    def append(self, new_event):
+        if isinstance(new_event, Event) and not any(isinstance(event, TrackEndEvent) for event in self):
+            super().append(new_event)
 
     def __str__(self):
-        string_to_print = f"Channel Number: {self.channel_number}\n"
+        string_to_print = f"Track Number: {self.track_number}\n"
         for event in self:
             string_to_print += event.__str__()
 
@@ -18,9 +18,31 @@ class Event:
         self.message = message
 
     def __str__(self):
-        return f"Generic Event: {self.message}\n"
+        return f"Generic Event:\n    {self.message}\n"
 
-class KeySignature(Event):
+class ControlChangeEvent(Event):
+    def __init__(self, channel_number, control_number, value):
+        super().__init__()
+        self.channel_number = channel_number
+        self.control_number = control_number
+        self.value = value
+
+    def __str__(self):
+        string_to_print = f"Control Change:\n    Channel Number: {self.channel_number}\n    Control Number: {self.control_number}\n    Value: {self.value}\n"
+
+        return string_to_print
+
+class DeltaTimeEvent(Event):
+    def __init__(self, delta_time):
+        super().__init__()
+        self.delta_time = delta_time
+
+    def __str__(self):
+        string_to_print = f"Delta Time: {self.delta_time}\n"
+
+        return string_to_print
+
+class KeySignatureEvent(Event):
     def __init__(self, number_accidentals, is_minor=False):
         super().__init__()
         self.number_accidentals = number_accidentals
@@ -31,49 +53,52 @@ class KeySignature(Event):
 
         return string_to_print
 
-class NoteStart(Event):
-    def __init__(self, note_number, velocity):
+class NoteOnEvent(Event):
+    def __init__(self, channel_number, note_number, velocity):
         super().__init__()
+        self.channel_number = channel_number
         self.note_number = note_number
         self.velocity = velocity
 
     def __str__(self):
-        string_to_print = f"Note Start:\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
+        string_to_print = f"Note On:\n    Channel Number: {self.channel_number}\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
 
         return string_to_print
 
-class NoteEnd(Event):
-    def __init__(self, note_number, velocity):
+class NoteOffEvent(Event):
+    def __init__(self, channel_number, note_number, velocity):
         super().__init__()
+        self.channel_number = channel_number
         self.note_number = note_number
         self.velocity = velocity
 
     def __str__(self):
-        string_to_print = f"Note End:\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
+        string_to_print = f"Note Off:\n    Channel Number: {self.channel_number}\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
 
         return string_to_print
 
-class Tempo(Event):
-    def __init__(self, tempo):
+class ProgramChangeEvent(Event):
+    def __init__(self, channel_number, program_number):
         super().__init__()
-        self.tempo = tempo
+        self.channel_number = channel_number
+        self.program_number = program_number
 
     def __str__(self):
-        string_to_print = f"Tempo: {self.tempo}\n"
+        string_to_print = f"Program Change:\n    Channel Number: {self.channel_number}\n    Program Number: {self.program_number}\n"
 
         return string_to_print
 
-class TimeDelta(Event):
-    def __init__(self, time_value):
+class TempoEvent(Event):
+    def __init__(self, microseconds_per_beat):
         super().__init__()
-        self.time_value = time_value
+        self.microseconds_per_beat = microseconds_per_beat
 
     def __str__(self):
-        string_to_print = f"Time Delta: {self.time_value}\n"
+        string_to_print = f"Tempo:\n    Microseconds/Beat: {self.microseconds_per_beat}\n"
 
         return string_to_print
 
-class TimeSignature(Event):
+class TimeSignatureEvent(Event):
     def __init__(self, numerator, denominator):
         super().__init__()
         self.numerator = numerator
@@ -84,11 +109,21 @@ class TimeSignature(Event):
 
         return string_to_print
 
-class TrackEnd(Event):
+class TrackEndEvent(Event):
     def __init__(self):
         super().__init__()
 
     def __str__(self):
         string_to_print = f"Track End\n"
+
+        return string_to_print
+
+class TrackNameEvent(Event):
+    def __init__(self, name):
+        super().__init__()
+        self.name = name
+
+    def __str__(self):
+        string_to_print = f"Track Name:\n    {self.name}\n"
 
         return string_to_print

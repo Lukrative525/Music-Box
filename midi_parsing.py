@@ -6,8 +6,8 @@ from midi_elements import *
 class RunningStatus(Enum):
     CONTROL_CHANGE = auto()
     NONE = auto()
-    NOTE_END = auto()
-    NOTE_START = auto()
+    NOTE_OFF = auto()
+    NOTE_ON = auto()
     PROGRAM_CHANGE = auto()
 
 def extractVariableLengthQuantity(byte_data, index):
@@ -29,6 +29,28 @@ def extractVariableLengthQuantity(byte_data, index):
 
     return [vlq_value, vlq_length]
 
+def getDeltaTime(byte_data, index):
+
+    delta_time, delta_time_byte_length = extractVariableLengthQuantity(byte_data, index)
+
+    return [delta_time, delta_time_byte_length]
+
+def getTrackName(byte_data, index):
+
+    vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (index + 2))
+    chunk_length = vlq_value
+
+    name = ""
+    for k in range(chunk_length):
+        byte_value = byte_data[index + 2 + vlq_length + k]
+        if byte_value != 0:
+            name += chr(byte_value)
+    name_byte_length = 2 + vlq_length + chunk_length
+
+    return [name, name_byte_length]
+
+# Header Functions
+
 def isMidiFile(byte_data):
 
     if byte_data[0] == ord("M") and byte_data[1] == ord("T") and byte_data[2] == ord("h") and byte_data[3] == ord("d"):
@@ -36,9 +58,37 @@ def isMidiFile(byte_data):
     else:
         return False
 
+def getNumberOfTracks(byte_data):
+
+    format_type = byte_data[9]
+    if format_type == 0:
+        tracks = 1
+    elif format_type == 1 or format_type == 2:
+        tracks = bt.concatenateBytes(byte_data[10:12])
+
+    return tracks
+
+def getTicksPerBeat(byte_data):
+
+    bits = bt.getBits(byte_data[12])
+    if bits[0] == "0":
+        ticks_per_beat = bt.concatenateBytes(byte_data[12:14])
+        return ticks_per_beat
+    else:
+        raise Exception("I don\'t know how to handle this time format")
+
 def isTrackStart(byte_data, index):
 
     if byte_data[index] == ord("M") and byte_data[index + 1] == ord("T") and byte_data[index + 2] == ord("r") and byte_data[index + 3] == ord("k"):
+        return True
+    else:
+        return False
+
+# Meta Event Functions
+
+def isMetaEvent(byte_data, index):
+
+    if hex(byte_data[index]) == "0xff":
         return True
     else:
         return False
@@ -57,7 +107,7 @@ def isMidiPort(byte_data, index):
     else:
         return False
 
-def isEndTrack(byte_data, index):
+def isTrackEnd(byte_data, index):
 
     if hex(byte_data[index]) == "0xff" and hex(byte_data[index + 1]) == "0x2f" and hex(byte_data[index + 2]) == "0x0":
         return True
@@ -85,7 +135,9 @@ def isKeySignature(byte_data, index):
     else:
         return False
 
-def isChannelNoteEnd(byte_data, index):
+# Channel-Specific
+
+def isNoteOff(byte_data, index):
 
     bits = bt.getBits(byte_data[index])
 
@@ -94,7 +146,7 @@ def isChannelNoteEnd(byte_data, index):
     else:
         return False
 
-def isChannelNoteStart(byte_data, index):
+def isNoteOn(byte_data, index):
 
     bits = bt.getBits(byte_data[index])
 
@@ -103,7 +155,7 @@ def isChannelNoteStart(byte_data, index):
     else:
         return False
 
-def isChannelControlChange(byte_data, index):
+def isControlChange(byte_data, index):
 
     bits = bt.getBits(byte_data[index])
 
@@ -112,7 +164,7 @@ def isChannelControlChange(byte_data, index):
     else:
         return False
 
-def isChannelProgramChange(byte_data, index):
+def isProgramChange(byte_data, index):
 
     bits = bt.getBits(byte_data[index])
 
@@ -121,157 +173,37 @@ def isChannelProgramChange(byte_data, index):
     else:
         return False
 
-def isControlPanChange(byte_data, index):
+# Channel-Agnostic
+
+def isPan(byte_data, index):
 
     if hex(byte_data[index]) == "0xa":
         return True
     else:
         return False
 
-def isControlReverbChange(byte_data, index):
+def isReverb(byte_data, index):
 
     if hex(byte_data[index]) == "0x5b":
         return True
     else:
         return False
 
-def isControlTremoloChange(byte_data, index):
+def isTremolo(byte_data, index):
 
     if hex(byte_data[index]) == "0x5c":
         return True
     else:
         return False
 
-def isControlChorusChange(byte_data, index):
+def isChorus(byte_data, index):
 
     if hex(byte_data[index]) == "0x5d":
         return True
     else:
         return False
 
-def getNumberOfChannels(byte_data):
-
-    channel_type = byte_data[9]
-    if channel_type == 0:
-        channels = 1
-    elif channel_type == 1 or channel_type == 2:
-        channels = bt.concatenateBytes(byte_data[10:12])
-
-    return channels
-
-# def getChannelOrder(byte_data):
-
-#     bytes_to_skip = 1
-#     next_event = EventType.TRACK_START
-#     channel_number = None
-#     channel_order = []
-
-#     for i in range(len(byte_data)):
-
-#         if bytes_to_skip > 1:
-#             bytes_to_skip -= 1
-
-#         elif next_event == EventType.TRACK_START and isTrackStart(byte_data, i):
-#             bytes_to_skip = 8
-#             time_delta_next = True
-
-#         elif next_event == EventType.DELTA_T:
-#             vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, i)
-#             bytes_to_skip = vlq_length
-#             next_event = EventType.OTHER
-
-#         elif next_event == EventType.OTHER:
-
-#             # ------------
-#             # meta events:
-#             # ------------
-
-#             if isTrackName(byte_data, i):
-#                 vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (i + 2))
-#                 chunk_length = vlq_value
-#                 bytes_to_skip = 2 + vlq_length + chunk_length
-#                 time_delta_next = True
-
-#             elif isMidiPort(byte_data, i):
-#                 bytes_to_skip = 4
-#                 time_delta_next = True
-
-#             elif isEndTrack(byte_data, i):
-#                 bytes_to_skip = 3
-#                 next_event = EventType.TRACK_START
-
-#             elif isTempoChange(byte_data, i):
-#                 bytes_to_skip = 6
-#                 time_delta_next = True
-
-#             elif isTimeSignature(byte_data, i):
-#                 bytes_to_skip = 7
-#                 time_delta_next = True
-
-#             elif isKeySignature(byte_data, i):
-#                 bytes_to_skip = 5
-#                 time_delta_next = True
-
-#             # -----------------------
-#             # channel voice messages:
-#             # -----------------------
-
-#             elif isChannelNoteEnd(byte_data, i):
-#                 channel_number = byte_data[i] - 128
-#                 channel_order.append(channel_number)
-#                 bytes_to_skip = 3
-#                 next_event = EventType.TRACK_START
-
-#             elif isChannelNoteStart(byte_data, i):
-#                 channel_number = byte_data[i] - 144
-#                 channel_order.append(channel_number)
-#                 bytes_to_skip = 3
-#                 next_event = EventType.TRACK_START
-
-#             elif isChannelControlChange(byte_data, i):
-#                 channel_number = byte_data[i] - 176
-#                 channel_order.append(channel_number)
-#                 bytes_to_skip = 3
-#                 next_event = EventType.TRACK_START
-
-#             elif isChannelProgramChange(byte_data, i):
-#                 channel_number = byte_data[i] - 192
-#                 channel_order.append(channel_number)
-#                 bytes_to_skip = 2
-#                 next_event = EventType.TRACK_START
-
-#             # -------------------------
-#             # midi controller messages:
-#             # -------------------------
-
-#             elif isControlPanChange(byte_data, i):
-#                 bytes_to_skip = 2
-#                 time_delta_next = True
-
-#             elif isControlReverbChange(byte_data, i):
-#                 bytes_to_skip = 2
-#                 time_delta_next = True
-
-#             elif isControlTremoloChange(byte_data, i):
-#                 bytes_to_skip = 2
-#                 time_delta_next = True
-
-#             elif isControlChorusChange(byte_data, i):
-#                 bytes_to_skip = 2
-#                 time_delta_next = True
-
-#     return channel_order
-
-def getTicksPerBeat(byte_data):
-
-    bits = bt.getBits(byte_data[12])
-    if bits[0] == "0":
-        ticks_per_beat = bt.concatenateBytes(byte_data[12:14])
-        return ticks_per_beat
-    else:
-        raise Exception("don\'t know how to handle this time format")
-
-def parseMidiFile(file_name, verbose):
+def parseMidiFile(file_name):
 
     """
     For parsing midi files into easy to use arrays of notes.
@@ -287,180 +219,162 @@ def parseMidiFile(file_name, verbose):
     midi_file.close
     number_bytes_in_file = len(byte_data)
 
+    # Parse Midi Header
+
     if not isMidiFile(byte_data):
-        raise Exception("source file is not a midi file")
-
-    channels = getNumberOfChannels(byte_data)
+        raise Exception("Source file is not a midi file")
+    number_tracks = getNumberOfTracks(byte_data)
     ticks_per_beat = getTicksPerBeat(byte_data)
-
-    bytes_to_skip = 0
-    current_running_status = RunningStatus.NONE
-    time_delta_next = False
     tracks = []
-    track_index = 0
 
-    for i in range(14, number_bytes_in_file):
+    # Parse Tracks
 
-        if bytes_to_skip > 1:
-            bytes_to_skip -= 1
+    index = 14
+    for track_number in range(number_tracks):
+        if not isTrackStart(byte_data, index):
+            raise Exception(f"Parse error: the current index ({index}) doesn't represent the beginning of a track")
+        index += 8
+        new_track = Track(track_number)
+        current_running_status = RunningStatus.NONE
+        while index < number_bytes_in_file:
+            delta_time, delta_time_byte_length = getDeltaTime(byte_data, index)
+            new_track.append(DeltaTimeEvent(delta_time))
+            index += delta_time_byte_length
 
-        elif time_delta_next:
-            vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, i)
-            delta_t = vlq_value
-            bytes_to_skip = vlq_length
-            tracks[track_index].append(TimeDelta(delta_t))
-            time_delta_next = False
+            # -----------
+            # Meta Events
+            # -----------
 
-        elif isTrackStart(byte_data, i):
-            tracks.append(Track(track_index))
-            bytes_to_skip = 8
-            time_delta_next = True
+            if isMetaEvent(byte_data, index):
+                current_running_status = RunningStatus.NONE
 
-        # ------------
-        # meta events:
-        # ------------
+                if isTrackName(byte_data, index):
+                    name, name_byte_length = getTrackName(byte_data, index)
+                    new_track.append(TrackNameEvent(name))
+                    index += name_byte_length
 
-        elif isTrackName(byte_data, i):
-            vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (i + 2))
-            chunk_length = vlq_value
-            bytes_to_skip = 2 + vlq_length + chunk_length
-            time_delta_next = True
+                elif isMidiPort(byte_data, index):
+                    port = byte_data[index + 3]
+                    new_track.append(Event(f"Midi Port = {port}"))
+                    index += 4
 
-        elif isMidiPort(byte_data, i):
-            bytes_to_skip = 4
-            time_delta_next = True
+                elif isTrackEnd(byte_data, index):
+                    new_track.append(TrackEndEvent())
+                    index += 3
+                    break
 
-        elif isEndTrack(byte_data, i):
-            tracks[track_index].append(TrackEnd())
-            bytes_to_skip = 3
-            current_running_status = RunningStatus.NONE
-            track_index += 1
+                elif isTempoChange(byte_data, index):
+                    microseconds_per_beat = bt.concatenateBytes(byte_data[index + 3:index + 6])
+                    new_track.append(TempoEvent(microseconds_per_beat))
+                    index += 6
 
-        elif isTempoChange(byte_data, i):
-            microseconds_per_beat = bt.concatenateBytes(byte_data[i + 3:i + 6])
-            tracks[track_index].append(Tempo(microseconds_per_beat))
-            bytes_to_skip = 6
-            time_delta_next = True
+                elif isTimeSignature(byte_data, index):
+                    numerator = byte_data[index + 3]
+                    denominator = 2 ** byte_data[index + 4]
+                    new_track.append(TimeSignatureEvent(numerator, denominator))
+                    index += 7
 
-        elif isTimeSignature(byte_data, i):
-            numerator = byte_data[i + 3]
-            denominator = 2 ** byte_data[i + 4]
-            tracks[track_index].append(TimeSignature(numerator, denominator))
-            bytes_to_skip = 7
-            time_delta_next = True
+                elif isKeySignature(byte_data, index):
+                    number_accidentals = byte_data[index + 3]
+                    is_minor = (byte_data[index + 4] == 1)
+                    new_track.append(KeySignatureEvent(number_accidentals, is_minor))
+                    index += 5
 
-        elif isKeySignature(byte_data, i):
-            number_accidentals = byte_data[i + 3]
-            is_minor = (byte_data[i + 4] == 1)
-            tracks[track_index].append(KeySignature(number_accidentals, is_minor))
-            bytes_to_skip = 5
-            time_delta_next = True
+            # ----------------
+            # Channel-Specific
+            # ----------------
 
-        # -----------------------
-        # channel voice messages:
-        # -----------------------
+            elif isNoteOff(byte_data, index):
+                channel_number = byte_data[index] - 128
+                note_number = byte_data[index + 1]
+                velocity = byte_data[index + 2]
+                new_track.append(NoteOffEvent(channel_number, note_number, velocity))
+                current_running_status = RunningStatus.NOTE_OFF
+                index += 3
 
-        elif isChannelNoteEnd(byte_data, i):
-            channel_number = byte_data[i] - 128
-            note_number = byte_data[i + 1]
-            velocity = byte_data[i + 2]
-            tracks[track_index].append(NoteEnd(note_number, velocity))
-            bytes_to_skip = 3
-            time_delta_next = True
-            current_running_status = RunningStatus.NOTE_END
+            elif isNoteOn(byte_data, index):
+                channel_number = byte_data[index] - 144
+                note_number = byte_data[index + 1]
+                velocity = byte_data[index + 2]
+                new_track.append(NoteOnEvent(channel_number, note_number, velocity))
+                current_running_status = RunningStatus.NOTE_ON
+                index += 3
 
-        elif isChannelNoteStart(byte_data, i):
-            channel_number = byte_data[i] - 144
-            note_number = byte_data[i + 1]
-            velocity = byte_data[i + 2]
-            tracks[track_index].append(NoteStart(note_number, velocity))
-            bytes_to_skip = 3
-            time_delta_next = True
-            current_running_status = RunningStatus.NOTE_START
+            elif isControlChange(byte_data, index):
+                channel_number = byte_data[index] - 176
+                control_number = byte_data[index + 1]
+                value = byte_data[index + 2]
+                new_track.append(ControlChangeEvent(channel_number, control_number, value))
+                current_running_status = RunningStatus.CONTROL_CHANGE
+                index += 3
 
-        elif isChannelControlChange(byte_data, i):
-            channel_number = byte_data[i] - 176
-            control_number = byte_data[i + 1]
-            assigned_value = byte_data[i + 2]
-            tracks[track_index].append(Event(f"Control = {control_number}, Value = {assigned_value}"))
-            bytes_to_skip = 3
-            time_delta_next = True
-            current_running_status = RunningStatus.CONTROL_CHANGE
+            elif isProgramChange(byte_data, index):
+                channel_number = byte_data[index] - 192
+                program_number = byte_data[index + 1]
+                new_track.append(ProgramChangeEvent(channel_number, program_number))
+                current_running_status = RunningStatus.PROGRAM_CHANGE
+                index += 2
 
-        elif isChannelProgramChange(byte_data, i):
-            channel_number = byte_data[i] - 192
-            program_number = byte_data[i + 1]
-            tracks[track_index].append(Event(f"Program = {program_number}"))
-            bytes_to_skip = 2
-            time_delta_next = True
-            current_running_status = RunningStatus.PROGRAM_CHANGE
+            # -------------------------------
+            # Channel-Specific Running Status
+            # -------------------------------
 
-        # --------------------------------------
-        # running status channel voice messages:
-        # --------------------------------------
+            elif current_running_status == RunningStatus.NOTE_OFF:
+                note_number = byte_data[index]
+                velocity = byte_data[index + 1]
+                new_track.append(NoteOffEvent(channel_number, note_number, velocity))
+                index += 2
 
-        elif current_running_status == RunningStatus.NOTE_END:
-            note_number = byte_data[i]
-            velocity = byte_data[i + 1]
-            tracks[track_index].append(NoteEnd(note_number, velocity))
-            bytes_to_skip = 2
-            time_delta_next = True
+            elif current_running_status == RunningStatus.NOTE_ON:
+                note_number = byte_data[index]
+                velocity = byte_data[index + 1]
+                new_track.append(NoteOnEvent(channel_number, note_number, velocity))
+                index += 2
 
-        elif current_running_status == RunningStatus.NOTE_START:
-            note_number = byte_data[i]
-            velocity = byte_data[i + 1]
-            tracks[track_index].append(NoteStart(note_number, velocity))
-            bytes_to_skip = 2
-            time_delta_next = True
+            elif current_running_status == RunningStatus.CONTROL_CHANGE:
+                control_number = byte_data[index]
+                value = byte_data[index + 1]
+                new_track.append(ControlChangeEvent(channel_number, control_number, value))
+                index += 2
 
-        elif current_running_status == RunningStatus.CONTROL_CHANGE:
-            control_number = byte_data[i]
-            assigned_value = byte_data[i + 1]
-            tracks[track_index].append(Event(f"Control = {control_number}, Value = {assigned_value}"))
-            bytes_to_skip = 2
-            time_delta_next = True
+            elif current_running_status == RunningStatus.PROGRAM_CHANGE:
+                program_number = byte_data[index]
+                new_track.append(ProgramChangeEvent(channel_number, program_number))
+                index += 1
 
-        elif current_running_status == RunningStatus.PROGRAM_CHANGE:
-            program_number = byte_data[i]
-            tracks[track_index].append(Event(f"Program = {program_number}"))
-            bytes_to_skip = 1
-            time_delta_next = True
+            # ----------------
+            # Channel-Agnostic
+            # ----------------
 
-        # -------------------------
-        # midi controller messages:
-        # -------------------------
+            elif isPan(byte_data, index):
+                pan = byte_data[index + 1]
+                new_track.append(Event(f"Pan: {pan}"))
+                index += 2
 
-        elif isControlPanChange(byte_data, i):
-            pan = byte_data[i + 1]
-            tracks[track_index].append(Event(f"Pan = {pan}"))
-            bytes_to_skip = 2
-            time_delta_next = True
+            elif isReverb(byte_data, index):
+                reverb = byte_data[index + 1]
+                new_track.append(Event(f"Reverb: {reverb}"))
+                index += 2
 
-        elif isControlReverbChange(byte_data, i):
-            reverb = byte_data[i + 1]
-            tracks[track_index].append(Event(f"Reverb = {reverb}"))
-            bytes_to_skip = 2
-            time_delta_next = True
+            elif isTremolo(byte_data, index):
+                tremolo = byte_data[index + 1]
+                new_track.append(Event(f"Tremolo: {tremolo}"))
+                index += 2
 
-        elif isControlTremoloChange(byte_data, i):
-            tremolo = byte_data[i + 1]
-            tracks[track_index].append(Event(f"Tremolo = {tremolo}"))
-            bytes_to_skip = 2
-            time_delta_next = True
+            elif isChorus(byte_data, index):
+                chorus = byte_data[index + 1]
+                new_track.append(Event(f"Chorus: {chorus}"))
+                index += 2
 
-        elif isControlChorusChange(byte_data, i):
-            chorus = byte_data[i + 1]
-            tracks[track_index].append(Event(f"Chorus = {chorus}"))
-            bytes_to_skip = 2
-            time_delta_next = True
+        tracks.append(new_track)
 
     # sync = synchronizeEvents(notes_array, verbose, debug)
     # sync = convertTimesToDurations(sync, ticks_per_beat, verbose, debug)
 
     # return sync
 
-    for track in tracks:
-        print(track)
+    for new_track in tracks:
+        print(new_track)
 
 def synchronizeEvents(notes_array, verbose, debug):
 

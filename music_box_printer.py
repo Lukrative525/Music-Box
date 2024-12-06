@@ -33,5 +33,5 @@ verbose = True
 # generate gcode files
 for i in range(len(file_names)):
     # print(f'\n{short_file_names[i]}')
-    mp.parseMidiFile(source_files[i], verbose)
+    mp.parseMidiFile(source_files[i])
 # print('\nFinished\n')
