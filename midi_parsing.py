@@ -275,7 +275,7 @@ def parseMidiFile(file_name):
                     index += 7
 
                 elif isKeySignature(byte_data, index):
-                    number_accidentals = byte_data[index + 3]
+                    number_accidentals = byte_data[index + 3] # why is off by 256
                     is_minor = (byte_data[index + 4] == 1)
                     new_track.append(KeySignatureEvent(number_accidentals, is_minor))
                     index += 5
@@ -319,28 +319,30 @@ def parseMidiFile(file_name):
             # Channel-Specific Running Status
             # -------------------------------
 
-            elif current_running_status == RunningStatus.NOTE_OFF:
-                note_number = byte_data[index]
-                velocity = byte_data[index + 1]
-                new_track.append(NoteOffEvent(channel_number, note_number, velocity))
-                index += 2
+            elif not current_running_status == RunningStatus.NONE:
 
-            elif current_running_status == RunningStatus.NOTE_ON:
-                note_number = byte_data[index]
-                velocity = byte_data[index + 1]
-                new_track.append(NoteOnEvent(channel_number, note_number, velocity))
-                index += 2
+                if current_running_status == RunningStatus.NOTE_OFF:
+                    note_number = byte_data[index]
+                    velocity = byte_data[index + 1]
+                    new_track.append(NoteOffEvent(channel_number, note_number, velocity))
+                    index += 2
 
-            elif current_running_status == RunningStatus.CONTROL_CHANGE:
-                control_number = byte_data[index]
-                value = byte_data[index + 1]
-                new_track.append(ControlChangeEvent(channel_number, control_number, value))
-                index += 2
+                elif current_running_status == RunningStatus.NOTE_ON:
+                    note_number = byte_data[index]
+                    velocity = byte_data[index + 1]
+                    new_track.append(NoteOnEvent(channel_number, note_number, velocity))
+                    index += 2
 
-            elif current_running_status == RunningStatus.PROGRAM_CHANGE:
-                program_number = byte_data[index]
-                new_track.append(ProgramChangeEvent(channel_number, program_number))
-                index += 1
+                elif current_running_status == RunningStatus.CONTROL_CHANGE:
+                    control_number = byte_data[index]
+                    value = byte_data[index + 1]
+                    new_track.append(ControlChangeEvent(channel_number, control_number, value))
+                    index += 2
+
+                elif current_running_status == RunningStatus.PROGRAM_CHANGE:
+                    program_number = byte_data[index]
+                    new_track.append(ProgramChangeEvent(channel_number, program_number))
+                    index += 1
 
             # ----------------
             # Channel-Agnostic
