@@ -3,11 +3,6 @@ from enum import Enum, auto
 import binary_tools as bt
 from midi_elements import *
 
-class EventType(Enum):
-    DELTA_T = auto()
-    OTHER = auto()
-    TRACK_START = auto()
-
 class RunningStatus(Enum):
     CONTROL_CHANGE = auto()
     NONE = auto()
@@ -178,7 +173,7 @@ def getNumberOfChannels(byte_data):
 
 #         elif next_event == EventType.TRACK_START and isTrackStart(byte_data, i):
 #             bytes_to_skip = 8
-#             next_event = EventType.DELTA_T
+#             time_delta_next = True
 
 #         elif next_event == EventType.DELTA_T:
 #             vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, i)
@@ -195,11 +190,11 @@ def getNumberOfChannels(byte_data):
 #                 vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (i + 2))
 #                 chunk_length = vlq_value
 #                 bytes_to_skip = 2 + vlq_length + chunk_length
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #             elif isMidiPort(byte_data, i):
 #                 bytes_to_skip = 4
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #             elif isEndTrack(byte_data, i):
 #                 bytes_to_skip = 3
@@ -207,15 +202,15 @@ def getNumberOfChannels(byte_data):
 
 #             elif isTempoChange(byte_data, i):
 #                 bytes_to_skip = 6
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #             elif isTimeSignature(byte_data, i):
 #                 bytes_to_skip = 7
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #             elif isKeySignature(byte_data, i):
 #                 bytes_to_skip = 5
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #             # -----------------------
 #             # channel voice messages:
@@ -251,19 +246,19 @@ def getNumberOfChannels(byte_data):
 
 #             elif isControlPanChange(byte_data, i):
 #                 bytes_to_skip = 2
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #             elif isControlReverbChange(byte_data, i):
 #                 bytes_to_skip = 2
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #             elif isControlTremoloChange(byte_data, i):
 #                 bytes_to_skip = 2
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #             elif isControlChorusChange(byte_data, i):
 #                 bytes_to_skip = 2
-#                 next_event = EventType.DELTA_T
+#                 time_delta_next = True
 
 #     return channel_order
 
@@ -300,7 +295,7 @@ def parseMidiFile(file_name, verbose):
 
     bytes_to_skip = 0
     current_running_status = RunningStatus.NONE
-    next_event = EventType.TRACK_START
+    time_delta_next = False
     tracks = []
     track_index = 0
 
@@ -309,154 +304,151 @@ def parseMidiFile(file_name, verbose):
         if bytes_to_skip > 1:
             bytes_to_skip -= 1
 
-        elif next_event == EventType.TRACK_START and isTrackStart(byte_data, i):
-            tracks.append(Track(track_index))
-            bytes_to_skip = 8
-            next_event = EventType.DELTA_T
-
-        elif next_event == EventType.DELTA_T:
+        elif time_delta_next:
             vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, i)
             delta_t = vlq_value
             bytes_to_skip = vlq_length
             tracks[track_index].append(TimeDelta(delta_t))
-            next_event = EventType.OTHER
+            time_delta_next = False
 
-        elif next_event == EventType.OTHER:
+        elif isTrackStart(byte_data, i):
+            tracks.append(Track(track_index))
+            bytes_to_skip = 8
+            time_delta_next = True
 
-            # ------------
-            # meta events:
-            # ------------
+        # ------------
+        # meta events:
+        # ------------
 
-            if isTrackName(byte_data, i):
-                vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (i + 2))
-                chunk_length = vlq_value
-                bytes_to_skip = 2 + vlq_length + chunk_length
-                next_event = EventType.DELTA_T
+        elif isTrackName(byte_data, i):
+            vlq_value, vlq_length = extractVariableLengthQuantity(byte_data, (i + 2))
+            chunk_length = vlq_value
+            bytes_to_skip = 2 + vlq_length + chunk_length
+            time_delta_next = True
 
-            elif isMidiPort(byte_data, i):
-                bytes_to_skip = 4
-                next_event = EventType.DELTA_T
+        elif isMidiPort(byte_data, i):
+            bytes_to_skip = 4
+            time_delta_next = True
 
-            elif isEndTrack(byte_data, i):
-                tracks[track_index].append(TrackEnd())
-                bytes_to_skip = 3
-                next_event = EventType.TRACK_START
-                current_running_status = RunningStatus.NONE
-                track_index += 1
+        elif isEndTrack(byte_data, i):
+            tracks[track_index].append(TrackEnd())
+            bytes_to_skip = 3
+            current_running_status = RunningStatus.NONE
+            track_index += 1
 
-            elif isTempoChange(byte_data, i):
-                microseconds_per_beat = bt.concatenateBytes(byte_data[i + 3:i + 6])
-                tracks[track_index].append(Tempo(microseconds_per_beat))
-                bytes_to_skip = 6
-                next_event = EventType.DELTA_T
+        elif isTempoChange(byte_data, i):
+            microseconds_per_beat = bt.concatenateBytes(byte_data[i + 3:i + 6])
+            tracks[track_index].append(Tempo(microseconds_per_beat))
+            bytes_to_skip = 6
+            time_delta_next = True
 
-            elif isTimeSignature(byte_data, i):
-                numerator = byte_data[i + 3]
-                denominator = 2 ** byte_data[i + 4]
-                tracks[track_index].append(TimeSignature(numerator, denominator))
-                bytes_to_skip = 7
-                next_event = EventType.DELTA_T
+        elif isTimeSignature(byte_data, i):
+            numerator = byte_data[i + 3]
+            denominator = 2 ** byte_data[i + 4]
+            tracks[track_index].append(TimeSignature(numerator, denominator))
+            bytes_to_skip = 7
+            time_delta_next = True
 
-            elif isKeySignature(byte_data, i):
-                number_accidentals = byte_data[i + 3]
-                is_minor = (byte_data[i + 4] == 1)
-                tracks[track_index].append(KeySignature(number_accidentals, is_minor))
-                bytes_to_skip = 5
-                next_event = EventType.DELTA_T
+        elif isKeySignature(byte_data, i):
+            number_accidentals = byte_data[i + 3]
+            is_minor = (byte_data[i + 4] == 1)
+            tracks[track_index].append(KeySignature(number_accidentals, is_minor))
+            bytes_to_skip = 5
+            time_delta_next = True
 
-            # -----------------------
-            # channel voice messages:
-            # -----------------------
+        # -----------------------
+        # channel voice messages:
+        # -----------------------
 
-            elif isChannelNoteEnd(byte_data, i):
-                channel_number = byte_data[i] - 128
-                note_value = byte_data[i + 1]
-                tracks[track_index].append(NoteEnd(note_value))
-                bytes_to_skip = 3
-                next_event = EventType.DELTA_T
-                current_running_status = RunningStatus.NOTE_END
+        elif isChannelNoteEnd(byte_data, i):
+            channel_number = byte_data[i] - 128
+            note_value = byte_data[i + 1]
+            tracks[track_index].append(NoteEnd(note_value))
+            bytes_to_skip = 3
+            time_delta_next = True
+            current_running_status = RunningStatus.NOTE_END
 
-            elif isChannelNoteStart(byte_data, i):
-                channel_number = byte_data[i] - 144
-                note_value = byte_data[i + 1]
-                tracks[track_index].append(NoteStart(note_value))
-                bytes_to_skip = 3
-                next_event = EventType.DELTA_T
-                current_running_status = RunningStatus.NOTE_START
+        elif isChannelNoteStart(byte_data, i):
+            channel_number = byte_data[i] - 144
+            note_value = byte_data[i + 1]
+            tracks[track_index].append(NoteStart(note_value))
+            bytes_to_skip = 3
+            time_delta_next = True
+            current_running_status = RunningStatus.NOTE_START
 
-            elif isChannelControlChange(byte_data, i):
-                # channel_number = byte_data[i] - 176
-                # control_number = byte_data[i + 1]
-                # assigned_value = byte_data[i + 2]
-                tracks[track_index].append(Event())
-                bytes_to_skip = 3
-                next_event = EventType.DELTA_T
-                current_running_status = RunningStatus.CONTROL_CHANGE
+        elif isChannelControlChange(byte_data, i):
+            # channel_number = byte_data[i] - 176
+            # control_number = byte_data[i + 1]
+            # assigned_value = byte_data[i + 2]
+            tracks[track_index].append(Event())
+            bytes_to_skip = 3
+            time_delta_next = True
+            current_running_status = RunningStatus.CONTROL_CHANGE
 
-            elif isChannelProgramChange(byte_data, i):
-                # channel_number = byte_data[i] - 192
-                # program_number = byte_data[i + 1]
-                tracks[track_index].append(Event())
-                bytes_to_skip = 2
-                next_event = EventType.DELTA_T
-                current_running_status = RunningStatus.PROGRAM_CHANGE
+        elif isChannelProgramChange(byte_data, i):
+            # channel_number = byte_data[i] - 192
+            # program_number = byte_data[i + 1]
+            tracks[track_index].append(Event())
+            bytes_to_skip = 2
+            time_delta_next = True
+            current_running_status = RunningStatus.PROGRAM_CHANGE
 
-            # --------------------------------------
-            # running status channel voice messages:
-            # --------------------------------------
+        # --------------------------------------
+        # running status channel voice messages:
+        # --------------------------------------
 
-            elif current_running_status == RunningStatus.NOTE_END:
-                note_value = byte_data[i]
-                tracks[track_index].append(NoteEnd(note_value))
-                bytes_to_skip = 2
-                next_event = EventType.DELTA_T
+        elif current_running_status == RunningStatus.NOTE_END:
+            note_value = byte_data[i]
+            tracks[track_index].append(NoteEnd(note_value))
+            bytes_to_skip = 2
+            time_delta_next = True
 
-            elif current_running_status == RunningStatus.NOTE_START:
-                note_value = byte_data[i]
-                tracks[track_index].append(NoteStart(note_value))
-                bytes_to_skip = 2
-                next_event = EventType.DELTA_T
+        elif current_running_status == RunningStatus.NOTE_START:
+            note_value = byte_data[i]
+            tracks[track_index].append(NoteStart(note_value))
+            bytes_to_skip = 2
+            time_delta_next = True
 
-            elif current_running_status == RunningStatus.CONTROL_CHANGE:
-                # control_number = byte_data[i]
-                # assigned_value = byte_data[i + 1]
-                tracks[track_index].append(Event())
-                bytes_to_skip = 2
-                next_event = EventType.DELTA_T
+        elif current_running_status == RunningStatus.CONTROL_CHANGE:
+            # control_number = byte_data[i]
+            # assigned_value = byte_data[i + 1]
+            tracks[track_index].append(Event())
+            bytes_to_skip = 2
+            time_delta_next = True
 
-            elif current_running_status == RunningStatus.PROGRAM_CHANGE:
-                # program_number = byte_data[i]
-                tracks[track_index].append(Event())
-                bytes_to_skip = 1
-                next_event = EventType.DELTA_T
+        elif current_running_status == RunningStatus.PROGRAM_CHANGE:
+            # program_number = byte_data[i]
+            tracks[track_index].append(Event())
+            bytes_to_skip = 1
+            time_delta_next = True
 
-            # -------------------------
-            # midi controller messages:
-            # -------------------------
+        # -------------------------
+        # midi controller messages:
+        # -------------------------
 
-            elif isControlPanChange(byte_data, i):
-                # pan = byte_data[i + 1]
-                tracks[track_index].append(Event())
-                bytes_to_skip = 2
-                next_event = EventType.DELTA_T
+        elif isControlPanChange(byte_data, i):
+            # pan = byte_data[i + 1]
+            tracks[track_index].append(Event())
+            bytes_to_skip = 2
+            time_delta_next = True
 
-            elif isControlReverbChange(byte_data, i):
-                # reverb = byte_data[i + 1]
-                tracks[track_index].append(Event())
-                bytes_to_skip = 2
-                next_event = EventType.DELTA_T
+        elif isControlReverbChange(byte_data, i):
+            # reverb = byte_data[i + 1]
+            tracks[track_index].append(Event())
+            bytes_to_skip = 2
+            time_delta_next = True
 
-            elif isControlTremoloChange(byte_data, i):
-                # tremolo = byte_data[i + 1]
-                tracks[track_index].append(Event())
-                bytes_to_skip = 2
-                next_event = EventType.DELTA_T
+        elif isControlTremoloChange(byte_data, i):
+            # tremolo = byte_data[i + 1]
+            tracks[track_index].append(Event())
+            bytes_to_skip = 2
+            time_delta_next = True
 
-            elif isControlChorusChange(byte_data, i):
-                # chorus = byte_data[i + 1]
-                tracks[track_index].append(Event())
-                bytes_to_skip = 2
-                next_event = EventType.DELTA_T
+        elif isControlChorusChange(byte_data, i):
+            # chorus = byte_data[i + 1]
+            tracks[track_index].append(Event())
+            bytes_to_skip = 2
+            time_delta_next = True
 
     # sync = synchronizeEvents(notes_array, verbose, debug)
     # sync = convertTimesToDurations(sync, ticks_per_beat, verbose, debug)
