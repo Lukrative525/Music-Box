@@ -362,33 +362,35 @@ def parseMidiFile(file_name, verbose):
 
         elif isChannelNoteEnd(byte_data, i):
             channel_number = byte_data[i] - 128
-            note_value = byte_data[i + 1]
-            tracks[track_index].append(NoteEnd(note_value))
+            note_number = byte_data[i + 1]
+            velocity = byte_data[i + 2]
+            tracks[track_index].append(NoteEnd(note_number, velocity))
             bytes_to_skip = 3
             time_delta_next = True
             current_running_status = RunningStatus.NOTE_END
 
         elif isChannelNoteStart(byte_data, i):
             channel_number = byte_data[i] - 144
-            note_value = byte_data[i + 1]
-            tracks[track_index].append(NoteStart(note_value))
+            note_number = byte_data[i + 1]
+            velocity = byte_data[i + 2]
+            tracks[track_index].append(NoteStart(note_number, velocity))
             bytes_to_skip = 3
             time_delta_next = True
             current_running_status = RunningStatus.NOTE_START
 
         elif isChannelControlChange(byte_data, i):
-            # channel_number = byte_data[i] - 176
-            # control_number = byte_data[i + 1]
-            # assigned_value = byte_data[i + 2]
-            tracks[track_index].append(Event())
+            channel_number = byte_data[i] - 176
+            control_number = byte_data[i + 1]
+            assigned_value = byte_data[i + 2]
+            tracks[track_index].append(Event(f"Control = {control_number}, Value = {assigned_value}"))
             bytes_to_skip = 3
             time_delta_next = True
             current_running_status = RunningStatus.CONTROL_CHANGE
 
         elif isChannelProgramChange(byte_data, i):
-            # channel_number = byte_data[i] - 192
-            # program_number = byte_data[i + 1]
-            tracks[track_index].append(Event())
+            channel_number = byte_data[i] - 192
+            program_number = byte_data[i + 1]
+            tracks[track_index].append(Event(f"Program = {program_number}"))
             bytes_to_skip = 2
             time_delta_next = True
             current_running_status = RunningStatus.PROGRAM_CHANGE
@@ -398,27 +400,29 @@ def parseMidiFile(file_name, verbose):
         # --------------------------------------
 
         elif current_running_status == RunningStatus.NOTE_END:
-            note_value = byte_data[i]
-            tracks[track_index].append(NoteEnd(note_value))
+            note_number = byte_data[i]
+            velocity = byte_data[i + 1]
+            tracks[track_index].append(NoteEnd(note_number, velocity))
             bytes_to_skip = 2
             time_delta_next = True
 
         elif current_running_status == RunningStatus.NOTE_START:
-            note_value = byte_data[i]
-            tracks[track_index].append(NoteStart(note_value))
+            note_number = byte_data[i]
+            velocity = byte_data[i + 1]
+            tracks[track_index].append(NoteStart(note_number, velocity))
             bytes_to_skip = 2
             time_delta_next = True
 
         elif current_running_status == RunningStatus.CONTROL_CHANGE:
-            # control_number = byte_data[i]
-            # assigned_value = byte_data[i + 1]
-            tracks[track_index].append(Event())
+            control_number = byte_data[i]
+            assigned_value = byte_data[i + 1]
+            tracks[track_index].append(Event(f"Control = {control_number}, Value = {assigned_value}"))
             bytes_to_skip = 2
             time_delta_next = True
 
         elif current_running_status == RunningStatus.PROGRAM_CHANGE:
-            # program_number = byte_data[i]
-            tracks[track_index].append(Event())
+            program_number = byte_data[i]
+            tracks[track_index].append(Event(f"Program = {program_number}"))
             bytes_to_skip = 1
             time_delta_next = True
 
@@ -427,26 +431,26 @@ def parseMidiFile(file_name, verbose):
         # -------------------------
 
         elif isControlPanChange(byte_data, i):
-            # pan = byte_data[i + 1]
-            tracks[track_index].append(Event())
+            pan = byte_data[i + 1]
+            tracks[track_index].append(Event(f"Pan = {pan}"))
             bytes_to_skip = 2
             time_delta_next = True
 
         elif isControlReverbChange(byte_data, i):
-            # reverb = byte_data[i + 1]
-            tracks[track_index].append(Event())
+            reverb = byte_data[i + 1]
+            tracks[track_index].append(Event(f"Reverb = {reverb}"))
             bytes_to_skip = 2
             time_delta_next = True
 
         elif isControlTremoloChange(byte_data, i):
-            # tremolo = byte_data[i + 1]
-            tracks[track_index].append(Event())
+            tremolo = byte_data[i + 1]
+            tracks[track_index].append(Event(f"Tremolo = {tremolo}"))
             bytes_to_skip = 2
             time_delta_next = True
 
         elif isControlChorusChange(byte_data, i):
-            # chorus = byte_data[i + 1]
-            tracks[track_index].append(Event())
+            chorus = byte_data[i + 1]
+            tracks[track_index].append(Event(f"Chorus = {chorus}"))
             bytes_to_skip = 2
             time_delta_next = True
 

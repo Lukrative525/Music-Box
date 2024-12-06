@@ -1,9 +1,9 @@
 from midi_elements import *
 
 track = Track(1)
-event1 = NoteStart(60)
+event1 = NoteStart(60, 100)
 event2 = TimeDelta(1)
-event3 = NoteEnd(60)
+event3 = NoteStart(60, 0)
 
 track.append(event1)
 track.append(event2)

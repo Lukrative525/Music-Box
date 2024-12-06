@@ -14,11 +14,11 @@ class Track(list):
         return string_to_print
 
 class Event:
-    def __init__(self):
-        pass
+    def __init__(self, message=None):
+        self.message = message
 
     def __str__(self):
-        return f"Generic Event at {hex(id(self))}\n"
+        return f"Generic Event: {self.message}\n"
 
 class KeySignature(Event):
     def __init__(self, number_accidentals, is_minor=False):
@@ -27,27 +27,29 @@ class KeySignature(Event):
         self.is_minor = is_minor
 
     def __str__(self):
-        string_to_print = f"Key Signature Change:\n    Number Accidentals: {self.number_accidentals}\n    Is Minor: {self.is_minor}\n"
+        string_to_print = f"Key Signature:\n    Number Accidentals: {self.number_accidentals}\n    Is Minor: {self.is_minor}\n"
 
         return string_to_print
 
 class NoteStart(Event):
-    def __init__(self, note_value):
+    def __init__(self, note_number, velocity):
         super().__init__()
-        self.note_value = note_value
+        self.note_number = note_number
+        self.velocity = velocity
 
     def __str__(self):
-        string_to_print = f"Note Start: {self.note_value}\n"
+        string_to_print = f"Note Start:\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
 
         return string_to_print
 
 class NoteEnd(Event):
-    def __init__(self, note_value):
+    def __init__(self, note_number, velocity):
         super().__init__()
-        self.note_value = note_value
+        self.note_number = note_number
+        self.velocity = velocity
 
     def __str__(self):
-        string_to_print = f"Note End: {self.note_value}\n"
+        string_to_print = f"Note End:\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
 
         return string_to_print
 
@@ -78,7 +80,7 @@ class TimeSignature(Event):
         self.denominator = denominator
 
     def __str__(self):
-        string_to_print = f"Time Signature Change:\n    Numerator: {self.numerator}\n    Denominator: {self.denominator}\n"
+        string_to_print = f"Time Signature:\n    Numerator: {self.numerator}\n    Denominator: {self.denominator}\n"
 
         return string_to_print
 
