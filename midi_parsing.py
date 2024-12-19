@@ -25,7 +25,7 @@ def extractVariableLengthQuantity(byte_data, index):
         else:
             is_looking_for_end = False
 
-    vlq_value = bt.convertBitStringToInt(vlq_bits)
+    vlq_value = bt.convertBitStringToUnsignedInt(vlq_bits)
 
     return [vlq_value, vlq_length]
 
@@ -225,7 +225,7 @@ def parseMidiFile(file_name):
         raise Exception("Source file is not a midi file")
     number_tracks = getNumberOfTracks(byte_data)
     ticks_per_beat = getTicksPerBeat(byte_data)
-    tracks = []
+    tracks: list[Track] = []
 
     # Parse Tracks
 
@@ -238,7 +238,7 @@ def parseMidiFile(file_name):
         current_running_status = RunningStatus.NONE
         while index < number_bytes_in_file:
             delta_time, delta_time_byte_length = getDeltaTime(byte_data, index)
-            new_track.append(DeltaTimeEvent(delta_time))
+            new_track.append(TimeEvent(delta_time))
             index += delta_time_byte_length
 
             # -----------
@@ -255,7 +255,7 @@ def parseMidiFile(file_name):
 
                 elif isMidiPort(byte_data, index):
                     port = byte_data[index + 3]
-                    new_track.append(Event(f"Midi Port = {port}"))
+                    new_track.append(MidiPortEvent(port))
                     index += 4
 
                 elif isTrackEnd(byte_data, index):
@@ -275,7 +275,7 @@ def parseMidiFile(file_name):
                     index += 7
 
                 elif isKeySignature(byte_data, index):
-                    number_accidentals = byte_data[index + 3] # why is off by 256
+                    number_accidentals = bt.convertBitStringToSignedInt(bt.getBits(byte_data[index + 3]))
                     is_minor = (byte_data[index + 4] == 1)
                     new_track.append(KeySignatureEvent(number_accidentals, is_minor))
                     index += 5
@@ -370,13 +370,17 @@ def parseMidiFile(file_name):
 
         tracks.append(new_track)
 
+    for track in tracks:
+        track.convertNullNoteOnToNoteOff()
+        track.convertDeltaTimeToElapsedTime()
+
     # sync = synchronizeEvents(notes_array, verbose, debug)
     # sync = convertTimesToDurations(sync, ticks_per_beat, verbose, debug)
 
     # return sync
 
-    for new_track in tracks:
-        print(new_track)
+    for track in tracks:
+        print(track)
 
 def synchronizeEvents(notes_array, verbose, debug):
 

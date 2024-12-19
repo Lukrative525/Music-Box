@@ -1,36 +1,25 @@
-def reverseBits(bit_string):
+def getBits(value, number_bits=8):
 
-    return bit_string[::-1]
+    bit_list = number_bits * ["0"]
 
-def padBitsWithZeros(bit_string):
+    for i in range((number_bits - 1), -1, -1):
+        if (value >> i) & 1:
+            bit_list[(number_bits - 1) - i] = "1"
 
-    while len(bit_string) < 8:
-        bit_string += "0"
+    return "".join(bit_list)
 
-    return bit_string
-
-def removeBinaryIdentifier(bit_string):
-
-    for i in range(len(bit_string)):
-        if bit_string[i] == "b":
-            bit_string = bit_string[i + 1:]
-            break
-
-    return bit_string
-
-def getBits(byte_as_int):
-
-    bit_string = bin(byte_as_int)
-    bit_string = removeBinaryIdentifier(bit_string)
-    bit_string = reverseBits(bit_string)
-    bit_string = padBitsWithZeros(bit_string)
-    bit_string = reverseBits(bit_string)
-
-    return bit_string
-
-def convertBitStringToInt(bit_string):
+def convertBitStringToUnsignedInt(bit_string):
 
     bits_value = int(bit_string, 2)
+
+    return bits_value
+
+def convertBitStringToSignedInt(bit_string):
+
+    bits_value = convertBitStringToUnsignedInt(bit_string)
+
+    if bit_string[0] == "1":
+        bits_value -= (1 << len(bit_string))
 
     return bits_value
 
@@ -40,14 +29,20 @@ def concatenateBytes(bytes_list):
     for byte in bytes_list:
         bit_string += getBits(byte)
 
-    bytes_value = convertBitStringToInt(bit_string)
+    bytes_value = convertBitStringToUnsignedInt(bit_string)
 
     return bytes_value
 
 if __name__ == "__main__":
 
-    bytes_list = [1, 56, 126]
+    bytes_list = [-2, 3, 0]
 
-    print(concatenateBytes(bytes_list))
+    byte_string_list = []
+    for byte in bytes_list:
+        byte_string_list.append(getBits(byte))
 
-    print(chr(0))
+    for byte_string in byte_string_list:
+        print(convertBitStringToUnsignedInt(byte_string))
+
+    for byte_string in byte_string_list:
+        print(convertBitStringToSignedInt(byte_string))

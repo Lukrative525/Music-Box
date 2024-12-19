@@ -6,6 +6,18 @@ class Track(list):
         if isinstance(new_event, Event) and not any(isinstance(event, TrackEndEvent) for event in self):
             super().append(new_event)
 
+    def convertNullNoteOnToNoteOff(self):
+        for i, event in enumerate(self):
+            if isinstance(event, NoteOnEvent) and event.velocity == 0:
+                self[i] = NoteOffEvent(event.channel_number, event.note_number, event.velocity)
+
+    def convertDeltaTimeToElapsedTime(self):
+        current_time = 0
+        for event in self:
+            if isinstance(event, TimeEvent):
+                event.time += current_time
+                current_time = event.time
+
     def __str__(self):
         string_to_print = f"Track Number: {self.track_number}\n"
         for event in self:
@@ -32,16 +44,6 @@ class ControlChangeEvent(Event):
 
         return string_to_print
 
-class DeltaTimeEvent(Event):
-    def __init__(self, delta_time):
-        super().__init__()
-        self.delta_time = delta_time
-
-    def __str__(self):
-        string_to_print = f"Delta Time: {self.delta_time}\n"
-
-        return string_to_print
-
 class KeySignatureEvent(Event):
     def __init__(self, number_accidentals, is_minor=False):
         super().__init__()
@@ -50,6 +52,16 @@ class KeySignatureEvent(Event):
 
     def __str__(self):
         string_to_print = f"Key Signature:\n    Number Accidentals: {self.number_accidentals}\n    Is Minor: {self.is_minor}\n"
+
+        return string_to_print
+
+class MidiPortEvent(Event):
+    def __init__(self, port):
+        super().__init__()
+        self.port = port
+
+    def __str__(self):
+        string_to_print = f"Midi Port:\n    Port Number: {self.port}\n"
 
         return string_to_print
 
@@ -95,6 +107,16 @@ class TempoEvent(Event):
 
     def __str__(self):
         string_to_print = f"Tempo:\n    Microseconds/Beat: {self.microseconds_per_beat}\n"
+
+        return string_to_print
+
+class TimeEvent(Event):
+    def __init__(self, time):
+        super().__init__()
+        self.time = time
+
+    def __str__(self):
+        string_to_print = f"Time: {self.time}\n"
 
         return string_to_print
 
