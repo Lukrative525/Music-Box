@@ -49,6 +49,33 @@ class Track(list):
 
         return has_only_time_events_of_type
 
+    def mergeTracks(self, track_to_merge: Track):
+        if not self.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED) or not track_to_merge.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED):
+            raise Exception(f"To perform track merges, both tracks must have only time events of type \"{TimeEventType.ELAPSED.value}\"")
+        current_time = 0
+        for index, event in enumerate(self):
+            if isinstance(event, TimeEvent):
+                current_time = event.value
+                if len(track_to_merge) > 0:
+                    if not isinstance(track_to_merge[0], TimeEvent):
+                        self.insert(index, track_to_merge.pop(0))
+                    elif track_to_merge[0].value < current_time:
+                        self.insert(index, track_to_merge.pop(0))
+                    elif track_to_merge[0].value == current_time:
+                        del track_to_merge[0]
+        if not isinstance(track_to_merge[0], TrackEndEvent):
+            del self[-1]
+            while len(track_to_merge) > 0:
+                self.append(track_to_merge.pop(0))
+
+    def removeAllEventsOfType(self, event_type):
+        index = 0
+        while index < len(self):
+            if isinstance(self[index], event_type):
+                del self[index]
+            else:
+                index += 1
+
     def removeNullDeltaTimeEvents(self):
         for i, event in enumerate(self):
             if isinstance(event, TimeEvent) and event.value == 0:

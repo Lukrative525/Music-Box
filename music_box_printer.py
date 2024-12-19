@@ -5,7 +5,7 @@ from tkinter import Tk
 
 root = Tk()
 root.withdraw()
-file_names = filedialog.askopenfilename(filetypes = [('MIDI files','*.mid')], multiple = True)
+file_names: str = filedialog.askopenfilename(filetypes = [('MIDI files','*.mid')], multiple = True)
 file_names = list(file_names)
 
 # strip .mid from full file path to replace later with .gcode

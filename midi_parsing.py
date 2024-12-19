@@ -375,6 +375,16 @@ def parseMidiFile(file_name):
         track.removeNullDeltaTimeEvents()
         track.convertDeltaTimeToElapsedTime()
 
+    for track in tracks:
+        track.removeAllEventsOfType(ControlChangeEvent)
+        track.removeAllEventsOfType(KeySignatureEvent)
+        track.removeAllEventsOfType(MidiPortEvent)
+        track.removeAllEventsOfType(ProgramChangeEvent)
+        track.removeAllEventsOfType(TrackNameEvent)
+
+    for track in tracks[1:]:
+        tracks[0].mergeTracks(track)
+
     # sync = synchronizeEvents(notes_array, verbose, debug)
     # sync = convertTimesToDurations(sync, ticks_per_beat, verbose, debug)
 
