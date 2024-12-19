@@ -127,25 +127,25 @@ def get_cnc_settings():
 
     return settings
 
-def calculate_frequency(midi):
+def calculate_frequency(midi_value):
 
     '''
     For calculating frequencies of notes
     '''
 
     # this formula calculates the frequency of our key number based on A440, key number 69
-    frequency = 440 * (2 ** ((midi - 69) / 12))
+    frequency = 440 * (2 ** ((midi_value - 69) / 12))
 
     return frequency
 
-def convert_midi_to_pitch_notation(midi):
+def convert_midi_to_pitch_notation(midi_value):
 
     '''
     For converting midi note numbers (e.g. 69) to scientific pitch notation (e.g. A4)
     '''
 
-    octave = int(np.floor(midi / 12) - 1)
-    note = note_names[midi % 12]
+    octave = int(np.floor(midi_value / 12) - 1)
+    note = note_names[midi_value % 12]
 
     return note + str(octave)
 

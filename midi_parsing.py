@@ -1,6 +1,6 @@
 import numpy as np
 from enum import Enum, auto
-import binary_tools as bt
+from binary_tools import *
 from midi_elements import *
 
 class RunningStatus(Enum):
@@ -17,7 +17,7 @@ def extractVariableLengthQuantity(byte_data, index):
     vlq_length = 1
 
     while is_looking_for_end:
-        current_bits = bt.getBits(byte_data[index])
+        current_bits = getBits(byte_data[index])
         vlq_bits += current_bits[1:]
         if current_bits[0] == "1":
             index += 1
@@ -25,7 +25,7 @@ def extractVariableLengthQuantity(byte_data, index):
         else:
             is_looking_for_end = False
 
-    vlq_value = bt.convertBitStringToUnsignedInt(vlq_bits)
+    vlq_value = convertBitStringToUnsignedInt(vlq_bits)
 
     return [vlq_value, vlq_length]
 
@@ -64,15 +64,15 @@ def getNumberOfTracks(byte_data):
     if format_type == 0:
         tracks = 1
     elif format_type == 1 or format_type == 2:
-        tracks = bt.concatenateBytes(byte_data[10:12])
+        tracks = concatenateBytes(byte_data[10:12])
 
     return tracks
 
 def getTicksPerBeat(byte_data):
 
-    bits = bt.getBits(byte_data[12])
+    bits = getBits(byte_data[12])
     if bits[0] == "0":
-        ticks_per_beat = bt.concatenateBytes(byte_data[12:14])
+        ticks_per_beat = concatenateBytes(byte_data[12:14])
         return ticks_per_beat
     else:
         raise Exception("I don\'t know how to handle this time format")
@@ -139,7 +139,7 @@ def isKeySignature(byte_data, index):
 
 def isNoteOff(byte_data, index):
 
-    bits = bt.getBits(byte_data[index])
+    bits = getBits(byte_data[index])
 
     if bits[0:4] == "1000":
         return True
@@ -148,7 +148,7 @@ def isNoteOff(byte_data, index):
 
 def isNoteOn(byte_data, index):
 
-    bits = bt.getBits(byte_data[index])
+    bits = getBits(byte_data[index])
 
     if bits[0:4] == "1001":
         return True
@@ -157,7 +157,7 @@ def isNoteOn(byte_data, index):
 
 def isControlChange(byte_data, index):
 
-    bits = bt.getBits(byte_data[index])
+    bits = getBits(byte_data[index])
 
     if bits[0:4] == "1011":
         return True
@@ -166,7 +166,7 @@ def isControlChange(byte_data, index):
 
 def isProgramChange(byte_data, index):
 
-    bits = bt.getBits(byte_data[index])
+    bits = getBits(byte_data[index])
 
     if bits[0:4] == "1100":
         return True
@@ -232,9 +232,9 @@ def parseMidiFile(file_name):
     index = 14
     for track_number in range(number_tracks):
         if not isTrackStart(byte_data, index):
-            raise Exception(f"Parse error: the current index ({index}) doesn't represent the beginning of a track")
+            raise Exception(f"Parse error: the byte at the current index ({index}) doesn't represent the beginning of a track")
         index += 8
-        new_track = Track(track_number)
+        new_track = Track(track_number, ticks_per_beat)
         current_running_status = RunningStatus.NONE
         while index < number_bytes_in_file:
             delta_time, delta_time_byte_length = getDeltaTime(byte_data, index)
@@ -264,7 +264,7 @@ def parseMidiFile(file_name):
                     break
 
                 elif isTempoChange(byte_data, index):
-                    microseconds_per_beat = bt.concatenateBytes(byte_data[index + 3:index + 6])
+                    microseconds_per_beat = concatenateBytes(byte_data[index + 3:index + 6])
                     new_track.append(TempoEvent(microseconds_per_beat))
                     index += 6
 
@@ -275,7 +275,7 @@ def parseMidiFile(file_name):
                     index += 7
 
                 elif isKeySignature(byte_data, index):
-                    number_accidentals = bt.convertBitStringToSignedInt(bt.getBits(byte_data[index + 3]))
+                    number_accidentals = convertBitStringToSignedInt(getBits(byte_data[index + 3]))
                     is_minor = (byte_data[index + 4] == 1)
                     new_track.append(KeySignatureEvent(number_accidentals, is_minor))
                     index += 5
@@ -372,6 +372,7 @@ def parseMidiFile(file_name):
 
     for track in tracks:
         track.convertNullNoteOnToNoteOff()
+        track.removeNullDeltaTimeEvents()
         track.convertDeltaTimeToElapsedTime()
 
     # sync = synchronizeEvents(notes_array, verbose, debug)

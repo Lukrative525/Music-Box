@@ -1,25 +1,61 @@
+from __future__ import annotations
+from enum import Enum
+
+class TimeEventType(Enum):
+    DELTA = "delta"
+    ELAPSED = "elapsed"
+
 class Track(list):
-    def __init__(self, track_number):
+    def __init__(self, track_number, ticks_per_beat):
         self.track_number = track_number
+        self.ticks_per_beat = ticks_per_beat
 
     def append(self, new_event):
         if isinstance(new_event, Event) and not any(isinstance(event, TrackEndEvent) for event in self):
             super().append(new_event)
+
+    def convertDeltaTimeToElapsedTime(self):
+        if not self.hasOnlyTimeEventsOfType(TimeEventType.DELTA):
+            raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.ELAPSED.value}\": track already contains time events of this type")
+        elapsed_time = 0
+        for event in self:
+            if isinstance(event, TimeEvent):
+                elapsed_time = event.value + elapsed_time
+                event.value = elapsed_time
+                event.time_event_type = TimeEventType.ELAPSED
+
+    def convertElapsedTimeToDeltaTime(self):
+        if not self.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED):
+            raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.DELTA.value}\": track already contains time events of this type")
+        previous_elapsed_time = 0
+        for event in self:
+            if isinstance(event, TimeEvent):
+                delta_time = event.value - previous_elapsed_time
+                previous_elapsed_time = event.value
+                event.value = delta_time
+                event.time_event_type = TimeEventType.DELTA
 
     def convertNullNoteOnToNoteOff(self):
         for i, event in enumerate(self):
             if isinstance(event, NoteOnEvent) and event.velocity == 0:
                 self[i] = NoteOffEvent(event.channel_number, event.note_number, event.velocity)
 
-    def convertDeltaTimeToElapsedTime(self):
-        current_time = 0
+    def hasOnlyTimeEventsOfType(self, desired_type=TimeEventType.DELTA):
+        has_only_time_events_of_type = True
         for event in self:
             if isinstance(event, TimeEvent):
-                event.time += current_time
-                current_time = event.time
+                if not event.time_event_type == desired_type:
+                    has_only_time_events_of_type = False
+
+        return has_only_time_events_of_type
+
+    def removeNullDeltaTimeEvents(self):
+        for i, event in enumerate(self):
+            if isinstance(event, TimeEvent) and event.value == 0:
+                del self[i]
 
     def __str__(self):
-        string_to_print = f"Track Number: {self.track_number}\n"
+        string_to_print = f"Track Number: {self.track_number}\nTicks Per Beat: {self.ticks_per_beat}\n"
         for event in self:
             string_to_print += event.__str__()
 
@@ -51,7 +87,7 @@ class KeySignatureEvent(Event):
         self.is_minor = is_minor
 
     def __str__(self):
-        string_to_print = f"Key Signature:\n    Number Accidentals: {self.number_accidentals}\n    Is Minor: {self.is_minor}\n"
+        string_to_print = f"Key Signature:\n    Number of Accidentals: {self.number_accidentals}\n    Is Minor: {self.is_minor}\n"
 
         return string_to_print
 
@@ -111,12 +147,13 @@ class TempoEvent(Event):
         return string_to_print
 
 class TimeEvent(Event):
-    def __init__(self, time):
+    def __init__(self, value, time_event_type=TimeEventType.DELTA):
         super().__init__()
-        self.time = time
+        self.value = value
+        self.time_event_type = time_event_type
 
     def __str__(self):
-        string_to_print = f"Time: {self.time}\n"
+        string_to_print = f"Time:\n    Value: {self.value}\n    Type: {self.time_event_type.value}\n"
 
         return string_to_print
 
