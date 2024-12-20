@@ -59,16 +59,19 @@ class Track(list):
 
             while index < len(self) and not isinstance(self[index], TimeEvent):
                 index += 1
+            if index >= len(self):
+                break
 
-            while not isinstance(source[0], TimeEvent) and len(source) > 0:
+            while len(source) > 0 and not isinstance(source[0], TimeEvent):
                 self.insert(index, source.pop(0))
                 index += 1
-
-            if index >= len(self) or len(source) < 1:
+            if len(source) < 1:
                 break
 
             current_time = self[index].value
-            if source[0].value == current_time:
+            if source[0].value < current_time:
+                self.insert(index, source.pop(0))
+            elif source[0].value == current_time:
                 del source[0]
                 index += 1
             elif source[0].value > current_time:
