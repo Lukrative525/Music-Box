@@ -27,13 +27,10 @@ for i in range(len(file_names)):
     source_files[i] = file_names[i] + '.mid'
     target_files[i] = file_names[i] + '.gcode'
 
-# enable/disable output from mp.parse
-verbose = True
-
 # generate gcode files
-for i in range(len(file_names)):
-    # print(f'\n{short_file_names[i]}')
-    tracks = mp.parseMidiFile(source_files[i])
+for short_file_name, source_file in zip(short_file_names, source_files):
+    print(f'\n{short_file_name}')
+    tracks = mp.parseMidiFile(source_file)
     track = mp.condenseMidiTracks(tracks)
-    print(i)
-# print('\nFinished\n')
+    print(track)
+print('\nFinished\n')
