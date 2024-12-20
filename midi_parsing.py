@@ -206,7 +206,7 @@ def isChorus(byte_data, index):
 def parseMidiFile(file_name):
 
     """
-    For parsing midi files into easy to use arrays of notes.
+    For parsing midi files.
 
     Parameters
     ==========
@@ -375,16 +375,14 @@ def parseMidiFile(file_name):
 def condenseMidiTracks(tracks: list[Track]):
 
     for track in tracks:
-        track.convertNullNoteOnToNoteOff()
         track.removeNullDeltaTimeEvents()
-        track.convertDeltaTimeToElapsedTime()
-
-    for track in tracks:
         track.removeAllEventsOfType(ControlChangeEvent)
         track.removeAllEventsOfType(KeySignatureEvent)
         track.removeAllEventsOfType(MidiPortEvent)
         track.removeAllEventsOfType(ProgramChangeEvent)
         track.removeAllEventsOfType(TrackNameEvent)
+        track.convertNullNoteOnToNoteOff()
+        track.convertDeltaTimeToElapsedTime()
 
     for track in tracks[1:]:
         tracks[0].mergeTracks(track)
