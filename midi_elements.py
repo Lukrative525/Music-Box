@@ -50,14 +50,34 @@ class Track(list):
         return has_only_time_events_of_type
 
     def mergeTracks(self, source: Track):
+
         if not self.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED) or not source.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED):
             raise Exception(f"To perform a track merge, both tracks must have only time events of type \"{TimeEventType.ELAPSED.value}\"")
 
-        # 1. find next time event in self and check its value
-        # 2. go through source and move its events to self just before the current time event, until a time event in source is found.
-            # if the source time event has a value less that the selt time event, then return to step 2.
-            # if the source time event has a value equal to the self time event, then delete it and return to step 1.
-            # if the source time event has a value greater than the self time event, then return to step 1.
+        index = 0
+        while True:
+
+            while index < len(self) and not isinstance(self[index], TimeEvent):
+                index += 1
+
+            while not isinstance(source[0], TimeEvent) and len(source) > 0:
+                self.insert(index, source.pop(0))
+                index += 1
+
+            if index >= len(self) or len(source) < 1:
+                break
+
+            current_time = self[index].value
+            if source[0].value == current_time:
+                del source[0]
+                index += 1
+            elif source[0].value > current_time:
+                index += 1
+
+        if len(source) > 0:
+            self.removeAllEventsOfType(TrackEndEvent)
+        while len(source) > 0:
+            self.append(source.pop(0))
 
     def removeAllEventsOfType(self, event_type):
         index = 0
