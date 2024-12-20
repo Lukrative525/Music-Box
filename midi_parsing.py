@@ -250,12 +250,12 @@ def parseMidiFile(file_name):
 
                 if isTrackName(byte_data, index):
                     name, name_byte_length = getTrackName(byte_data, index)
-                    new_track.append(TrackNameEvent(name))
+                    # new_track.append(TrackNameEvent(name))
                     index += name_byte_length
 
                 elif isMidiPort(byte_data, index):
-                    port = byte_data[index + 3]
-                    new_track.append(MidiPortEvent(port))
+                    # port = byte_data[index + 3]
+                    # new_track.append(MidiPortEvent(port))
                     index += 4
 
                 elif isTrackEnd(byte_data, index):
@@ -275,9 +275,9 @@ def parseMidiFile(file_name):
                     index += 7
 
                 elif isKeySignature(byte_data, index):
-                    number_accidentals = convertBitStringToSignedInt(getBits(byte_data[index + 3]))
-                    is_minor = (byte_data[index + 4] == 1)
-                    new_track.append(KeySignatureEvent(number_accidentals, is_minor))
+                    # number_accidentals = convertBitStringToSignedInt(getBits(byte_data[index + 3]))
+                    # is_minor = (byte_data[index + 4] == 1)
+                    # new_track.append(KeySignatureEvent(number_accidentals, is_minor))
                     index += 5
 
             # ----------------
@@ -301,17 +301,17 @@ def parseMidiFile(file_name):
                 index += 3
 
             elif isControlChange(byte_data, index):
-                channel_number = byte_data[index] - 176
-                control_number = byte_data[index + 1]
-                value = byte_data[index + 2]
-                new_track.append(ControlChangeEvent(channel_number, control_number, value))
+                # channel_number = byte_data[index] - 176
+                # control_number = byte_data[index + 1]
+                # value = byte_data[index + 2]
+                # new_track.append(ControlChangeEvent(channel_number, control_number, value))
                 current_running_status = RunningStatus.CONTROL_CHANGE
                 index += 3
 
             elif isProgramChange(byte_data, index):
-                channel_number = byte_data[index] - 192
-                program_number = byte_data[index + 1]
-                new_track.append(ProgramChangeEvent(channel_number, program_number))
+                # channel_number = byte_data[index] - 192
+                # program_number = byte_data[index + 1]
+                # new_track.append(ProgramChangeEvent(channel_number, program_number))
                 current_running_status = RunningStatus.PROGRAM_CHANGE
                 index += 2
 
@@ -334,14 +334,14 @@ def parseMidiFile(file_name):
                     index += 2
 
                 elif current_running_status == RunningStatus.CONTROL_CHANGE:
-                    control_number = byte_data[index]
-                    value = byte_data[index + 1]
-                    new_track.append(ControlChangeEvent(channel_number, control_number, value))
+                    # control_number = byte_data[index]
+                    # value = byte_data[index + 1]
+                    # new_track.append(ControlChangeEvent(channel_number, control_number, value))
                     index += 2
 
                 elif current_running_status == RunningStatus.PROGRAM_CHANGE:
-                    program_number = byte_data[index]
-                    new_track.append(ProgramChangeEvent(channel_number, program_number))
+                    # program_number = byte_data[index]
+                    # new_track.append(ProgramChangeEvent(channel_number, program_number))
                     index += 1
 
             # ----------------
@@ -376,11 +376,11 @@ def condenseMidiTracks(tracks: list[Track]):
 
     for track in tracks:
         track.removeNullDeltaTimeEvents()
-        track.removeAllEventsOfType(ControlChangeEvent)
-        track.removeAllEventsOfType(KeySignatureEvent)
-        track.removeAllEventsOfType(MidiPortEvent)
-        track.removeAllEventsOfType(ProgramChangeEvent)
-        track.removeAllEventsOfType(TrackNameEvent)
+        # track.removeAllEventsOfType(ControlChangeEvent)
+        # track.removeAllEventsOfType(KeySignatureEvent)
+        # track.removeAllEventsOfType(MidiPortEvent)
+        # track.removeAllEventsOfType(ProgramChangeEvent)
+        # track.removeAllEventsOfType(TrackNameEvent)
         track.convertNullNoteOnToNoteOff()
         track.convertDeltaTimeToElapsedTime()
 

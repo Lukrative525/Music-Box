@@ -2,6 +2,7 @@ import midi_parsing as mp
 import gcode_maker as gm
 from tkinter import filedialog
 from tkinter import Tk
+from time import perf_counter_ns
 
 root = Tk()
 root.withdraw()
@@ -27,10 +28,12 @@ for i in range(len(file_names)):
     source_files[i] = file_names[i] + '.mid'
     target_files[i] = file_names[i] + '.gcode'
 
+start = perf_counter_ns()
 # generate gcode files
 for short_file_name, source_file in zip(short_file_names, source_files):
     print(f'\n{short_file_name}')
     tracks = mp.parseMidiFile(source_file)
     track = mp.condenseMidiTracks(tracks)
-    print(track)
+    # print(track)
+print(perf_counter_ns() - start)
 print('\nFinished\n')
