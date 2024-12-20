@@ -232,19 +232,3 @@ class TrackNameEvent(Event):
         string_to_print = f"Track Name:\n    {self.name}\n"
 
         return string_to_print
-
-if __name__ == "__main__":
-    import timeit
-
-    # Measure instantiation time
-    instantiation_time = timeit.timeit("NoteOnEvent(1, 69, 80)", setup="from __main__ import NoteOnEvent", number=100000)
-
-    # Measure appending time
-    list_append_time = timeit.timeit("my_list.append(my_event)", setup="from __main__ import NoteOnEvent; my_list = []; my_event = NoteOnEvent(1, 69, 80)", number=100000)
-
-    # Measure inserting time
-    list_insert_time = timeit.timeit("my_list.insert(0, my_event)", setup="from __main__ import NoteOnEvent; my_list = []; my_event = NoteOnEvent(1, 69, 80)", number=100000)
-
-    print(f"Instantiation time: {instantiation_time:.6f} seconds")
-    print(f"Appending time: {list_append_time:.6f} seconds")
-    print(f"Inserting time: {list_insert_time:.6f} seconds")
