@@ -54,6 +54,11 @@ class Track(list):
         if not self.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED) or not source.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED):
             raise Exception(f"To perform a track merge, both tracks must have only time events of type \"{TimeEventType.ELAPSED.value}\"")
 
+        if not isinstance(self[-1], TrackEndEvent):
+            raise Exception("Target track for merge is missing a track end event")
+        elif not isinstance(source[-1], TrackEndEvent):
+            raise Exception("Source track for merge is missing a track end event")
+
         index = 0
         while True:
 
@@ -62,10 +67,10 @@ class Track(list):
             if index >= len(self):
                 break
 
-            while len(source) > 0 and not isinstance(source[0], TimeEvent):
+            while len(source) > 1 and not isinstance(source[0], TimeEvent):
                 self.insert(index, source.pop(0))
                 index += 1
-            if len(source) < 1:
+            if len(source) <= 1:
                 break
 
             current_time = self[index].value
@@ -78,7 +83,7 @@ class Track(list):
                 index += 1
 
         if len(source) > 0:
-            self.removeAllEventsOfType(TrackEndEvent)
+            del self[-1]
         while len(source) > 0:
             self.append(source.pop(0))
 
