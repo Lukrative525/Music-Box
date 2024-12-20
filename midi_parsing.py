@@ -368,6 +368,9 @@ def parseMidiFile(file_name):
                 new_track.append(Event(f"Chorus: {chorus}"))
                 index += 2
 
+            else:
+                raise Exception(f"Parse error: unrecognized midi event at byte {index}: {getBits(byte_data[index])}")
+
         tracks.append(new_track)
 
     return tracks

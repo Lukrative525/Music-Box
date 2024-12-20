@@ -15,8 +15,10 @@ class Track(list):
             super().append(new_event)
 
     def convertDeltaTimeToElapsedTime(self):
+
         if not self.hasOnlyTimeEventsOfType(TimeEventType.DELTA):
             raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.ELAPSED.value}\": track already contains time events of this type")
+
         elapsed_time = 0
         for event in self:
             if isinstance(event, TimeEvent):
@@ -25,8 +27,10 @@ class Track(list):
                 event.time_event_type = TimeEventType.ELAPSED
 
     def convertElapsedTimeToDeltaTime(self):
+
         if not self.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED):
             raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.DELTA.value}\": track already contains time events of this type")
+
         previous_elapsed_time = 0
         for event in self:
             if isinstance(event, TimeEvent):
@@ -40,6 +44,20 @@ class Track(list):
             if isinstance(event, NoteOnEvent) and event.velocity == 0:
                 self[i] = NoteOffEvent(event.channel_number, event.note_number, event.velocity)
 
+    def convertTicksToMicroseconds(self):
+
+        if not self.hasTempoEvents():
+            raise Exception("Cannot convert ticks to microseconds because track has no tempo events")
+        elif not self.hasOnlyTimeEventsOfType(TimeEventType.DELTA):
+            raise Exception(f"Cannot convert ticks to microseconds because track contains time events of type \"{TimeEventType.ELAPSED.value}\"")
+
+        microseconds_per_beat = 0
+        for event in self:
+            if isinstance(event, TimeEvent):
+                event.value = event.value / self.ticks_per_beat * microseconds_per_beat
+            elif isinstance(event, TempoEvent):
+                microseconds_per_beat = event.microseconds_per_beat
+
     def hasOnlyTimeEventsOfType(self, desired_type=TimeEventType.DELTA):
         has_only_time_events_of_type = True
         for event in self:
@@ -48,6 +66,13 @@ class Track(list):
                     has_only_time_events_of_type = False
 
         return has_only_time_events_of_type
+
+    def hasTempoEvents(self):
+        for event in self:
+            if isinstance(event, TempoEvent):
+                return True
+
+        return False
 
     def mergeTracks(self, source: Track):
 

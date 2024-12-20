@@ -26,9 +26,12 @@ for i in range(len(file_names)):
     target_files[i] = file_names[i] + '.gcode'
 
 # generate gcode files
+print()
 for short_file_name, source_file in zip(short_file_names, source_files):
-    print(f'\n{short_file_name}')
+    print(f'{short_file_name}\n')
     tracks = mp.parseMidiFile(source_file)
-    track = mp.condenseMidiTracks(tracks)
-    print(track)
-print('\nFinished\n')
+    condensedTrack = mp.condenseMidiTracks(tracks)
+    condensedTrack.convertElapsedTimeToDeltaTime()
+    condensedTrack.convertTicksToMicroseconds()
+    print(condensedTrack)
+print('Finished\n')
