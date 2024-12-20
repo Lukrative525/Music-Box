@@ -1,7 +1,5 @@
 import midi_parsing as mp
-import gcode_maker as gm
-from tkinter import filedialog
-from tkinter import Tk
+from tkinter import filedialog, Tk
 
 root = Tk()
 root.withdraw()

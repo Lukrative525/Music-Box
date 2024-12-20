@@ -1,5 +1,5 @@
 import midi_parsing as mp
-import gcode_maker as gm
+import gcode_generation as gg
 from tkinter import filedialog
 from tkinter import Tk
 
@@ -37,5 +37,5 @@ pause = False
 for i in range(len(file_names)):
     print(f'\n{short_file_names[i]}')
     sync = mp.parseMidiFile(source_files[i], verbose)
-    gm.generate_cnc_gcode(target_files[i], sync, pause)
+    gg.generate_cnc_gcode(target_files[i], sync, pause)
 print('\nFinished\n')
