@@ -1,4 +1,3 @@
-import numpy as np
 from enum import Enum, auto
 from binary_tools import *
 from midi_elements import *
@@ -369,7 +368,7 @@ def parseMidiFile(file_name):
                 index += 2
 
             else:
-                raise Exception(f"Parse error: unrecognized midi event at byte {index}: {getBits(byte_data[index])}")
+                raise Exception(f"Parse error: unimplemented midi event at byte {index}: {getBits(byte_data[index])}")
 
         tracks.append(new_track)
 
