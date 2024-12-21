@@ -62,8 +62,8 @@ class Printer:
     Axis = Axis
 
     def __init__(self):
-        self.axes = []
-        self.time_keeper = None
+        self.axes: list[Axis] = []
+        self.time_keeper: TimeKeeper = None
 
     def addAxis(self, label, axis_type, upper_limit, lower_limit, max_feed_rate, starting_position, base_steps_per_millimeter, microstepping_factor):
         new_axis = Axis(label)
