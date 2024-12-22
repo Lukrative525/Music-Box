@@ -7,7 +7,7 @@ settings = gg.get_printer_settings()
 
 midi = 108
 feeds_max = np.zeros(len(settings[0]))
-frequency_max = gg.calculate_frequency(midi)
+frequency_max = gg.calculateFrequency(midi)
 
 for j in range(len(settings[0])):
     feeds_max[j] = (frequency_max * 60) / settings[1][j]

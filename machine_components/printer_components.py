@@ -5,17 +5,28 @@ class Axis:
         LINEAR = "linear"
         ROTARY = "rotary"
 
-    def __init__(self, label: str):
+    def __init__(self,
+            label: str,
+            axis_type: AxisType=None,
+            upper_limit=None,
+            lower_limit=None,
+            max_feed_rate=None,
+            starting_position=None,
+            base_steps_per_millimeter=None,
+            microstepping_factor=None):
+
         self.label = label
 
-        self.axis_type: Axis.AxisType = None
-        self.limits: AxisLimits = None
-        self.max_feed_rate = None
-        self.starting_position = None
+        self.axis_type = axis_type
+        self.limits = AxisLimits(upper_limit, lower_limit)
+        self.max_feed_rate = max_feed_rate
+        self.starting_position = starting_position
 
         self._base_steps_per_millimeter = None
         self._microstepping_factor = None
-        self._steps_per_millimeter = None
+
+        self.base_steps_per_millimeter = base_steps_per_millimeter
+        self.microstepping_factor = microstepping_factor
 
     @property
     def base_steps_per_millimeter(self):
@@ -41,6 +52,23 @@ class Axis:
     def steps_per_millimeter(self):
         return self._steps_per_millimeter
 
+    def isComplete(self):
+        if self.axis_type is None:
+            return False
+        elif self.limits is None:
+            return False
+        elif self.max_feed_rate is None:
+            return False
+        elif self.starting_position is None:
+            return False
+        elif self.base_steps_per_millimeter is None:
+            return False
+        elif self.microstepping_factor is None:
+            return False
+        elif self.steps_per_millimeter is None:
+            return False
+        return True
+
 class AxisLimits:
     def __init__(self, upper, lower):
         if upper <= lower:
@@ -65,16 +93,19 @@ class Printer:
         self.axes: list[Axis] = []
         self.time_keeper: TimeKeeper = None
 
-    def addAxis(self, label, axis_type, upper_limit, lower_limit, max_feed_rate, starting_position, base_steps_per_millimeter, microstepping_factor):
-        new_axis = Axis(label)
-        new_axis.axis_type = axis_type
-        axis_limits = AxisLimits(upper_limit, lower_limit)
-        new_axis.limits = axis_limits
-        new_axis.max_feed_rate = max_feed_rate
-        new_axis.starting_position = starting_position
-        new_axis.base_steps_per_millimeter = base_steps_per_millimeter
-        new_axis.microstepping_factor = microstepping_factor
+    def addAxis(self, label: str, axis_type: Axis.AxisType, upper_limit, lower_limit, max_feed_rate, starting_position, base_steps_per_millimeter, microstepping_factor):
+        new_axis = Axis(label, axis_type, upper_limit, lower_limit, max_feed_rate, starting_position, base_steps_per_millimeter, microstepping_factor)
         self.axes.append(new_axis)
+
+    def isComplete(self):
+        if len(self.axes) < 1:
+            return False
+        for axis in self.axes:
+            if not axis.isComplete():
+                return False
+        if self.time_keeper is None:
+            return False
+        return True
 
     def setTimeKeeper(self, label, feed_rate):
         self.time_keeper = TimeKeeper(label, feed_rate)

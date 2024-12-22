@@ -1,4 +1,4 @@
-from settings_printer import Printer
+from machine_components.printer_components import Printer
 
 printer_of_theseus = Printer()
 printer_of_theseus.addAxis("X", Printer.Axis.AxisType.LINEAR, 118, -118, 7527, 0, 6.25, 16)

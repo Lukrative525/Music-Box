@@ -10,9 +10,12 @@ class Track(list):
         self.track_number = track_number
         self.ticks_per_beat = ticks_per_beat
 
+        self.channels = set()
+
     def append(self, new_event):
         if isinstance(new_event, Event) and not any(isinstance(event, TrackEndEvent) for event in self):
             super().append(new_event)
+            self.updateChannelSet(new_event)
 
     def convertDeltaTimeToElapsedTime(self):
 
@@ -74,6 +77,10 @@ class Track(list):
 
         return False
 
+    def insert(self, index, new_event):
+        super().insert(index, new_event)
+        self.updateChannelSet(new_event)
+
     def mergeTracks(self, source: Track):
 
         if not self.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED) or not source.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED):
@@ -125,6 +132,10 @@ class Track(list):
             if isinstance(event, TimeEvent) and event.value == 0:
                 del self[i]
 
+    def updateChannelSet(self, new_event):
+        if isinstance(new_event, ChannelEvent):
+            self.channels.add(new_event.channel_number)
+
     def __str__(self):
         string_to_print = f"Track Number: {self.track_number}\nTicks Per Beat: {self.ticks_per_beat}\n"
         for event in self:
@@ -139,10 +150,16 @@ class Event:
     def __str__(self):
         return f"Generic Event:\n    {self.message}\n"
 
-class ControlChangeEvent(Event):
-    def __init__(self, channel_number, control_number, value):
-        super().__init__()
+class ChannelEvent(Event):
+    def __init__(self, channel_number):
         self.channel_number = channel_number
+
+    def __str__(self):
+            return f"Channel Event:\n    Channel Number: {self.channel_number}\n"
+
+class ControlChangeEvent(ChannelEvent):
+    def __init__(self, channel_number, control_number, value):
+        super().__init__(channel_number)
         self.control_number = control_number
         self.value = value
 
@@ -153,7 +170,6 @@ class ControlChangeEvent(Event):
 
 class KeySignatureEvent(Event):
     def __init__(self, number_accidentals, is_minor=False):
-        super().__init__()
         self.number_accidentals = number_accidentals
         self.is_minor = is_minor
 
@@ -164,7 +180,6 @@ class KeySignatureEvent(Event):
 
 class MidiPortEvent(Event):
     def __init__(self, port):
-        super().__init__()
         self.port = port
 
     def __str__(self):
@@ -172,10 +187,9 @@ class MidiPortEvent(Event):
 
         return string_to_print
 
-class NoteOnEvent(Event):
+class NoteOnEvent(ChannelEvent):
     def __init__(self, channel_number, note_number, velocity):
-        super().__init__()
-        self.channel_number = channel_number
+        super().__init__(channel_number)
         self.note_number = note_number
         self.velocity = velocity
 
@@ -184,10 +198,9 @@ class NoteOnEvent(Event):
 
         return string_to_print
 
-class NoteOffEvent(Event):
+class NoteOffEvent(ChannelEvent):
     def __init__(self, channel_number, note_number, velocity):
-        super().__init__()
-        self.channel_number = channel_number
+        super().__init__(channel_number)
         self.note_number = note_number
         self.velocity = velocity
 
@@ -196,10 +209,9 @@ class NoteOffEvent(Event):
 
         return string_to_print
 
-class ProgramChangeEvent(Event):
+class ProgramChangeEvent(ChannelEvent):
     def __init__(self, channel_number, program_number):
-        super().__init__()
-        self.channel_number = channel_number
+        super().__init__(channel_number)
         self.program_number = program_number
 
     def __str__(self):
@@ -209,7 +221,6 @@ class ProgramChangeEvent(Event):
 
 class TempoEvent(Event):
     def __init__(self, microseconds_per_beat):
-        super().__init__()
         self.microseconds_per_beat = microseconds_per_beat
 
     def __str__(self):
@@ -219,7 +230,6 @@ class TempoEvent(Event):
 
 class TimeEvent(Event):
     def __init__(self, value, time_event_type=TimeEventType.DELTA):
-        super().__init__()
         self.value = value
         self.time_event_type = time_event_type
 
@@ -230,7 +240,6 @@ class TimeEvent(Event):
 
 class TimeSignatureEvent(Event):
     def __init__(self, numerator, denominator):
-        super().__init__()
         self.numerator = numerator
         self.denominator = denominator
 
@@ -241,7 +250,7 @@ class TimeSignatureEvent(Event):
 
 class TrackEndEvent(Event):
     def __init__(self):
-        super().__init__()
+        pass
 
     def __str__(self):
         string_to_print = f"Track End\n"
@@ -250,7 +259,6 @@ class TrackEndEvent(Event):
 
 class TrackNameEvent(Event):
     def __init__(self, name):
-        super().__init__()
         self.name = name
 
     def __str__(self):
