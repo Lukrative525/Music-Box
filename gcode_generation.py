@@ -1,7 +1,7 @@
 from midi_elements import *
 from machine_components.printer_components import Printer, AxisType
 from math import floor, sqrt
-from typing import Dict, TextIO
+from typing import TextIO
 
 note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
@@ -13,7 +13,7 @@ class MovementComponent:
 
 class LinearMovement:
     def __init__(self, time_keeper: MovementComponent=None):
-        self.components: Dict[int, MovementComponent] = {}
+        self.components: dict[int, MovementComponent] = {}
         self.time_keeper = time_keeper
 
     def addMovementComponent(self, index, new_movement_component: MovementComponent):
