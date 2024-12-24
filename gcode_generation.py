@@ -1,5 +1,5 @@
 from midi_elements import *
-from machine_components.printer_components import Printer, AxisType
+from machine_components.printer_components import Printer, Axis
 from math import floor, sqrt
 from note_buffer import NoteBuffer
 from typing import TextIO
@@ -53,14 +53,14 @@ note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 #         if index in self.components:
 #             del self.components[index]
 
-def calculateFeedRate(note: NoteOnEvent, machine: Printer):
+def calculateFeedRate(note_number, axis: Axis):
 
     """
     For calculating feedrate in mm/min
     """
 
-    frequency = calculateFrequency(note.note_number)
-    feed_rate = frequency * 60 / machine.axes[note.channel_number].steps_per_millimeter
+    frequency = calculateFrequency(note_number)
+    feed_rate = frequency * 60 / axis.steps_per_millimeter
 
     return feed_rate
 
@@ -94,12 +94,6 @@ def convertMidiToPitchNotation(note_number):
 
     return note + str(octave)
 
-def generateMovementCommand(file_stream: TextIO, note_buffer: NoteBuffer, machine: Printer):
-
-    command_string = ""
-    # TODO: finish
-
-
 def generatePrinterGcode(target_file, track: Track, machine: Printer):
 
     """
@@ -120,7 +114,7 @@ def generatePrinterGcode(target_file, track: Track, machine: Printer):
             note_buffer.channels[event.channel_number].remove(event.note_number)
         elif isinstance(event, TimeEvent):
             note_buffer.duration = event.value / 1e6 / 60
-            generateMovementCommand()
+            writeMovementCommand(file_stream, note_buffer, machine)
 
     writeEndGcode(file_stream)
     file_stream.close()
@@ -128,6 +122,15 @@ def generatePrinterGcode(target_file, track: Track, machine: Printer):
 def writeEndGcode(file_stream: TextIO):
     file_stream.write("M302 P0; disallow cold extrusion\n")
     file_stream.write("G4 S1; pause for a second\n")
+
+def writeMovementCommand(file_stream: TextIO, note_buffer: NoteBuffer, machine: Printer):
+
+    command_string = "G1"
+    for channel_number in range(len(machine.axes)):
+        if len(note_buffer.channels[channel_number]) != 1:
+            return
+        note_number = min(note_buffer.channels[channel_number])
+        feedrate = calculateFeedRate(note_number, machine.axes[channel_number])
 
 def writeStartGcode(file_stream: TextIO, machine: Printer):
     file_stream.write("M302 P1; allow cold extrusion\n")
@@ -143,9 +146,3 @@ def writeStartGcode(file_stream: TextIO, machine: Printer):
     # file_stream.write(centering_command.generateMovementCommand("center axis/axes"))
 
     file_stream.write("G4 S1; pause for a second\n")
-
-if __name__ == "__main__":
-    from machines import printer_of_theseus
-    test_note = NoteOnEvent(1, 59, 80)
-    print(printer_of_theseus.axes[1].steps_per_millimeter)
-    print(calculateFeedRate(test_note, printer_of_theseus))

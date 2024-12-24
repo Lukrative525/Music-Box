@@ -14,4 +14,3 @@ class NoteBuffer:
         for i in range(number_channels):
             self.channels[i] = Channel()
         self.duration = 0
-

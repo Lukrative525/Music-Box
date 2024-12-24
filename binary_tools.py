@@ -32,17 +32,3 @@ def concatenateBytes(bytes_list):
     bytes_value = convertBitStringToUnsignedInt(bit_string)
 
     return bytes_value
-
-if __name__ == "__main__":
-
-    bytes_list = [-2, 3, 0]
-
-    byte_string_list = []
-    for byte in bytes_list:
-        byte_string_list.append(getBits(byte))
-
-    for byte_string in byte_string_list:
-        print(convertBitStringToUnsignedInt(byte_string))
-
-    for byte_string in byte_string_list:
-        print(convertBitStringToSignedInt(byte_string))
