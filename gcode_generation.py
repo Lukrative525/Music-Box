@@ -1,56 +1,57 @@
 from midi_elements import *
 from machine_components.printer_components import Printer, AxisType
 from math import floor, sqrt
+from note_buffer import NoteBuffer
 from typing import TextIO
 
 note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
-class MovementComponent:
-    def __init__(self, label: str, feedrate=0, position=None):
-        self.label = label
-        self.feedrate = feedrate
-        self.position = position
+# class MovementComponent:
+#     def __init__(self, label: str, feedrate=0, position=None):
+#         self.label = label
+#         self.feedrate = feedrate
+#         self.position = position
 
-class LinearMovement:
-    def __init__(self, time_keeper: MovementComponent=None):
-        self.components: dict[int, MovementComponent] = {}
-        self.time_keeper = time_keeper
+# class LinearMovement:
+#     def __init__(self, time_keeper: MovementComponent=None):
+#         self.components: dict[int, MovementComponent] = {}
+#         self.time_keeper = time_keeper
 
-    def addMovementComponent(self, index, new_movement_component: MovementComponent):
-        self.components[index] = new_movement_component
+#     def addMovementComponent(self, index, new_movement_component: MovementComponent):
+#         self.components[index] = new_movement_component
 
-    def generateMovementCommand(self, comment: str=None):
-        command_string = f"G1 F{self.calculateTotalFeedrate()}"
-        for index, component in sorted(self.components.items()):
-            if component.position is None:
-                raise Exception("Cannot generate movement command when position has not been defined")
-            command_string += f" {component.label}{round(component.position, 5)}"
-        if self.time_keeper is not None:
-            command_string += f" {self.time_keeper.label}{round(self.time_keeper.position, 5)}"
-        if comment is not None:
-            command_string += f"; {comment}"
-        command_string += "\n"
+#     def generateMovementCommand(self, comment: str=None):
+#         command_string = f"G1 F{self.calculateTotalFeedrate()}"
+#         for index, component in sorted(self.components.items()):
+#             if component.position is None:
+#                 raise Exception("Cannot generate movement command when position has not been defined")
+#             command_string += f" {component.label}{round(component.position, 5)}"
+#         if self.time_keeper is not None:
+#             command_string += f" {self.time_keeper.label}{round(self.time_keeper.position, 5)}"
+#         if comment is not None:
+#             command_string += f"; {comment}"
+#         command_string += "\n"
 
-        return command_string
+#         return command_string
 
-    def calculateTotalFeedrate(self):
-        feedrate_squared = 0
-        for component in self.components.values():
-            feedrate_squared += component.feedrate ** 2
+#     def calculateTotalFeedrate(self):
+#         feedrate_squared = 0
+#         for component in self.components.values():
+#             feedrate_squared += component.feedrate ** 2
 
-        if feedrate_squared == 0 and self.time_keeper is not None:
-            feedrate = abs(self.time_keeper.feedrate)
-        else:
-            feedrate = sqrt(feedrate_squared)
+#         if feedrate_squared == 0 and self.time_keeper is not None:
+#             feedrate = abs(self.time_keeper.feedrate)
+#         else:
+#             feedrate = sqrt(feedrate_squared)
 
-        return round(feedrate, 5)
+#         return round(feedrate, 5)
 
-    def clear(self):
-        self.components.clear()
+#     def clear(self):
+#         self.components.clear()
 
-    def removeMovementComponent(self, index):
-        if index in self.components:
-            del self.components[index]
+#     def removeMovementComponent(self, index):
+#         if index in self.components:
+#             del self.components[index]
 
 def calculateFeedRate(note: NoteOnEvent, machine: Printer):
 
@@ -93,6 +94,12 @@ def convertMidiToPitchNotation(note_number):
 
     return note + str(octave)
 
+def generateMovementCommand(file_stream: TextIO, note_buffer: NoteBuffer, machine: Printer):
+
+    command_string = ""
+    # TODO: finish
+
+
 def generatePrinterGcode(target_file, track: Track, machine: Printer):
 
     """
@@ -105,25 +112,15 @@ def generatePrinterGcode(target_file, track: Track, machine: Printer):
     file_stream = open(target_file, "w")
     writeStartGcode(file_stream, machine)
 
-    current_positions = machine.getStartingPositions()
-    current_movement = LinearMovement(MovementComponent(machine.time_keeper.label, machine.time_keeper.feed_rate, machine.time_keeper.starting_position))
+    note_buffer = NoteBuffer(len(track.channels))
     for event in track:
         if isinstance(event, NoteOnEvent):
-            channel_number = event.channel_number
-            label = machine.axes[channel_number].label
-            feedrate = calculateFeedRate(event, machine)
-            current_movement.addMovementComponent(channel_number, MovementComponent(label, feedrate))
+            note_buffer.channels[event.channel_number].add(event.note_number)
         elif isinstance(event, NoteOffEvent):
-            channel_number = event.channel_number
-            current_movement.removeMovementComponent(channel_number)
+            note_buffer.channels[event.channel_number].remove(event.note_number)
         elif isinstance(event, TimeEvent):
-            movement_duration_microseconds = event.value
-            movement_duration_minutes = movement_duration_microseconds / 1e6 / 60
-            for index, component in current_movement.components.items():
-                current_positions[index] += component.feedrate * movement_duration_minutes
-                component.position = current_positions[index]
-            current_movement.time_keeper.position = current_movement.time_keeper.feedrate * movement_duration_minutes
-            file_stream.write(current_movement.generateMovementCommand())
+            note_buffer.duration = event.value / 1e6 / 60
+            generateMovementCommand()
 
     writeEndGcode(file_stream)
     file_stream.close()
@@ -136,14 +133,14 @@ def writeStartGcode(file_stream: TextIO, machine: Printer):
     file_stream.write("M302 P1; allow cold extrusion\n")
     file_stream.write("M83; relative extruder moves\n")
 
-    centering_command = LinearMovement()
-    file_stream.write(f"G92 {machine.time_keeper.label}0; reset {machine.time_keeper.label} axis/axes\n")
-    for index, axis in enumerate(machine.axes):
-        if axis.axis_type == AxisType.ROTARY:
-            file_stream.write(f"G92 {axis.label}{axis.starting_position}; reset {axis.label} axis/axes\n")
-        elif axis.axis_type == AxisType.LINEAR:
-            centering_command.addMovementComponent(index, MovementComponent(axis.label, axis.max_feed_rate, axis.starting_position))
-    file_stream.write(centering_command.generateMovementCommand("center axis/axes"))
+    # centering_command = LinearMovement()
+    # file_stream.write(f"G92 {machine.time_keeper.label}0; reset {machine.time_keeper.label} axis/axes\n")
+    # for index, axis in enumerate(machine.axes):
+    #     if axis.axis_type == AxisType.ROTARY:
+    #         file_stream.write(f"G92 {axis.label}{axis.starting_position}; reset {axis.label} axis/axes\n")
+    #     elif axis.axis_type == AxisType.LINEAR:
+    #         centering_command.addMovementComponent(index, MovementComponent(axis.label, axis.max_feed_rate, axis.starting_position))
+    # file_stream.write(centering_command.generateMovementCommand("center axis/axes"))
 
     file_stream.write("G4 S1; pause for a second\n")
 

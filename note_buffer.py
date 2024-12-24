@@ -1,18 +1,17 @@
-class Note:
-    def __init__(self, note_number=None):
-        self.note_number = note_number
-
-class Channel(dict[int, Note]):
+class Channel(set):
     def __init__(self):
         super().__init__()
 
-class Segment(dict[int, Channel]):
+    def add(self, note_number):
+        super().add(note_number)
+
+    def remove(self, note_number):
+        super().discard(note_number)
+
+class NoteBuffer:
     def __init__(self, number_channels):
-        super().__init__()
+        self.channels: dict[int, Channel] = {}
         for i in range(number_channels):
-            self[i] = Channel()
+            self.channels[i] = Channel()
         self.duration = 0
 
-if __name__ == "__main__":
-    segment = Segment(5)
-    segment[2] = 
