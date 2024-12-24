@@ -19,7 +19,7 @@ class Track(list):
 
     def convertDeltaTimeToElapsedTime(self):
 
-        if not self.hasOnlyTimeEventsOfType(TimeEventType.DELTA):
+        if not self.hasTimeEventsAllOfType(TimeEventType.DELTA):
             raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.ELAPSED.value}\": track already contains time events of this type")
 
         elapsed_time = 0
@@ -31,7 +31,7 @@ class Track(list):
 
     def convertElapsedTimeToDeltaTime(self):
 
-        if not self.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED):
+        if not self.hasTimeEventsAllOfType(TimeEventType.ELAPSED):
             raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.DELTA.value}\": track already contains time events of this type")
 
         previous_elapsed_time = 0
@@ -47,11 +47,20 @@ class Track(list):
             if isinstance(event, NoteOnEvent) and event.velocity == 0:
                 self[i] = NoteOffEvent(event.channel_number, event.note_number, event.velocity)
 
+    def hasTimeEventsAllOfType(self, desired_type=TimeEventType.DELTA):
+        has_only_time_events_of_type = True
+        for event in self:
+            if isinstance(event, TimeEvent):
+                if not event.time_event_type == desired_type:
+                    has_only_time_events_of_type = False
+
+        return has_only_time_events_of_type
+
     def convertTicksToMicroseconds(self):
 
         if not self.hasTempoEvents():
             raise Exception("Cannot convert ticks to microseconds because track has no tempo events")
-        elif not self.hasOnlyTimeEventsOfType(TimeEventType.DELTA):
+        elif not self.hasTimeEventsAllOfType(TimeEventType.DELTA):
             raise Exception(f"Cannot convert ticks to microseconds because track contains time events of type \"{TimeEventType.ELAPSED.value}\"")
 
         microseconds_per_beat = 0
@@ -60,15 +69,6 @@ class Track(list):
                 event.value = event.value / self.ticks_per_beat * microseconds_per_beat
             elif isinstance(event, TempoEvent):
                 microseconds_per_beat = event.microseconds_per_beat
-
-    def hasOnlyTimeEventsOfType(self, desired_type=TimeEventType.DELTA):
-        has_only_time_events_of_type = True
-        for event in self:
-            if isinstance(event, TimeEvent):
-                if not event.time_event_type == desired_type:
-                    has_only_time_events_of_type = False
-
-        return has_only_time_events_of_type
 
     def hasTempoEvents(self):
         for event in self:
@@ -83,8 +83,8 @@ class Track(list):
 
     def mergeTracks(self, source: Track):
 
-        if not self.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED) or not source.hasOnlyTimeEventsOfType(TimeEventType.ELAPSED):
-            raise Exception(f"To perform a track merge, both tracks must have only time events of type \"{TimeEventType.ELAPSED.value}\"")
+        if not self.hasTimeEventsAllOfType(TimeEventType.ELAPSED) or not source.hasTimeEventsAllOfType(TimeEventType.ELAPSED):
+            raise Exception(f"To perform a track merge, both tracks' time events must all be of type \"{TimeEventType.ELAPSED.value}\"")
 
         if not isinstance(self[-1], TrackEndEvent):
             raise Exception("Target track for merge is missing a track end event")

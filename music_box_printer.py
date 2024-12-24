@@ -35,6 +35,5 @@ for short_file_name, source_file, target_file in zip(short_file_names, source_fi
     condensed_track = mp.condenseMidiTracks(tracks)
     condensed_track.convertElapsedTimeToDeltaTime()
     condensed_track.convertTicksToMicroseconds()
-    print(condensed_track)
     gg.generatePrinterGcode(target_file, condensed_track, machines.printer_of_theseus)
 print('Finished\n')

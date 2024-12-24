@@ -1,10 +1,10 @@
 from enum import Enum
 
-class Axis:
-    class AxisType(Enum):
-        LINEAR = "linear"
-        ROTARY = "rotary"
+class AxisType(Enum):
+    LINEAR = "linear"
+    ROTARY = "rotary"
 
+class Axis:
     def __init__(self,
             label: str,
             axis_type: AxisType=None,
@@ -82,18 +82,17 @@ class AxisLimits:
         return False
 
 class TimeKeeper:
-    def __init__(self, label: str, feed_rate):
+    def __init__(self, label: str, feed_rate, starting_position):
         self.label = label
         self.feed_rate = feed_rate
+        self.starting_position = starting_position
 
 class Printer:
-    Axis = Axis
-
     def __init__(self):
         self.axes: list[Axis] = []
         self.time_keeper: TimeKeeper = None
 
-    def addAxis(self, label: str, axis_type: Axis.AxisType, upper_limit, lower_limit, max_feed_rate, starting_position, base_steps_per_millimeter, microstepping_factor):
+    def addAxis(self, label: str, axis_type: AxisType, upper_limit, lower_limit, max_feed_rate, starting_position, base_steps_per_millimeter, microstepping_factor):
         new_axis = Axis(label, axis_type, upper_limit, lower_limit, max_feed_rate, starting_position, base_steps_per_millimeter, microstepping_factor)
         self.axes.append(new_axis)
 
@@ -107,5 +106,16 @@ class Printer:
             return False
         return True
 
-    def setTimeKeeper(self, label, feed_rate):
-        self.time_keeper = TimeKeeper(label, feed_rate)
+    def getStartingPositions(self):
+        if self.isComplete():
+            starting_positions = []
+            for axis in self.axes:
+                starting_positions.append(axis.starting_position)
+
+            return starting_positions
+
+    def getTimeKeeperIndex(self):
+        return len(self.axes)
+
+    def setTimeKeeper(self, label, feed_rate, starting_position):
+        self.time_keeper = TimeKeeper(label, feed_rate, starting_position)
