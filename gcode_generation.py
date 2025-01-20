@@ -1,57 +1,102 @@
 from midi_elements import *
-from machine_components.printer_components import Printer, Axis
+from machine_elements.printer_components import Printer, Axis, AxisType
+from machine_elements.printer_state import PrinterState, Direction
 from math import floor, sqrt
 from note_buffer import NoteBuffer
 from typing import TextIO
 
 note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
-# class MovementComponent:
-#     def __init__(self, label: str, feedrate=0, position=None):
-#         self.label = label
-#         self.feedrate = feedrate
-#         self.position = position
+class PrinterGcodeGenerator:
+    def __init__(self, machine: Printer):
+        self.machine = machine
+        self.machine_state = PrinterState(self.machine)
 
-# class LinearMovement:
-#     def __init__(self, time_keeper: MovementComponent=None):
-#         self.components: dict[int, MovementComponent] = {}
-#         self.time_keeper = time_keeper
+    def checkTrackCompatibility(self, track: Track):
+        if len(track.channels) > len(self.machine.axes):
+            raise Exception("Number of channels exceeds number of available axes. Remove channels or add more axes.")
+        if max(track.channels) > len(self.machine.axes) - 1:
+            raise Exception("The highest channel number in the input midi file exceeds the number of available axes. Each channel added in the midi file should use the lowest channel number available.")
+        if not track.hasTimeEventsAllOfType(TimeEventType.DELTA):
+            raise Exception(f"Track time events must all be of type \"{TimeEventType.DELTA.value}\"")
 
-#     def addMovementComponent(self, index, new_movement_component: MovementComponent):
-#         self.components[index] = new_movement_component
+    def generatePrinterGcode(self, target_file, track: Track):
 
-#     def generateMovementCommand(self, comment: str=None):
-#         command_string = f"G1 F{self.calculateTotalFeedrate()}"
-#         for index, component in sorted(self.components.items()):
-#             if component.position is None:
-#                 raise Exception("Cannot generate movement command when position has not been defined")
-#             command_string += f" {component.label}{round(component.position, 5)}"
-#         if self.time_keeper is not None:
-#             command_string += f" {self.time_keeper.label}{round(self.time_keeper.position, 5)}"
-#         if comment is not None:
-#             command_string += f"; {comment}"
-#         command_string += "\n"
+        """
+        For generating musical gcode to run on FDM 3D printers
+        target_file is a string containing the file you want to write the gcode to.
+        """
 
-#         return command_string
+        self.checkTrackCompatibility(track)
 
-#     def calculateTotalFeedrate(self):
-#         feedrate_squared = 0
-#         for component in self.components.values():
-#             feedrate_squared += component.feedrate ** 2
+        file_stream = open(target_file, "w")
+        self.writeStartGcode(file_stream)
 
-#         if feedrate_squared == 0 and self.time_keeper is not None:
-#             feedrate = abs(self.time_keeper.feedrate)
-#         else:
-#             feedrate = sqrt(feedrate_squared)
+        current_notes = NoteBuffer(len(track.channels))
+        previous_notes = NoteBuffer(len(track.channels))
+        for event in track:
+            if isinstance(event, NoteOnEvent):
+                current_notes.channels[event.channel_number].add(event.note_number)
+            elif isinstance(event, NoteOffEvent):
+                current_notes.channels[event.channel_number].remove(event.note_number)
+            elif isinstance(event, TimeEvent):
+                current_notes.duration = event.value
+                self.updateMachineState(current_notes, previous_notes)
+                self.writeMovementCommand(file_stream)
+                previous_notes.copyNotes(current_notes)
 
-#         return round(feedrate, 5)
+        self.writeEndGcode(file_stream)
+        file_stream.close()
 
-#     def clear(self):
-#         self.components.clear()
+    def updateMachineState(self, current_notes: NoteBuffer, previous_notes: NoteBuffer):
+        for channel_number in range(self.machine_state.number_channels):
+            if not current_notes.channels[channel_number] == previous_notes.channels[channel_number]:
+                print("Notes changed!")
 
-#     def removeMovementComponent(self, index):
-#         if index in self.components:
-#             del self.components[index]
+    def writeEndGcode(self, file_stream: TextIO):
+        file_stream.write("M302 P0; disallow cold extrusion\n")
+        file_stream.write("G4 S1; pause for a second\n")
+
+    def writeMovementCommand(self, file_stream: TextIO):
+        total_feedrate = 0
+        for channel_number in range(len(self.machine.axes)):
+            total_feedrate += self.machine_state.feedrates[channel_number] ** 2
+        total_feedrate = sqrt(total_feedrate)
+        if total_feedrate == 0:
+            total_feedrate = abs(self.machine.time_keeper.feed_rate)
+
+        movement_command = f"G1 F{total_feedrate}"
+        for channel_number, axis in enumerate(self.machine.axes):
+            if not self.machine_state.feedrates[channel_number] == 0:
+                movement_command += f" {axis.label}{self.machine_state.positions[channel_number]}"
+        movement_command += f" {self.machine.time_keeper.label}{self.machine_state.time_keeper_position}\n"
+
+        file_stream.write(movement_command)
+
+    def writeStartGcode(self, file_stream: TextIO):
+        file_stream.write("M302 P1; allow cold extrusion\n")
+        file_stream.write("M83; relative extruder moves\n")
+
+        file_stream.write(f"G92 {self.machine.time_keeper.label}0; reset {self.machine.time_keeper.label} axis\n")
+        linear_axes_command = "G1 F60000000"
+        rotary_axes_command = "G92"
+        linear_axes_present = False
+        rotary_axes_present = False
+        for axis in self.machine.axes:
+            if axis.axis_type == AxisType.LINEAR:
+                linear_axes_present = True
+                linear_axes_command += f" {axis.label}{axis.starting_position}"
+            elif axis.axis_type == AxisType.ROTARY:
+                rotary_axes_present = True
+                rotary_axes_command += f" {axis.label}{axis.starting_position}"
+        if linear_axes_present:
+            linear_axes_command += "; center axis/axes\n"
+            file_stream.write(linear_axes_command)
+        if rotary_axes_present:
+            rotary_axes_command += "; reset axis/axes\n"
+            file_stream.write(rotary_axes_command)
+
+        file_stream.write("G4 S1; pause for a second\n")
 
 def calculateFeedRate(note_number, axis: Axis):
 
@@ -74,15 +119,6 @@ def calculateFrequency(note_number):
 
     return frequency
 
-def checkCompatibility(track: Track, machine: Printer):
-
-    if len(track.channels) > len(machine.axes):
-        raise Exception("Number of channels exceeds number of available axes. Remove channels or add more axes.")
-    if max(track.channels) > len(machine.axes) - 1:
-        raise Exception("The highest channel number in the input midi file exceeds the number of available axes. Each channel added in the midi file should use the lowest channel number available.")
-    if not track.hasTimeEventsAllOfType(TimeEventType.DELTA):
-        raise Exception(f"Track time events must all be of type \"{TimeEventType.DELTA.value}\"")
-
 def convertMidiToPitchNotation(note_number):
 
     """
@@ -93,56 +129,3 @@ def convertMidiToPitchNotation(note_number):
     note = note_names[note_number % 12]
 
     return note + str(octave)
-
-def generatePrinterGcode(target_file, track: Track, machine: Printer):
-
-    """
-    For generating musical gcode to run on FDM 3D printers
-    target_file is a string containing the file you want to write the gcode to.
-    """
-
-    checkCompatibility(track, machine)
-
-    file_stream = open(target_file, "w")
-    writeStartGcode(file_stream, machine)
-
-    note_buffer = NoteBuffer(len(track.channels))
-    for event in track:
-        if isinstance(event, NoteOnEvent):
-            note_buffer.channels[event.channel_number].add(event.note_number)
-        elif isinstance(event, NoteOffEvent):
-            note_buffer.channels[event.channel_number].remove(event.note_number)
-        elif isinstance(event, TimeEvent):
-            note_buffer.duration = event.value / 1e6 / 60
-            writeMovementCommand(file_stream, note_buffer, machine)
-
-    writeEndGcode(file_stream)
-    file_stream.close()
-
-def writeEndGcode(file_stream: TextIO):
-    file_stream.write("M302 P0; disallow cold extrusion\n")
-    file_stream.write("G4 S1; pause for a second\n")
-
-def writeMovementCommand(file_stream: TextIO, note_buffer: NoteBuffer, machine: Printer):
-
-    command_string = "G1"
-    for channel_number in range(len(machine.axes)):
-        if len(note_buffer.channels[channel_number]) != 1:
-            return
-        note_number = min(note_buffer.channels[channel_number])
-        feedrate = calculateFeedRate(note_number, machine.axes[channel_number])
-
-def writeStartGcode(file_stream: TextIO, machine: Printer):
-    file_stream.write("M302 P1; allow cold extrusion\n")
-    file_stream.write("M83; relative extruder moves\n")
-
-    # centering_command = LinearMovement()
-    # file_stream.write(f"G92 {machine.time_keeper.label}0; reset {machine.time_keeper.label} axis/axes\n")
-    # for index, axis in enumerate(machine.axes):
-    #     if axis.axis_type == AxisType.ROTARY:
-    #         file_stream.write(f"G92 {axis.label}{axis.starting_position}; reset {axis.label} axis/axes\n")
-    #     elif axis.axis_type == AxisType.LINEAR:
-    #         centering_command.addMovementComponent(index, MovementComponent(axis.label, axis.max_feed_rate, axis.starting_position))
-    # file_stream.write(centering_command.generateMovementCommand("center axis/axes"))
-
-    file_stream.write("G4 S1; pause for a second\n")

@@ -374,7 +374,7 @@ def parseMidiFile(file_name):
 
     return tracks
 
-def condenseMidiTracks(tracks: list[Track]):
+def createTrackForGcodeConversion(tracks: list[Track]):
 
     for track in tracks:
         track.removeNullDeltaTimeEvents()
@@ -388,5 +388,8 @@ def condenseMidiTracks(tracks: list[Track]):
 
     for track in tracks[1:]:
         tracks[0].mergeTracks(track)
+
+    tracks[0].convertElapsedTimeToDeltaTime()
+    tracks[0].convertTicksToSeconds()
 
     return tracks[0]

@@ -1,4 +1,4 @@
-import gcode_generation as gg
+from gcode_generation import PrinterGcodeGenerator
 import machines
 import midi_parsing as mp
 from tkinter import filedialog, Tk
@@ -29,11 +29,10 @@ for i in range(len(file_names)):
 
 # generate gcode files
 print()
+generator = PrinterGcodeGenerator(machines.printer_of_theseus)
 for short_file_name, source_file, target_file in zip(short_file_names, source_files, target_files):
     print(f'{short_file_name}\n')
     tracks = mp.parseMidiFile(source_file)
-    condensed_track = mp.condenseMidiTracks(tracks)
-    condensed_track.convertElapsedTimeToDeltaTime()
-    condensed_track.convertTicksToMicroseconds()
-    gg.generatePrinterGcode(target_file, condensed_track, machines.printer_of_theseus)
+    track = mp.createTrackForGcodeConversion(tracks)
+    generator.generatePrinterGcode(target_file, track)
 print('Finished\n')

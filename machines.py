@@ -1,4 +1,4 @@
-from machine_components.printer_components import Printer, AxisType
+from machine_elements.printer_components import Printer, AxisType
 
 printer_of_theseus = Printer()
 printer_of_theseus.addAxis("X", AxisType.LINEAR, 118, -118, 7527, 0, 6.25, 16)

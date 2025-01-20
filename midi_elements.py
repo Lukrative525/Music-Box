@@ -1,6 +1,8 @@
 from __future__ import annotations
 from enum import Enum
 
+microseconds_per_second = 1e6
+
 class TimeEventType(Enum):
     DELTA = "delta"
     ELAPSED = "elapsed"
@@ -47,16 +49,7 @@ class Track(list):
             if isinstance(event, NoteOnEvent) and event.velocity == 0:
                 self[i] = NoteOffEvent(event.channel_number, event.note_number, event.velocity)
 
-    def hasTimeEventsAllOfType(self, desired_type=TimeEventType.DELTA):
-        has_only_time_events_of_type = True
-        for event in self:
-            if isinstance(event, TimeEvent):
-                if not event.time_event_type == desired_type:
-                    has_only_time_events_of_type = False
-
-        return has_only_time_events_of_type
-
-    def convertTicksToMicroseconds(self):
+    def convertTicksToSeconds(self):
 
         if not self.hasTempoEvents():
             raise Exception("Cannot convert ticks to microseconds because track has no tempo events")
@@ -66,7 +59,7 @@ class Track(list):
         microseconds_per_beat = 0
         for event in self:
             if isinstance(event, TimeEvent):
-                event.value = event.value / self.ticks_per_beat * microseconds_per_beat
+                event.value = event.value / self.ticks_per_beat * microseconds_per_beat / microseconds_per_second
             elif isinstance(event, TempoEvent):
                 microseconds_per_beat = event.microseconds_per_beat
 
@@ -76,6 +69,14 @@ class Track(list):
                 return True
 
         return False
+
+    def hasTimeEventsAllOfType(self, desired_type=TimeEventType.DELTA):
+        for event in self:
+            if isinstance(event, TimeEvent):
+                if not event.time_event_type == desired_type:
+                    return False
+
+        return True
 
     def insert(self, index, new_event):
         super().insert(index, new_event)
@@ -93,7 +94,6 @@ class Track(list):
 
         index = 0
         while True:
-
             while index < len(self) and not isinstance(self[index], TimeEvent):
                 index += 1
             if index >= len(self):
