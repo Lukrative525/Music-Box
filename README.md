@@ -1,8 +1,10 @@
 Music-Box is an application for converting MIDI files into musical G-code readable by FDM 3D printers. If its stepper motors are noisy enough, the 3D printer will playback the music from the original MIDI file when the G-code file is run.
 
+See this in action: [https://youtu.be/1bL-VmJUtvs](https://youtu.be/1bL-VmJUtvs)
+
 # Environment Setup
 
-Make sure to set your working directory to 
+Make sure to set your working directory to the one containing this project.
 
 # Creating a Machine Definition
 
@@ -22,7 +24,7 @@ printer_of_theseus.setTimeKeeper("E", -30, 0)
 
 The `addAxis` method of the `Printer` class takes the following parameters: `label`, `axis_type`, `upper_limit`, `lower_limit`, `max_feed_rate`, `starting_position`, `base_steps_per_millimeter`, and `microstepping_factor`.
 
-The `setTimeKeeper` method defines the axis used to keep all of the others in sync. It doesn't play any notes, but rather rotates slowly at a constant rate during the entirety of the G-code file execution. Using an axis in this way, rather than using a `G$` dwell command, makes the rythms more accurate. The parameters for this command are: `label`, `feed_rate`, and `starting_position`.
+The `setTimeKeeper` method defines the axis used to keep all of the others in sync. It doesn't play any notes, but rather rotates slowly at a constant rate during the entirety of the G-code file execution. Using an axis in this way, rather than using a `G4` dwell command, makes the rythms more accurate. The parameters for this command are: `label`, `feed_rate`, and `starting_position`.
 
 Once you have finished defining your machine, you can import it into other files where needed.
 
@@ -35,4 +37,4 @@ With a machine defined, you can now use it in `music_box_printer.py`. Simply rep
 + generator = PrinterGcodeGenerator(machines.your_new_machine)
 ```
 
-Run `music_box_printer.py` and select the MIDI files you want to convert into G-code. 
+Run `music_box_printer.py` and using the file open dialog that appears, select the MIDI files you want to convert into G-code. The selected files will not be modified, and corresponding G-code files with the same name are created.
