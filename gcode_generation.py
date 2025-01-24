@@ -20,6 +20,12 @@ class PrinterGcodeGenerator:
         if not track.hasTimeEventsAllOfType(TimeEventType.DELTA):
             raise Exception(f"Track time events must all be of type \"{TimeEventType.DELTA.value}\"")
 
+    def flipDirection(self, channel_number):
+        if self.machine_state.directions[channel_number] == Direction.POSITIVE:
+            self.machine_state.directions[channel_number] = Direction.NEGATIVE
+        elif self.machine_state.directions[channel_number] == Direction.NEGATIVE:
+            self.machine_state.directions[channel_number] = Direction.POSITIVE
+
     def generatePrinterGcode(self, target_file, track: Track):
 
         """
