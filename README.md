@@ -37,4 +37,4 @@ With a machine defined, you can now use it in `music_box_printer.py`. Simply rep
 + generator = PrinterGcodeGenerator(machines.your_new_machine)
 ```
 
-Run `music_box_printer.py` and using the file open dialog that appears, select the MIDI files you want to convert into G-code. The selected files will not be modified, and corresponding G-code files with the same name are created.
+Run `music_box_printer.py` and, using the file open dialog that appears, select the MIDI files you want to convert into G-code. The selected files will not be modified: instead, corresponding G-code files with the same name will be created in the same directory as the MIDI files.
