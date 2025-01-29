@@ -8,17 +8,23 @@ class Direction(Enum):
 class PrinterState:
     def __init__(self, printer: Printer):
         self.number_channels = len(printer.axes)
-        self.positions = []
-        self.directions = []
-        self.feedrates = []
+        self.printer = printer
+        self.positions = [0] * self.number_channels
+        self.directions = [Direction.POSITIVE] * self.number_channels
+        self.feedrates = [0] * self.number_channels
         self.time_keeper_position = 0
-        for axis in printer.axes:
-            self.positions.append(axis.starting_position)
-            self.directions.append(Direction.POSITIVE)
-            self.feedrates.append(0)
 
-    def reverseDirection(self, channel_number):
-        if self.directions[channel_number] == Direction.POSITIVE:
-            self.directions[channel_number] = Direction.NEGATIVE
-        elif self.directions[channel_number] == Direction.NEGATIVE:
-            self.directions[channel_number] = Direction.POSITIVE
+        self.resetState()
+
+    def resetState(self):
+        for index, axis in enumerate(self.printer.axes):
+            self.positions[index] = axis.starting_position
+            self.directions[index] = Direction.NEGATIVE
+            self.feedrates[index] = 0
+        self.time_keeper_position = 0
+
+    def reverseDirection(self, channel_index):
+        if self.directions[channel_index] == Direction.POSITIVE:
+            self.directions[channel_index] = Direction.NEGATIVE
+        elif self.directions[channel_index] == Direction.NEGATIVE:
+            self.directions[channel_index] = Direction.POSITIVE

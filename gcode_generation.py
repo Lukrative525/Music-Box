@@ -1,24 +1,51 @@
 from midi_elements import *
-from machine_elements.printer_components import Printer, Axis, AxisType
-from machine_elements.printer_state import PrinterState, Direction
-from math import floor, sqrt
+from machine_elements.printer_components import Printer, Axis, AxisType, isWithinLimits
+from machine_elements.printer_state import PrinterState
+from math import sqrt
 from note_buffer import NoteBuffer
 from typing import TextIO
 
-note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-
 class PrinterGcodeGenerator:
     def __init__(self, machine: Printer):
-        self.machine = machine
-        self.machine_state = PrinterState(self.machine)
+        self.machine: Printer = machine
+        self.machine_state: PrinterState = PrinterState(self.machine)
 
     def checkTrackCompatibility(self, track: Track):
         if len(track.channels) > len(self.machine.axes):
             raise Exception("Number of channels exceeds number of available axes. Remove channels or add more axes.")
         if max(track.channels) > len(self.machine.axes) - 1:
-            raise Exception("The highest channel number in the input midi file exceeds the number of available axes. Each channel added in the midi file should use the lowest channel number available.")
+            raise Exception("The highest channel index in the input midi file is higher than the highest available machine axis index.")
         if not track.hasTimeEventsAllOfType(TimeEventType.DELTA):
-            raise Exception(f"Track time events must all be of type \"{TimeEventType.DELTA.value}\"")
+            raise Exception(f"Track time events must all be of type \"{TimeEventType.DELTA.value}\".")
+
+    def determineDirections(self, current_note_buffer: NoteBuffer, previous_note_buffer: NoteBuffer):
+        for channel_index in current_note_buffer.channel_indices:
+            if not current_note_buffer.channels[channel_index].isEmpty() and previous_note_buffer.channels[channel_index].isEmpty():
+                self.machine_state.reverseDirection(channel_index)
+
+    def determineFeedRates(self, current_note_buffer: NoteBuffer):
+        for channel_index in current_note_buffer.channel_indices:
+            if current_note_buffer.channels[channel_index].isEmpty():
+                self.machine_state.feedrates[channel_index] = 0
+            else:
+                note_number = current_note_buffer.channels[channel_index].getNote()
+                self.machine_state.feedrates[channel_index] = round(calculateFeedRate(note_number, self.machine.axes[channel_index]), self.machine.precision)
+
+    def determinePositions(self, current_note_buffer: NoteBuffer):
+        for channel_index in current_note_buffer.channel_indices:
+            travel_amount = self.machine_state.feedrates[channel_index] * current_note_buffer.duration / 60
+            new_position = self.machine_state.positions[channel_index] + self.machine_state.directions[channel_index].value * travel_amount
+            if isWithinLimits(new_position, self.machine.axes[channel_index]):
+                self.machine_state.positions[channel_index] = round(new_position, self.machine.precision)
+            else:
+                self.machine_state.reverseDirection(channel_index)
+                new_position = self.machine_state.positions[channel_index] + self.machine_state.directions[channel_index].value * travel_amount
+                if isWithinLimits(new_position, self.machine.axes[channel_index]):
+                    self.machine_state.positions[channel_index] = round(new_position, self.machine.precision)
+                else:
+                    raise Exception("Requested travel amount exceeds the available axis travel amount.")
+
+        self.machine_state.time_keeper_position = round(self.machine.time_keeper.feed_rate * current_note_buffer.duration / 60, self.machine.precision)
 
     def generatePrinterGcode(self, target_file, track: Track):
 
@@ -29,29 +56,28 @@ class PrinterGcodeGenerator:
 
         self.checkTrackCompatibility(track)
 
+        self.machine_state.resetState()
+
         file_stream = open(target_file, "w")
         self.writeStartGcode(file_stream)
 
-        current_notes = NoteBuffer(len(track.channels))
-        previous_notes = NoteBuffer(len(track.channels))
+        current_note_buffer = NoteBuffer(track.channels)
+        previous_note_buffer = NoteBuffer(track.channels)
         for event in track:
             if isinstance(event, NoteOnEvent):
-                current_notes.channels[event.channel_number].add(event.note_number)
+                current_note_buffer.channels[event.channel_index].add(event.note_number)
             elif isinstance(event, NoteOffEvent):
-                current_notes.channels[event.channel_number].remove(event.note_number)
-            elif isinstance(event, TimeEvent):
-                current_notes.duration = event.value
-                self.updateMachineState(current_notes, previous_notes)
+                current_note_buffer.channels[event.channel_index].remove(event.note_number)
+            elif isinstance(event, TimeEvent) and event.value > 0:
+                current_note_buffer.duration = event.value
+                self.determineDirections(current_note_buffer, previous_note_buffer)
+                self.determineFeedRates(current_note_buffer)
+                self.determinePositions(current_note_buffer)
                 self.writeMovementCommand(file_stream)
-                previous_notes.copyNotes(current_notes)
+                previous_note_buffer.copyNotes(current_note_buffer)
 
         self.writeEndGcode(file_stream)
         file_stream.close()
-
-    def updateMachineState(self, current_notes: NoteBuffer, previous_notes: NoteBuffer):
-        for channel_number in range(self.machine_state.number_channels):
-            if not current_notes.channels[channel_number] == previous_notes.channels[channel_number]:
-                print("Notes changed!")
 
     def writeEndGcode(self, file_stream: TextIO):
         file_stream.write("M302 P0; disallow cold extrusion\n")
@@ -59,16 +85,16 @@ class PrinterGcodeGenerator:
 
     def writeMovementCommand(self, file_stream: TextIO):
         total_feedrate = 0
-        for channel_number in range(len(self.machine.axes)):
-            total_feedrate += self.machine_state.feedrates[channel_number] ** 2
-        total_feedrate = sqrt(total_feedrate)
+        for channel_index, feedrate in enumerate(self.machine_state.feedrates):
+            total_feedrate += feedrate ** 2
+        total_feedrate = round(sqrt(total_feedrate), self.machine.precision)
         if total_feedrate == 0:
             total_feedrate = abs(self.machine.time_keeper.feed_rate)
 
         movement_command = f"G1 F{total_feedrate}"
-        for channel_number, axis in enumerate(self.machine.axes):
-            if not self.machine_state.feedrates[channel_number] == 0:
-                movement_command += f" {axis.label}{self.machine_state.positions[channel_number]}"
+        for channel_index, axis in enumerate(self.machine.axes):
+            if not self.machine_state.feedrates[channel_index] == 0:
+                movement_command += f" {axis.label}{self.machine_state.positions[channel_index]}"
         movement_command += f" {self.machine.time_keeper.label}{self.machine_state.time_keeper_position}\n"
 
         file_stream.write(movement_command)
@@ -98,7 +124,7 @@ class PrinterGcodeGenerator:
 
         file_stream.write("G4 S1; pause for a second\n")
 
-def calculateFeedRate(note_number, axis: Axis):
+def calculateFeedRate(note_number: int, axis: Axis):
 
     """
     For calculating feedrate in mm/min
@@ -118,14 +144,3 @@ def calculateFrequency(note_number):
     frequency = 440 * (2 ** ((note_number - 69) / 12))
 
     return frequency
-
-def convertMidiToPitchNotation(note_number):
-
-    """
-    For converting midi note numbers (e.g. 69) to scientific pitch notation (e.g. A4)
-    """
-
-    octave = int(floor(note_number / 12) - 1)
-    note = note_names[note_number % 12]
-
-    return note + str(octave)

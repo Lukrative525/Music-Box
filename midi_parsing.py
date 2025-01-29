@@ -74,7 +74,7 @@ def getTicksPerBeat(byte_data):
         ticks_per_beat = concatenateBytes(byte_data[12:14])
         return ticks_per_beat
     else:
-        raise Exception("I don\'t know how to handle this time format")
+        raise Exception("I don\'t know how to handle this time format.")
 
 def isTrackStart(byte_data, index):
 
@@ -221,7 +221,7 @@ def parseMidiFile(file_name):
     # Parse Midi Header
 
     if not isMidiFile(byte_data):
-        raise Exception("Source file is not a midi file")
+        raise Exception("Source file is not a midi file.")
     number_tracks = getNumberOfTracks(byte_data)
     ticks_per_beat = getTicksPerBeat(byte_data)
     tracks: list[Track] = []
@@ -231,7 +231,7 @@ def parseMidiFile(file_name):
     index = 14
     for track_number in range(number_tracks):
         if not isTrackStart(byte_data, index):
-            raise Exception(f"Parse error: the byte at the current index ({index}) doesn't represent the beginning of a track")
+            raise Exception(f"Parse error: the byte at the current index ({index}) doesn't represent the beginning of a track.")
         index += 8
         new_track = Track(track_number, ticks_per_beat)
         current_running_status = RunningStatus.NONE
@@ -284,33 +284,33 @@ def parseMidiFile(file_name):
             # ----------------
 
             elif isNoteOff(byte_data, index):
-                channel_number = byte_data[index] - 128
+                channel_index = byte_data[index] - 128
                 note_number = byte_data[index + 1]
                 velocity = byte_data[index + 2]
-                new_track.append(NoteOffEvent(channel_number, note_number, velocity))
+                new_track.append(NoteOffEvent(channel_index, note_number, velocity))
                 current_running_status = RunningStatus.NOTE_OFF
                 index += 3
 
             elif isNoteOn(byte_data, index):
-                channel_number = byte_data[index] - 144
+                channel_index = byte_data[index] - 144
                 note_number = byte_data[index + 1]
                 velocity = byte_data[index + 2]
-                new_track.append(NoteOnEvent(channel_number, note_number, velocity))
+                new_track.append(NoteOnEvent(channel_index, note_number, velocity))
                 current_running_status = RunningStatus.NOTE_ON
                 index += 3
 
             elif isControlChange(byte_data, index):
-                channel_number = byte_data[index] - 176
+                channel_index = byte_data[index] - 176
                 control_number = byte_data[index + 1]
                 value = byte_data[index + 2]
-                new_track.append(ControlChangeEvent(channel_number, control_number, value))
+                new_track.append(ControlChangeEvent(channel_index, control_number, value))
                 current_running_status = RunningStatus.CONTROL_CHANGE
                 index += 3
 
             elif isProgramChange(byte_data, index):
-                channel_number = byte_data[index] - 192
+                channel_index = byte_data[index] - 192
                 program_number = byte_data[index + 1]
-                new_track.append(ProgramChangeEvent(channel_number, program_number))
+                new_track.append(ProgramChangeEvent(channel_index, program_number))
                 current_running_status = RunningStatus.PROGRAM_CHANGE
                 index += 2
 
@@ -323,24 +323,24 @@ def parseMidiFile(file_name):
                 if current_running_status == RunningStatus.NOTE_OFF:
                     note_number = byte_data[index]
                     velocity = byte_data[index + 1]
-                    new_track.append(NoteOffEvent(channel_number, note_number, velocity))
+                    new_track.append(NoteOffEvent(channel_index, note_number, velocity))
                     index += 2
 
                 elif current_running_status == RunningStatus.NOTE_ON:
                     note_number = byte_data[index]
                     velocity = byte_data[index + 1]
-                    new_track.append(NoteOnEvent(channel_number, note_number, velocity))
+                    new_track.append(NoteOnEvent(channel_index, note_number, velocity))
                     index += 2
 
                 elif current_running_status == RunningStatus.CONTROL_CHANGE:
                     control_number = byte_data[index]
                     value = byte_data[index + 1]
-                    new_track.append(ControlChangeEvent(channel_number, control_number, value))
+                    new_track.append(ControlChangeEvent(channel_index, control_number, value))
                     index += 2
 
                 elif current_running_status == RunningStatus.PROGRAM_CHANGE:
                     program_number = byte_data[index]
-                    new_track.append(ProgramChangeEvent(channel_number, program_number))
+                    new_track.append(ProgramChangeEvent(channel_index, program_number))
                     index += 1
 
             # ----------------
@@ -368,7 +368,7 @@ def parseMidiFile(file_name):
                 index += 2
 
             else:
-                raise Exception(f"Parse error: unimplemented midi event at byte {index}: {getBits(byte_data[index])}")
+                raise Exception(f"Parse error: unimplemented midi event at byte {index}: {getBits(byte_data[index])}.")
 
         tracks.append(new_track)
 

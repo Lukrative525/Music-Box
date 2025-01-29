@@ -11,7 +11,7 @@ file_names = list(file_names)
 # strip .mid from full file path to replace later with .gcode
 for i in range(len(file_names)):
     if '.mid' not in file_names[i]:
-        raise Exception('Please select a MIDI file')
+        raise Exception('Please select a MIDI file.')
     file_names[i] = file_names[i].replace('.mid', '')
 
 # strip file path from file names to print to console (better readability)

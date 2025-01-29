@@ -18,7 +18,7 @@ class Axis:
         self.label = label
 
         self.axis_type = axis_type
-        self.limits = AxisLimits(upper_limit, lower_limit)
+        self.limits: AxisLimits = AxisLimits(upper_limit, lower_limit)
         self.max_feed_rate = max_feed_rate
         self.starting_position = starting_position
 
@@ -72,14 +72,14 @@ class Axis:
 class AxisLimits:
     def __init__(self, upper, lower):
         if upper <= lower:
-            raise Exception("Axis limits error: upper limit must be greater than lower limit")
+            raise Exception("Axis limits error: upper limit must be greater than lower limit.")
         self.upper = upper
         self.lower = lower
 
-    def isWithinLimits(self, value):
-        if value <= self.upper and value >= self.lower:
-            return True
-        return False
+def isWithinLimits(position, axis: Axis):
+    if position <= axis.limits.upper and position >= axis.limits.lower:
+        return True
+    return False
 
 class TimeKeeper:
     def __init__(self, label: str, feed_rate, starting_position):
@@ -90,6 +90,7 @@ class TimeKeeper:
 class Printer:
     def __init__(self):
         self.axes: list[Axis] = []
+        self.precision = 12
         self.time_keeper: TimeKeeper = None
 
     def addAxis(self, label: str, axis_type: AxisType, upper_limit, lower_limit, max_feed_rate, starting_position, base_steps_per_millimeter, microstepping_factor):
@@ -116,6 +117,9 @@ class Printer:
 
     def getTimeKeeperIndex(self):
         return len(self.axes)
+
+    def setPrecision(self, new_precision):
+        self.precision = new_precision
 
     def setTimeKeeper(self, label, feed_rate, starting_position):
         self.time_keeper = TimeKeeper(label, feed_rate, starting_position)

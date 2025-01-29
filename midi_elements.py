@@ -1,7 +1,21 @@
 from __future__ import annotations
 from enum import Enum
+from math import floor
 
 microseconds_per_second = 1e6
+
+note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+
+def convertMidiToPitchNotation(note_number):
+
+    """
+    For converting midi note numbers (e.g. 69) to scientific pitch notation (e.g. A4)
+    """
+
+    octave = int(floor(note_number / 12) - 1)
+    note = note_names[note_number % 12]
+
+    return note + str(octave)
 
 class TimeEventType(Enum):
     DELTA = "delta"
@@ -22,7 +36,7 @@ class Track(list):
     def convertDeltaTimeToElapsedTime(self):
 
         if not self.hasTimeEventsAllOfType(TimeEventType.DELTA):
-            raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.ELAPSED.value}\": track already contains time events of this type")
+            raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.ELAPSED.value}\": track already contains time events of this type.")
 
         elapsed_time = 0
         for event in self:
@@ -34,7 +48,7 @@ class Track(list):
     def convertElapsedTimeToDeltaTime(self):
 
         if not self.hasTimeEventsAllOfType(TimeEventType.ELAPSED):
-            raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.DELTA.value}\": track already contains time events of this type")
+            raise Exception(f"Cannot perform time event conversion to type \"{TimeEventType.DELTA.value}\": track already contains time events of this type.")
 
         previous_elapsed_time = 0
         for event in self:
@@ -47,14 +61,14 @@ class Track(list):
     def convertNullNoteOnToNoteOff(self):
         for i, event in enumerate(self):
             if isinstance(event, NoteOnEvent) and event.velocity == 0:
-                self[i] = NoteOffEvent(event.channel_number, event.note_number, event.velocity)
+                self[i] = NoteOffEvent(event.channel_index, event.note_number, event.velocity)
 
     def convertTicksToSeconds(self):
 
         if not self.hasTempoEvents():
-            raise Exception("Cannot convert ticks to microseconds because track has no tempo events")
+            raise Exception("Cannot convert ticks to microseconds because track has no tempo events.")
         elif not self.hasTimeEventsAllOfType(TimeEventType.DELTA):
-            raise Exception(f"Cannot convert ticks to microseconds because track contains time events of type \"{TimeEventType.ELAPSED.value}\"")
+            raise Exception(f"Cannot convert ticks to microseconds because track contains time events of type \"{TimeEventType.ELAPSED.value}\".")
 
         microseconds_per_beat = 0
         for event in self:
@@ -85,12 +99,12 @@ class Track(list):
     def mergeTracks(self, source: Track):
 
         if not self.hasTimeEventsAllOfType(TimeEventType.ELAPSED) or not source.hasTimeEventsAllOfType(TimeEventType.ELAPSED):
-            raise Exception(f"To perform a track merge, both tracks' time events must all be of type \"{TimeEventType.ELAPSED.value}\"")
+            raise Exception(f"To perform a track merge, both tracks' time events must all be of type \"{TimeEventType.ELAPSED.value}\".")
 
         if not isinstance(self[-1], TrackEndEvent):
-            raise Exception("Target track for merge is missing a track end event")
+            raise Exception("Target track for merge is missing a track end event.")
         elif not isinstance(source[-1], TrackEndEvent):
-            raise Exception("Source track for merge is missing a track end event")
+            raise Exception("Source track for merge is missing a track end event.")
 
         index = 0
         while True:
@@ -110,9 +124,7 @@ class Track(list):
                 self.insert(index, source.pop(0))
             elif source[0].value == current_time:
                 del source[0]
-                index += 1
-            elif source[0].value > current_time:
-                index += 1
+            index += 1
 
         if len(source) > 0:
             del self[-1]
@@ -134,7 +146,7 @@ class Track(list):
 
     def updateChannelSet(self, new_event):
         if isinstance(new_event, ChannelEvent):
-            self.channels.add(new_event.channel_number)
+            self.channels.add(new_event.channel_index)
 
     def __str__(self):
         string_to_print = f"Track Number: {self.track_number}\nTicks Per Beat: {self.ticks_per_beat}\n"
@@ -151,20 +163,20 @@ class Event:
         return f"Generic Event:\n    {self.message}\n"
 
 class ChannelEvent(Event):
-    def __init__(self, channel_number):
-        self.channel_number = channel_number
+    def __init__(self, channel_index):
+        self.channel_index = channel_index
 
     def __str__(self):
-            return f"Channel Event:\n    Channel Number: {self.channel_number}\n"
+            return f"Channel Event:\n    Channel Number: {self.channel_index}\n"
 
 class ControlChangeEvent(ChannelEvent):
-    def __init__(self, channel_number, control_number, value):
-        super().__init__(channel_number)
+    def __init__(self, channel_index, control_number, value):
+        super().__init__(channel_index)
         self.control_number = control_number
         self.value = value
 
     def __str__(self):
-        string_to_print = f"Control Change:\n    Channel Number: {self.channel_number}\n    Control Number: {self.control_number}\n    Value: {self.value}\n"
+        string_to_print = f"Control Change:\n    Channel Number: {self.channel_index}\n    Control Number: {self.control_number}\n    Value: {self.value}\n"
 
         return string_to_print
 
@@ -188,34 +200,34 @@ class MidiPortEvent(Event):
         return string_to_print
 
 class NoteOnEvent(ChannelEvent):
-    def __init__(self, channel_number, note_number, velocity):
-        super().__init__(channel_number)
+    def __init__(self, channel_index, note_number, velocity):
+        super().__init__(channel_index)
         self.note_number = note_number
         self.velocity = velocity
 
     def __str__(self):
-        string_to_print = f"Note On:\n    Channel Number: {self.channel_number}\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
+        string_to_print = f"Note On:\n    Channel Number: {self.channel_index}\n    Note Number: {self.note_number} ({convertMidiToPitchNotation(self.note_number)})\n    Velocity: {self.velocity}\n"
 
         return string_to_print
 
 class NoteOffEvent(ChannelEvent):
-    def __init__(self, channel_number, note_number, velocity):
-        super().__init__(channel_number)
+    def __init__(self, channel_index, note_number, velocity):
+        super().__init__(channel_index)
         self.note_number = note_number
         self.velocity = velocity
 
     def __str__(self):
-        string_to_print = f"Note Off:\n    Channel Number: {self.channel_number}\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
+        string_to_print = f"Note Off:\n    Channel Number: {self.channel_index}\n    Note Number: {self.note_number}\n    Velocity: {self.velocity}\n"
 
         return string_to_print
 
 class ProgramChangeEvent(ChannelEvent):
-    def __init__(self, channel_number, program_number):
-        super().__init__(channel_number)
+    def __init__(self, channel_index, program_number):
+        super().__init__(channel_index)
         self.program_number = program_number
 
     def __str__(self):
-        string_to_print = f"Program Change:\n    Channel Number: {self.channel_number}\n    Program Number: {self.program_number}\n"
+        string_to_print = f"Program Change:\n    Channel Number: {self.channel_index}\n    Program Number: {self.program_number}\n"
 
         return string_to_print
 
