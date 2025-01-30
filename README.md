@@ -20,11 +20,14 @@ printer_of_theseus.addAxis("Z", AxisType.LINEAR, 190, 10, 941, 100, 25, 16)
 printer_of_theseus.addAxis("A", AxisType.ROTARY, 190, -190, 4704, 0, 10, 16)
 printer_of_theseus.addAxis("B", AxisType.ROTARY, 190, -190, 4704, 0, 10, 16)
 printer_of_theseus.setTimeKeeper("E", -30, 0)
+printer_of_theseus.setPrecision(5)
 ```
 
 The `addAxis` method of the `Printer` class takes the following parameters: `label`, `axis_type`, `upper_limit`, `lower_limit`, `max_feed_rate`, `starting_position`, `base_steps_per_millimeter`, and `microstepping_factor`.
 
 The `setTimeKeeper` method defines the axis used to keep all of the others in sync. It doesn't play any notes, but rather rotates slowly at a constant rate during the entirety of the G-code file execution. Using an axis in this way, rather than using `G4` dwell commands, makes the rythms more accurate. The parameters for this command are: `label`, `feed_rate`, and `starting_position`.
+
+`setPrecision` sets the number of decimal places to dislay in the generated G-code.
 
 Once you have finished defining your machine, you can import it into other files where needed.
 
